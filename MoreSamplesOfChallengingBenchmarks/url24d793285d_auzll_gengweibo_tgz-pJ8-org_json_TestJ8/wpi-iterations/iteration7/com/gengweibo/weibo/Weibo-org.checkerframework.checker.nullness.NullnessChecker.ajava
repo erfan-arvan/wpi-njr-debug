@@ -1,0 +1,381 @@
+/**
+ * http://auzll.iteye.com/
+ */
+package com.gengweibo.weibo;
+
+import static com.gengweibo.weibo.Weibo.Method.GET;
+import static com.gengweibo.weibo.Weibo.Method.POST;
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import net.oauth.OAuth;
+import net.oauth.OAuth.Parameter;
+import net.oauth.OAuthAccessor;
+import net.oauth.OAuthConsumer;
+import net.oauth.OAuthMessage;
+import net.oauth.OAuthServiceProvider;
+import net.oauth.ParameterStyle;
+import net.oauth.client.OAuthClient;
+import net.oauth.client.URLConnectionClient;
+import net.oauth.http.HttpMessage;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.json.JSONException;
+import org.json.JSONObject;
+import com.google.inject.internal.Lists;
+import com.google.inject.internal.Maps;
+
+/**
+ * 微博接口的抽象实现。本实现是基于网易微博的，也就是说Weibo163这个类基本不用修改就能 使用；其余的WeiboQQ等等实现类需要做一些调整才能使用。
+ *
+ * @author auzll@msn.com
+ * @since 2011-3-11
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public abstract class Weibo implements IWeibo, Serializable {
+
+    private static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Log LOG = LogFactory.getLog(Weibo.class);
+
+    /**
+     * OAuth请求类型，本系统暂时只需要用到GET或POST
+     */
+    public static enum Method {
+
+        GET, POST
+    }
+
+    private static final  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull long serialVersionUID = -5519577190711442534L;
+
+    /**
+     * 分页参数，每页20条，每次最多可以获取20条数据
+     */
+    protected static final  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int PAGE_MAX = 20;
+
+    protected @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull OAuthAccessor accessor;
+
+    /**
+     * 用户在本系统中的id，如果是初次使用，用UUID生成
+     */
+    protected @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable String accountId;
+
+    /**
+     * 微博类型
+     */
+    protected @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull WeiboType type;
+
+    /**
+     * 各微博厂商请求资源的地址
+     */
+    protected @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String urlResource;
+
+    /**
+     * 用户在微博厂商系统中的昵称
+     */
+    protected @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull String weiboAccountName;
+
+    /**
+     * 微博账户在本系统中的ID，注意区别微博内容的id，本系统用statusId来表示微博内容的id。<br/>
+     * 微博账户ID格式(type_userIdorUserName): T_163_123123, T_QQ_zzzz, T_SINA_1231235
+     */
+    protected @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull String weiboId;
+
+    protected  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean synUpdate;
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    protected  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int parseLegalPageCount(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable String value) {
+        if (null != value) {
+            try {
+                int i = Integer.valueOf(value.trim());
+                if (i > 0 && i < PAGE_MAX) {
+                    return i;
+                }
+            } catch (NumberFormatException e) {
+            }
+        }
+        return PAGE_MAX;
+    }
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public Weibo(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String urlRequest, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String urlAuthorization, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String urlAccess, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String urlResource, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String urlCallback, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable String consumerKey, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable String consumerSecret, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull WeiboType type) {
+        OAuthServiceProvider provider = new OAuthServiceProvider(urlRequest, urlAuthorization, urlAccess);
+        OAuthConsumer consumer = new OAuthConsumer(urlCallback, consumerKey, consumerSecret, provider);
+        this.accessor = new OAuthAccessor(consumer);
+        this.urlResource = urlResource;
+        if (!this.urlResource.endsWith("/")) {
+            this.urlResource += "/";
+        }
+        this.type = type;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void bindWeiboAccountContext(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Weibo this) {
+        if (null == weiboId && null == weiboAccountName) {
+            Response response = verifyCredentials();
+            try {
+                JSONObject jsonObject = new JSONObject(response.readBodyAsString());
+                weiboId = getType().getEnName() + "_" + jsonObject.getString("id");
+                weiboAccountName = jsonObject.getString("name");
+            } catch (JSONException e) {
+                throw new WeiException(e);
+            }
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void convertAccessToken(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Weibo this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull IParam param) throws WeiException {
+        String oauth_verifier = param.getParamValue("oauth_verifier");
+        if (null == accessor.requestToken) {
+            throw new NullPointerException("accessor.requestToken is null");
+        }
+        Map<String, String> map = Maps.newHashMap();
+        map.put("oauth_token", accessor.requestToken);
+        if (null != oauth_verifier) {
+            map.put("oauth_verifier", oauth_verifier);
+        }
+        Response response = sendRequest(map, accessor.consumer.serviceProvider.accessTokenURL, GET);
+        accessor.requestToken = null;
+        accessor.accessToken = response.getParameter("oauth_token");
+        accessor.tokenSecret = response.getParameter("oauth_token_secret");
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Response favoritesCreate(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Weibo this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull IParam param) {
+        String id = param.getParamValue("statusId");
+        return sendRequest(null, urlResource + "favorites/create/" + id + ".json", POST);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Response friendshipsCreate(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Weibo this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull IParam param) {
+        String userId = param.getParamValue("userId");
+        return sendRequest(toRequestParam("user_id", userId), urlResource + "friendships/create.json", POST);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Response friendshipsDestroy(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Weibo this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull IParam param) {
+        String userId = param.getParamValue("userId");
+        return sendRequest(toRequestParam("user_id", userId), urlResource + "friendships/destroy.json", POST);
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable String getAccountId(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Weibo this) {
+        return accountId;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull WeiboType getType(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Weibo this) {
+        return type;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable String getWeiboAccountName(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Weibo this) {
+        return weiboAccountName;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable String getWeiboId(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Weibo this) {
+        return weiboId;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Response homeTimeline(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Weibo this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull IParam param) {
+        RequestParam reqParam = toRequestParam("count", parseLegalPageCount(param.getParamValue("count")));
+        if (null != param.getParamValue("since_id")) {
+            reqParam.add("since_id", param.getParamValue("since_id"));
+        }
+        if (null != param.getParamValue("max_id")) {
+            reqParam.add("max_id", param.getParamValue("max_id"));
+        }
+        return sendRequest(reqParam, urlResource + "statuses/home_timeline.json", GET);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String makeClickUrl(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Weibo this) throws WeiException {
+        OAuthClient client = new OAuthClient(new URLConnectionClient());
+        try {
+            client.getRequestToken(accessor);
+        } catch (Exception e) {
+            throw new WeiException(e);
+        }
+        Collection<Parameter> parameters = Lists.newArrayList();
+        parameters.add(new Parameter("oauth_token", accessor.requestToken));
+        if (null != accessor.consumer.callbackURL) {
+            parameters.add(new Parameter("oauth_callback", accessor.consumer.callbackURL));
+        }
+        try {
+            OAuthMessage request = accessor.newRequestMessage(GET.toString(), accessor.consumer.serviceProvider.userAuthorizationURL, parameters);
+            Object accepted = accessor.consumer.getProperty(OAuthConsumer.ACCEPT_ENCODING);
+            if (accepted != null) {
+                request.getHeaders().add(new OAuth.Parameter(HttpMessage.ACCEPT_ENCODING, accepted.toString()));
+            }
+            Object ps = accessor.consumer.getProperty(OAuthClient.PARAMETER_STYLE);
+            ParameterStyle style = (ps == null) ? ParameterStyle.BODY : Enum.valueOf(ParameterStyle.class, ps.toString());
+            HttpMessage httpRequest = HttpMessage.newRequest(request, style);
+            return httpRequest.url.toString();
+        } catch (Exception e) {
+            throw new WeiException(e);
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setAccountId(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Weibo this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable String accountId) {
+        this.accountId = accountId;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setWeiboAccountName(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Weibo this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String accountName) {
+        this.weiboAccountName = accountName;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setWeiboId(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Weibo this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String weiboId) {
+        this.weiboId = weiboId;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Response statusesComments(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Weibo this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull IParam param) {
+        RequestParam reqParam = toRequestParam("count", PAGE_MAX);
+        if (null != param.getParamValue("since_id")) {
+            // 163可选参数，该参数需传微博id，返回此条索引之后发的微博列表，不包含此条；
+            reqParam.add("since_id", param.getParamValue("since_id"));
+        }
+        return sendRequest(reqParam, urlResource + "statuses/comments/" + param.getParamValue("statusId") + ".json", GET);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Response statusesDestroy(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Weibo this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull IParam param) {
+        String id = param.getParamValue("statusId");
+        return sendRequest(null, urlResource + "statuses/destroy/" + id + ".json", POST);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Response statusesReply(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Weibo this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull IParam param) {
+        String id = param.getParamValue("statusId");
+        String status = param.getParamValue("status");
+        return sendRequest(toRequestParam("status", status).add("id", id), urlResource + "statuses/reply.json", POST);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Response statusesRetweet(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Weibo this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull IParam param) {
+        String id = param.getParamValue("statusId");
+        RequestParam reqParam = null;
+        if (null != param.getParamValue("status")) {
+            reqParam = toRequestParam("status", param.getParamValue("status"));
+        }
+        return sendRequest(reqParam, urlResource + "statuses/retweet/" + id + ".json", POST);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Response statusesUpdate(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Weibo this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull IParam param) {
+        String status = param.getParamValue("status");
+        return sendRequest(toRequestParam("status", status), urlResource + "statuses/update.json", POST);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Response verifyCredentials(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Weibo this) {
+        return sendRequest(null, urlResource + "account/verify_credentials.json", GET);
+    }
+
+    protected static final  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int MAX_RETRY_TIMES = 3;
+
+    @org.checkerframework.dataflow.qual.Impure
+    protected @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Response sendRequest(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable Map<?, ?> map, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable String url, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Method method) throws WeiException {
+        try {
+            List<Map.Entry<?, ?>> params = null;
+            if (null != map) {
+                params = Lists.newArrayList();
+                Iterator<?> it = map.entrySet().iterator();
+                while (it.hasNext()) {
+                    Map.Entry<?, ?> p = (Map.Entry<?, ?>) it.next();
+                    params.add(new OAuth.Parameter((String) p.getKey(), (String) p.getValue()));
+                }
+            }
+            OAuthClient client = new OAuthClient(new URLConnectionClient());
+            int tryTimes = 0;
+            while (tryTimes < MAX_RETRY_TIMES) {
+                try {
+                    tryTimes++;
+                    return new Response(client.invoke(accessor, method.toString(), url, params));
+                } catch (Exception e) {
+                    // 最多重试MAX_RETRY_TIMES
+                    LOG.error("method:sendRequest,url:" + url + ",tryTimes:" + tryTimes);
+                    if (tryTimes >= MAX_RETRY_TIMES) {
+                        throw e;
+                    }
+                }
+            }
+            throw new RuntimeException("UnexpectedException");
+        } catch (Exception e) {
+            throw new WeiException(e);
+        }
+    }
+
+    protected class RequestParam extends HashMap<String, String> {
+
+        private static final  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull long serialVersionUID = -5338614760105715587L;
+
+        @org.checkerframework.dataflow.qual.Impure
+        public RequestParam() {
+        }
+
+        @org.checkerframework.dataflow.qual.Impure
+        public RequestParam(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String key, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Object value) {
+            put(key, value.toString());
+        }
+
+        @org.checkerframework.dataflow.qual.Impure
+        public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull RequestParam add(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String key, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable Object value) {
+            if (null != value) {
+                put(key, value.toString());
+            }
+            return this;
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    protected @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull RequestParam toRequestParam(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String key, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable Object value) {
+        if (null == value) {
+            throw new NullPointerException("value for key[" + key + "] is null");
+        }
+        return new RequestParam(key, value.toString());
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull OAuthAccessor getAccessor() {
+        return accessor;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Response statusesMentions(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Weibo this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull IParam param) {
+        RequestParam reqParam = toRequestParam("count", parseLegalPageCount(param.getParamValue("count")));
+        if (null != param.getParamValue("since_id")) {
+            reqParam.add("since_id", param.getParamValue("since_id"));
+        }
+        if (null != param.getParamValue("max_id")) {
+            reqParam.add("max_id", param.getParamValue("max_id"));
+        }
+        return sendRequest(reqParam, urlResource + "statuses/mentions.json", GET);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable Response statusesCommentsToMe(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Weibo this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull IParam param) {
+        RequestParam reqParam = toRequestParam("count", parseLegalPageCount(param.getParamValue("count")));
+        if (null != param.getParamValue("since_id")) {
+            reqParam.add("since_id", param.getParamValue("since_id"));
+        }
+        reqParam.add("trim_user", "false");
+        return sendRequest(reqParam, urlResource + "statuses/comments_to_me.json", GET);
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean isSynUpdate(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Weibo this) {
+        return synUpdate;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setSynUpdate(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Weibo this,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean synUpdate) {
+        this.synUpdate = synUpdate;
+    }
+}

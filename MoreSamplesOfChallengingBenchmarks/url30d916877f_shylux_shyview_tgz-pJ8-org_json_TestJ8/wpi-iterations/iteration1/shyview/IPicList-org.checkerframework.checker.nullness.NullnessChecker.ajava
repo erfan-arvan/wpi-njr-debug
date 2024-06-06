@@ -1,0 +1,37 @@
+package shyview;
+
+import java.util.NoSuchElementException;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public interface IPicList extends java.util.List<IPicture> {
+
+    @org.checkerframework.dataflow.qual.Pure
+    @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String getName();
+
+    @org.checkerframework.dataflow.qual.Impure
+    @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull IPicture next() throws NoSuchElementException;
+
+    @org.checkerframework.dataflow.qual.Impure
+    @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull IPicture current() throws NoSuchElementException;
+
+    @org.checkerframework.dataflow.qual.Impure
+    @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull IPicture previous() throws NoSuchElementException;
+
+    @org.checkerframework.dataflow.qual.Impure
+     @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getIndex();
+
+    @org.checkerframework.dataflow.qual.Impure
+    void setIndex( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int i);
+
+    @org.checkerframework.dataflow.qual.Impure
+    void cleanup();
+
+    @org.checkerframework.dataflow.qual.Impure
+    void sort();
+
+    @org.checkerframework.dataflow.qual.Impure
+    @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull ShyviewMenu getMenuItem();
+
+    public class NoRessourceAvailable extends Exception {
+    }
+}

@@ -1,0 +1,41 @@
+package frs.hotgammon.variants.winnerdeterminers;
+
+import frs.hotgammon.WinnerDeterminer;
+import frs.hotgammon.framework.Color;
+import frs.hotgammon.framework.Game;
+import frs.hotgammon.framework.Location;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class BearOffWinnerDeterminer implements WinnerDeterminer {
+
+    private @org.checkerframework.checker.initialization.qual.UnknownInitialization(java.lang.Object.class) @org.checkerframework.checker.nullness.qual.MonotonicNonNull Game game;
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public BearOffWinnerDeterminer() {
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public BearOffWinnerDeterminer(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable Game game) {
+        this.setGame(game);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable Color winner(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull BearOffWinnerDeterminer this,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int turnCount) {
+        Color playerInTurn = (this.game.getPlayerInTurn() == Color.NONE) ? Color.BLACK : this.game.getPlayerInTurn();
+        Color opponent = (playerInTurn == Color.BLACK) ? Color.RED : Color.BLACK;
+        Location playerInTurnBearOff = (playerInTurn == Color.BLACK) ? Location.B_BEAR_OFF : Location.R_BEAR_OFF;
+        Location opponentBearOff = (playerInTurn == Color.BLACK) ? Location.R_BEAR_OFF : Location.B_BEAR_OFF;
+        if (this.game.getCount(playerInTurnBearOff) == 15) {
+            return playerInTurn;
+        }
+        if (this.game.getCount(opponentBearOff) == 15) {
+            return opponent;
+        }
+        return Color.NONE;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setGame(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull BearOffWinnerDeterminer this, @org.checkerframework.checker.initialization.qual.UnknownInitialization(frs.hotgammon.framework.Game.class) @org.checkerframework.checker.nullness.qual.Nullable Game game) {
+        this.game = game;
+    }
+}

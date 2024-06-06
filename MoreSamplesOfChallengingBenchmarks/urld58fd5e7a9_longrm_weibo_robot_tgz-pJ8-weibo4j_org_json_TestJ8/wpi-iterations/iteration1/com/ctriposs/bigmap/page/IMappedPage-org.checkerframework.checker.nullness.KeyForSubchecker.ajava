@@ -1,0 +1,77 @@
+package com.ctriposs.bigmap.page;
+
+import java.nio.ByteBuffer;
+
+/**
+ * Memory mapped page file ADT
+ *
+ * @author bulldog
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public interface IMappedPage {
+
+    /**
+     * Get a thread local copy of the mapped page buffer
+     *
+     * @param position start position(relative to the start position of source mapped page buffer) of the thread local buffer
+     * @return a byte buffer with specific position as start position.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+     ByteBuffer getLocal( IMappedPage this,   int position);
+
+    /**
+     * Get a thread local copy of the mapped page buffer
+     *
+     * @return a byte buffer with specific position as start position.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+     ByteBuffer getLocal( IMappedPage this);
+
+    /**
+     * Get data from a thread local copy of the mapped page buffer
+     *
+     * @param position start position(relative to the start position of source mapped page buffer) of the thread local buffer
+     * @param length the length to fetch
+     * @return byte data
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public   byte  [] getLocal( IMappedPage this,   int position,   int length);
+
+    /**
+     * Check if this mapped page has been closed or not
+     *
+     * @return
+     */
+    @org.checkerframework.dataflow.qual.Pure
+      boolean isClosed( IMappedPage this);
+
+    /**
+     * Set if the mapped page has been changed or not
+     *
+     * @param dirty
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    void setDirty( IMappedPage this,   boolean dirty);
+
+    /**
+     * The back page file name of the mapped page
+     *
+     * @return
+     */
+    @org.checkerframework.dataflow.qual.Pure
+     String getPageFile();
+
+    /**
+     * The index of the mapped page
+     *
+     * @return the index
+     */
+    @org.checkerframework.dataflow.qual.Pure
+      long getPageIndex();
+
+    /**
+     * Persist any changes to disk
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void flush( IMappedPage this);
+}

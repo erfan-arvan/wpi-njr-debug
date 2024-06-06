@@ -1,0 +1,22 @@
+package assignments.farmer.actionstrategies.weedcontrolstrategies;
+
+import assignments.farmer.actionstrategies.WeedControlStrategy;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class ConventionalWeedControlStrategy implements WeedControlStrategy {
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void weedControlInTheSpring(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull ConventionalWeedControlStrategy this) {
+        System.out.println("No action.");
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void weedControlInTheSummer(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull ConventionalWeedControlStrategy this) {
+        System.out.println("Spray.");
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void weedControlInTheFall(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull ConventionalWeedControlStrategy this) {
+        System.out.println("No action.");
+    }
+}

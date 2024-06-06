@@ -1,0 +1,17 @@
+package logica.ia.evaluacion;
+
+import core.EstadoCasilla;
+import core.Tablero;
+import core.Tablero.TipoTablero;
+
+/**
+ * Interfaz de la función de evaluación. Cada método de evaluación debe implementar esta
+ *
+ * @author Alejandro
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public interface Evaluacion {
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull double evaluar(final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable Tablero tablero, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable TipoTablero tipoTablero, final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull EstadoCasilla colorJugador);
+}

@@ -1,0 +1,53 @@
+package core;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class Jugador {
+
+    private  EstadoCasilla color;
+
+    private   int puntaje;
+
+    private   int  [] estrategia;
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public Jugador( EstadoCasilla color) {
+        super();
+        this.color = color;
+        this.puntaje = 0;
+        //cargar estrategia desde un archivo
+        this.estrategia = null;
+    }
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public Jugador( EstadoCasilla color,   int puntaje,   int  [] estrategia) {
+        super();
+        this.color = color;
+        this.puntaje = puntaje;
+        this.estrategia = estrategia;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  EstadoCasilla color( Jugador this) {
+        return color;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   int getPuntaje( Jugador this) {
+        return puntaje;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setPuntaje( Jugador this,   int puntaje) {
+        this.puntaje = puntaje;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   int  [] getEstrategia( Jugador this) {
+        return estrategia;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setEstrategia( Jugador this,   int  [] estrategia) {
+        this.estrategia = estrategia;
+    }
+}

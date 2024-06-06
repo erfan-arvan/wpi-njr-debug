@@ -1,0 +1,83 @@
+package ubc.swim.world.trajectory;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
+/**
+ * A reference trajectory that uses polynomial basis function
+ * @author Ben Humberston
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class PolynomialTrajectory extends RefTrajectory {
+
+    protected static final  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull float MIN_PERIOD = 0.00001f;
+
+    /**
+     * Struct to hold coefficient and polynomial exponent term
+     */
+    protected class Term {
+
+        public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull float coefficient;
+
+        public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int exponent;
+    }
+
+    /**
+     * Sorts terms by their exponent
+     */
+    public class TermComparator implements Comparator<Term> {
+
+        @org.checkerframework.dataflow.qual.Pure
+        public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int compare(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull TermComparator this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Term o1, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Term o2) {
+            return o1.exponent - o2.exponent;
+        }
+    }
+
+    /**
+     * Coefficients, in order from
+     */
+    protected @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull ArrayList<Term> terms;
+
+    /**
+     * Initializes with given number of basis funcs
+     * @param numFuncs
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public PolynomialTrajectory() {
+        terms = new ArrayList<Term>();
+    }
+
+    /**
+     * Sets coefficient for the term with given exponent. If the term already
+     * has a non-zero coefficient set, replaces that coeffient. Otherwise, adds new term
+     * to this trajectory's polynomial function.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void setTermCoefficient( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int exponent,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull float coefficient) {
+        //Search for existing term with same power
+        for (Term term : terms) {
+            if (term.exponent == exponent) {
+                term.coefficient = coefficient;
+                return;
+            }
+        }
+        //Otherwise, add new term
+        Term term = new Term();
+        term.exponent = exponent;
+        term.coefficient = coefficient;
+        terms.add(term);
+        Collections.sort(terms, new TermComparator());
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull float getValue(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull PolynomialTrajectory this,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull float time) {
+        float val = 0.0f;
+        //Add contribution from each term
+        for (int i = 0; i < terms.size(); i++) {
+            Term term = terms.get(i);
+            val += term.coefficient * (float) Math.pow(time, term.exponent);
+        }
+        return val;
+    }
+}

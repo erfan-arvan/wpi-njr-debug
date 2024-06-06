@@ -1,0 +1,250 @@
+package omatTietorakenteet;
+
+/**
+ * Ulkoisesti toimii kuin Javan oma Hakemisto (melkein), mutta toteutus on vain
+ * tällä hetkellä normaali hakemisto. Luodaan vielä se oikea Hakemisto
+ * myöhemmin.
+ *
+ * @param <K>
+ * @param <V>
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class Hakemisto<K, V> implements Iterable<Vektori> {
+
+    private  Object  [] avainVarasto;
+
+    private  Object  [] arvoVarasto;
+
+    private   int alkukoko = 15;
+
+    private   int mahtuu;
+
+    private   int koko;
+
+    public  Hakemisto tama = this;
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public Hakemisto() {
+        avainVarasto = new Object[alkukoko];
+        arvoVarasto = new Object[alkukoko];
+        mahtuu = alkukoko;
+        koko = 0;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public V get( Hakemisto<K, V> this, K key) {
+        return getArvo(key);
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public K getAvain( Hakemisto<K, V> this, V value) {
+        for (int i = 0; i < koko; i++) {
+            if (arvoVarasto[i].equals(value)) {
+                return (K) avainVarasto[i];
+            }
+        }
+        return null;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public V getArvo( Hakemisto<K, V> this, K key) {
+        for (int i = 0; i < koko; i++) {
+            if (avainVarasto[i].equals(key)) {
+                return (V) arvoVarasto[i];
+            }
+        }
+        return null;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public K getAvainIndexilla(int i) {
+        if (i > koko || i < 0) {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+        return (K) avainVarasto[i];
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public V getArvoIndexilla( Hakemisto<K, V> this,   int i) {
+        if (i > koko || i < 0) {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+        return (V) arvoVarasto[i];
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  Vektori<K, V> getVektoriAvaimella(K key) {
+        int monesko = getAvainIndexAvaimella(key);
+        return new Vektori<K, V>((K) avainVarasto[monesko], (V) arvoVarasto[monesko]);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  Vektori<K, V> getVektoriArvolla(V value) {
+        int monesko = getAvainIndexArvolla(value);
+        return new Vektori<K, V>((K) avainVarasto[monesko], (V) arvoVarasto[monesko]);
+    }
+
+    /**
+     * Otetaan vielä parempaan käyttöön itse ohjelmassa, lisää vain loppuun
+     * tiedot eikä varmista löytyykö samanlaista jo aiemmin.
+     *
+     * @param key
+     * @param value
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void add( Hakemisto<K, V> this, K k, V v) {
+        if (koko == mahtuu - 2) {
+            kasvata();
+        }
+        avainVarasto[koko] = (K) k;
+        arvoVarasto[koko] = (V) v;
+        koko++;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public   boolean put( Hakemisto<K, V> this, K k, V v) {
+        int monesko = getAvainIndexAvaimella(k);
+        if (monesko == -1) {
+            if (koko == mahtuu - 2) {
+                kasvata();
+            }
+            avainVarasto[koko] = (K) k;
+            arvoVarasto[koko] = (V) v;
+            koko++;
+            return true;
+        } else {
+            arvoVarasto[monesko] = v;
+            return true;
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   int getAvainIndexArvolla( Hakemisto<K, V> this, V value) {
+        for (int i = 0; i < koko; i++) {
+            if (arvoVarasto[i].equals(value)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public V remove( Hakemisto<K, V> this, K key) {
+        int index = getAvainIndexAvaimella(key);
+        if (index == -1) {
+            return null;
+        } else {
+            V vanha = (V) arvoVarasto[index];
+            for (int i = index; i < koko - 1; i++) {
+                avainVarasto[i] = avainVarasto[i + 1];
+                arvoVarasto[i] = arvoVarasto[i + 1];
+            }
+            koko--;
+            return vanha;
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   int getArvoIndexAvaimella(K key) {
+        for (int i = 0; i < koko; i++) {
+            if (avainVarasto[i].equals(key)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   int getAvainIndexAvaimella( Hakemisto<K, V> this, K key) {
+        for (int i = 0; i < koko; i++) {
+            if (avainVarasto[i].equals(key)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   int getArvoIndexArvolla(V value) {
+        for (int i = 0; i < koko; i++) {
+            if (arvoVarasto[i].equals(value)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void kasvata( Hakemisto<K, V> this) {
+        mahtuu *= 2;
+        Object[] avainVarasto = new Object[mahtuu];
+        Object[] arvoVarasto = new Object[mahtuu];
+        for (int i = 0; i < koko; i++) {
+            avainVarasto[i] = this.avainVarasto[i];
+            arvoVarasto[i] = this.arvoVarasto[i];
+        }
+        this.avainVarasto = avainVarasto;
+        this.arvoVarasto = arvoVarasto;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   int size( Hakemisto<K, V> this) {
+        return koko;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   int clear( Hakemisto<K, V> this) {
+        return koko;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   boolean isEmpty( Hakemisto<K, V> this) {
+        if (koko == 0) {
+            return true;
+        }
+        return false;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   boolean containsKey( Hakemisto<K, V> this, K e) {
+        for (int i = 0; i < koko; i++) {
+            if (avainVarasto[i].equals(e)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   boolean containsValue( Hakemisto<K, V> this, V v) {
+        for (int i = 0; i < koko; i++) {
+            if (arvoVarasto[0].equals(v)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public java.util. Iterator<Vektori> iterator( Hakemisto<K, V> this) {
+        return new java.util.Iterator() {
+
+            private int paikka = 0;
+
+            public boolean hasNext() {
+                if (paikka < koko) {
+                    return true;
+                }
+                return false;
+            }
+
+            public Vektori next() {
+                return new Vektori(avainVarasto[paikka], arvoVarasto[paikka++]);
+            }
+
+            public void remove() {
+                tama.remove(paikka);
+            }
+        };
+    }
+}

@@ -1,0 +1,14 @@
+package frs.hotgammon;
+
+import frs.hotgammon.framework.Color;
+import frs.hotgammon.framework.Game;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public interface WinnerDeterminer {
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  Color winner( WinnerDeterminer this,   int turnCount);
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setGame( WinnerDeterminer this,  Game game);
+}

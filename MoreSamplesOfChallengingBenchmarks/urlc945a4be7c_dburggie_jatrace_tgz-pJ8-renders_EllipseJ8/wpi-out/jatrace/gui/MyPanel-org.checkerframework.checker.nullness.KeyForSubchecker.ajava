@@ -1,0 +1,102 @@
+package jatrace.gui;
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class MyPanel extends JPanel {
+
+    private int xpos, ypos, width, height;
+
+    @org.checkerframework.dataflow.qual.Pure
+    public static  MyPanel byHeightWidth(int w, int h) {
+        return new MyPanel(0, 0, w, h);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public MyPanel(  int x,   int y,   int w,   int h) {
+        super();
+        this.setLocation(x, y);
+        this.setSize(w, h);
+        this.setLayout(null);
+        nextInChain = null;
+        prevInChain = null;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setLocation( MyPanel this,   int x,   int y) {
+        super.setLocation(x, y);
+        xpos = x;
+        ypos = y;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setSize( MyPanel this,   int w,   int h) {
+        super.setSize(w, h);
+        width = w;
+        height = h;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   int getXposition() {
+        return xpos;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   int getYposition() {
+        return ypos;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   int getWidth( MyPanel this) {
+        return width;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   int getHeight( MyPanel this) {
+        return height;
+    }
+
+    private  MyPanel nextInChain;
+
+    private  MyPanel prevInChain;
+
+    /**
+     * Get the next object in the chain.
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public  MyPanel nextLink() {
+        return nextInChain;
+    }
+
+    /**
+     * Get the previous object in the chain.
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public  MyPanel prevLink() {
+        return prevInChain;
+    }
+
+    /**
+     * Insert a new link before this one.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void insertBefore( MyPanel this,  MyPanel obj) {
+        if (prevInChain != obj) {
+            prevInChain = obj;
+            obj.insertAfter(this);
+        }
+    }
+
+    /**
+     * Insert a new link after this one.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void insertAfter( MyPanel this,  MyPanel obj) {
+        if (nextInChain != obj) {
+            nextInChain = obj;
+            obj.insertBefore(this);
+        }
+    }
+}

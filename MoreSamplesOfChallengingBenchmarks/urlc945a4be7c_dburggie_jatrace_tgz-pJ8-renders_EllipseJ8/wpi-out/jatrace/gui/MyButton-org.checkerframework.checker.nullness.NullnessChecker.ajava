@@ -1,0 +1,85 @@
+package jatrace.gui;
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class MyButton extends JButton {
+
+    //stuff
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String text = "";
+
+    int width, height;
+
+    int xpos, ypos;
+
+    @org.checkerframework.dataflow.qual.Impure
+    public MyButton(String message) {
+        super(message);
+        text = message;
+        this.setLocation(0, 0);
+        this.setSize(1, 1);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public MyButton(int x, int y, int w, int h, String message) {
+        super(message);
+        text = message;
+        this.setLocation(x, y);
+        this.setSize(w, h);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public MyButton(int w, int h, String message) {
+        super(message);
+        text = message;
+        this.setLocation(0, 0);
+        this.setSize(w, h);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setText(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull MyButton this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String t) {
+        super.setText(t);
+        text = t;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setLocation(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull MyButton this,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int x,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int y) {
+        super.setLocation(x, y);
+        xpos = x;
+        ypos = y;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setSize(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull MyButton this,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int w,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int h) {
+        super.setSize(w, h);
+        width = w;
+        height = h;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getXposition() {
+        return xpos;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getYposition() {
+        return ypos;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getWidth(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull MyButton this) {
+        return width;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getHeight(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull MyButton this) {
+        return height;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String getText(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull MyButton this) {
+        return text;
+    }
+}

@@ -1,0 +1,70 @@
+package minidraw.standard;
+
+import java.awt.event.MouseEvent;
+import java.awt.event.KeyEvent;
+import minidraw.framework.*;
+
+/**
+ * AbstractTool. Provides some rudimentary behaviour for
+ * other tools to override.
+ *
+ * Modeled over the schema from JHotDraw.
+ *
+ *   This source code is from the book
+ *     "Flexible, Reliable Software:
+ *       Using Patterns and Agile Development"
+ *     published 2010 by CRC Press.
+ *   Author:
+ *     Henrik B Christensen
+ *     Computer Science Department
+ *     Aarhus University
+ *
+ *   This source code is provided WITHOUT ANY WARRANTY either
+ *   expressed or implied. You may study, use, modify, and
+ *   distribute it for non-commercial purposes. For any
+ *   commercial use, see http://www.baerbak.com/
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public abstract class AbstractTool implements Tool {
+
+    protected @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull DrawingEditor editor;
+
+    protected int fAnchorX, fAnchorY;
+
+    /**
+     * Abstract base class for all tools.
+     *      @param editor the editor (object server) that this tool is
+     *      associated with.
+     */
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public AbstractTool(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull DrawingEditor editor) {
+        this.editor = editor;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void mouseDown(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull AbstractTool this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull MouseEvent e,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int x,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int y) {
+        fAnchorX = x;
+        fAnchorY = y;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void mouseDrag(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull AbstractTool this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull MouseEvent e,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int x,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int y) {
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void mouseUp(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull AbstractTool this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull MouseEvent e,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int x,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int y) {
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void mouseMove(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull AbstractTool this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull MouseEvent evt,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int x,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int y) {
+    }
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public void keyDown(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull AbstractTool this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull KeyEvent evt,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int key) {
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull DrawingEditor editor() {
+        return editor;
+    }
+}

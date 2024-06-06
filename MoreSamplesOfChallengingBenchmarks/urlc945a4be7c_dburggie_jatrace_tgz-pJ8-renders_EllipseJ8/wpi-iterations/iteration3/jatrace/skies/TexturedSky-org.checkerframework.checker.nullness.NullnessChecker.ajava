@@ -1,0 +1,144 @@
+package jatrace.skies;
+
+import jatrace.*;
+
+/**
+ * This sky has a texture wrapped around the interior of the sky sphere.
+ *  Textures loaded by this class should have an equirectangular transformation
+ *  to avoid distortions in the wrapping.
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class TexturedSky implements Sky {
+
+    private final static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull double pi = Math.PI;
+
+    protected static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Color background = new Color(0.01, 0.01, 0.01);
+
+    private static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Vector xAxis = new Vector(1.0, 0.0, 0.0);
+
+    private static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Vector yAxis = new Vector(0.0, 1.0, 0.0);
+
+    private static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Vector zAxis = new Vector(0.0, 0.0, 1.0);
+
+    protected @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable myImage texture;
+
+    protected  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean textureLoaded;
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull double halfWidth;
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int fullHeight;
+
+    protected @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull Vector sun;
+
+    @org.checkerframework.dataflow.qual.Impure
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Color highlight(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Vector direction, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Color color) {
+        double cosine = Math.max(0.0, direction.dot(sun));
+        double exponent = Math.pow(cosine, 20.0);
+        return color.gamma(1 - exponent);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Color getColor(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull TexturedSky this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Vector direction) {
+        if (!textureLoaded) {
+            return highlight(direction, background.dup());
+        }
+        /* We need to find how far from the north pole we are, then how far
+		 * East or West we are. */
+        // get percent of way south
+        double south = Math.acos(yAxis.dot(direction)) / pi;
+        // project direction onto x-z plane (horizontal plane)
+        double xDistance = xAxis.dot(direction), zDistance = zAxis.dot(direction);
+        // get x-part
+        Vector projection = xAxis.dup().scale(xDistance);
+        // add z-part
+        projection.trans(zAxis, zDistance).norm();
+        // now we can get how far east or west we are by dotting with x-axis
+        double eastwest = Math.acos(xAxis.dot(projection)) / pi;
+        // we can get coordinates now by checking with z to see if east or west
+        int x, y;
+        if (zDistance > 0) {
+            // going west
+            x = (int) (halfWidth - halfWidth * eastwest);
+        } else {
+            // going east
+            x = (int) (halfWidth + halfWidth * eastwest);
+        }
+        y = (int) (south * fullHeight);
+        Color color = texture.getPixel(x, y);
+        return highlight(direction, color);
+    }
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull double sunDelta;
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setDelta(double d) {
+        if (d < 0.00001) {
+            sunDelta = 0.0;
+        } else {
+            sunDelta = d;
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setSun(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Vector sunDirection) {
+        sun = sunDirection.dup().norm();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Vector @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] getLight(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull TexturedSky this) {
+        if (sunDelta < 0.00001) {
+            return new Vector[] { sun.dup() };
+        } else {
+            return new Vector[] { sun.dup().delta(sunDelta) };
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void init() {
+        sun = new Vector(0.0, 1.0, 0.0);
+        textureLoaded = false;
+        texture = null;
+        halfWidth = 0;
+        fullHeight = 0;
+        sunDelta = 0.0;
+    }
+
+    /**
+     * Default constructor just has a black background color. No texture.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public TexturedSky() {
+        init();
+    }
+
+    /**
+     * Initializes sky to given direction to sun and texture from the given
+     *  path.
+     *  @param sunDirection vector to sun
+     *  @param texturePath string containing path to sky texture
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public TexturedSky(Vector sunDirection, String texturePath) {
+        init();
+        setSun(sunDirection);
+        load(texturePath);
+    }
+
+    /**
+     * Loads image at given path as the sky's texture.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void load(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String texturePath) {
+        texture = myImage.read(texturePath);
+        if (texture != null) {
+            halfWidth = texture.getWidth() / 2.0;
+            fullHeight = texture.getHeight();
+            textureLoaded = true;
+        } else {
+            System.out.println("Failed to load texture '" + texturePath + "'.");
+            halfWidth = 0.0;
+            fullHeight = 0;
+            textureLoaded = false;
+        }
+    }
+}

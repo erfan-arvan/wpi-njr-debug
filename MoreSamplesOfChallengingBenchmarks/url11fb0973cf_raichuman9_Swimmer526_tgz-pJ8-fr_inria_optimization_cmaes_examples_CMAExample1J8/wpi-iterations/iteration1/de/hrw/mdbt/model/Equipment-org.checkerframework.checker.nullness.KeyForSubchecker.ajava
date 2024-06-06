@@ -1,0 +1,41 @@
+package de.hrw.mdbt.model;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class Equipment {
+
+    private  String name;
+
+    private  String description;
+
+    private   float price;
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  String getName() {
+        return name;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  String getDescription() {
+        return description;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   float getPrice() {
+        return price;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setPrice(float price) {
+        this.price = price;
+    }
+}

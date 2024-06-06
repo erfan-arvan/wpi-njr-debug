@@ -1,0 +1,43 @@
+package frs.hotgammon.variants.factories;
+
+import frs.hotgammon.MonFactory;
+import frs.hotgammon.MoveValidator;
+import frs.hotgammon.RollDeterminer;
+import frs.hotgammon.TurnDeterminer;
+import frs.hotgammon.WinnerDeterminer;
+import frs.hotgammon.framework.Game;
+import frs.hotgammon.variants.movevalidators.CompleteMoveValidator;
+import frs.hotgammon.variants.rolldeterminers.PairSequenceDeterminer;
+import frs.hotgammon.variants.turndeterminers.AlternatingTurnDeterminer;
+import frs.hotgammon.variants.winnerdeterminers.SixMoveWinnerDeterminer;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class BetaMonFactory implements MonFactory {
+
+    private  Game game;
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  MoveValidator createMoveValidator( BetaMonFactory this) {
+        return new CompleteMoveValidator(game);
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  TurnDeterminer createTurnDeterminer( BetaMonFactory this) {
+        return new AlternatingTurnDeterminer(game);
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  WinnerDeterminer createWinnerDeterminer( BetaMonFactory this) {
+        return new SixMoveWinnerDeterminer();
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  RollDeterminer createRollDeterminer( BetaMonFactory this) {
+        return new PairSequenceDeterminer();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setGame( BetaMonFactory this,  Game game) {
+        this.game = game;
+    }
+}

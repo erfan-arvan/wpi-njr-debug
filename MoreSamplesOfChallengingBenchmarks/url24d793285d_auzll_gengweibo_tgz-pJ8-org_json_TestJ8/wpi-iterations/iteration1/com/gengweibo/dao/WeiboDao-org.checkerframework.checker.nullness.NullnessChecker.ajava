@@ -1,0 +1,39 @@
+/**
+ * http://auzll.iteye.com/
+ */
+package com.gengweibo.dao;
+
+import java.util.List;
+import com.gengweibo.weibo.IWeibo;
+
+/**
+ * @author auzll@msn.com
+ * @since 2011-3-18
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public interface WeiboDao {
+
+    /**
+     * 保存新连接的微博帐户，如果原本有weiboId相同的，覆盖之(为了保障token的有效性)。
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    void save(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull IWeibo weibo);
+
+    /**
+     * 更新微博帐户的同步状态，也就是是否同步推送微博
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    void updateSyn(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String weiboId,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean synUpdate);
+
+    /**
+     * 删除已连接的微博帐户
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    void delete(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String weiboId);
+
+    /**
+     * 根据weiboId查询相关的已连接的微博帐户。weiboId找到accountId，再根据accountId加载所有的微博帐户。
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable List<IWeibo> queryRelatedList(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String weiboId);
+}

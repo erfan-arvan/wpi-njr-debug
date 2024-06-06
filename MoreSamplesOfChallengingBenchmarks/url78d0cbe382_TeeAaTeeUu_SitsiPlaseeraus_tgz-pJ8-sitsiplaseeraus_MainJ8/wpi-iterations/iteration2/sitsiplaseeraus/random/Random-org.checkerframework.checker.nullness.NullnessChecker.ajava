@@ -1,0 +1,31 @@
+package sitsiplaseeraus.random;
+
+/**
+ * Hoitaa yhtä asiaa: luo halutulla tavalla rajattuja satunnaislukuja
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class Random {
+
+    static int luo;
+
+    /**
+     * Palauttaa ylärajatun satunnaisluvun
+     * @param max yläraja
+     * @return kokonaisluku väliltä 0-max
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int luo( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int max) {
+        return (int) (Math.random() * (max + 1));
+    }
+
+    /**
+     * Palauttaa ylä- ja alarajatun satunnaisluvun
+     * @param max yläraja
+     * @param min alaraja
+     * @return Kokonaisluku väliltä min - max
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int luo( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int max,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int min) {
+        return min + (int) (Math.random() * (max - min + 1));
+    }
+}

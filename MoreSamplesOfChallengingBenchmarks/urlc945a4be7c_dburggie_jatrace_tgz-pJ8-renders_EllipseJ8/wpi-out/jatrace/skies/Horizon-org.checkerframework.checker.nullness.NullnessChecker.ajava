@@ -1,0 +1,54 @@
+package jatrace.skies;
+
+import jatrace.*;
+
+/**
+ * This Sky class has an interesting bright horizon.
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class Horizon implements Sky {
+
+    protected @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Vector light;
+
+    protected @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Color color;
+
+    protected final  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull double exp = 20.0;
+
+    protected final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Vector up = new Vector(0.0, 1.0, 0.0);
+
+    /**
+     * Default constructor is a blue sky with a vertical sun.
+     */
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public Horizon() {
+        light = new Vector(0.0, 1.0, 0.0);
+        color = new Color(0.2, 0.2, 0.9);
+    }
+
+    /**
+     * Constructs a Horizon object with given light direction and color.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public Horizon(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Vector l, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Color c) {
+        light = l.dup().norm();
+        color = c.dup();
+    }
+
+    /**
+     * Gets references to light vectors.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Vector @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] getLight(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Horizon this) {
+        Vector[] l = { light.dup().delta(0.01) };
+        return l;
+    }
+
+    /**
+     * Gets color of sky in given direction.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Color getColor(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Horizon this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Vector direction) {
+        double d = Math.max(0.0, Math.max(direction.dot(light), 1 - direction.dot(up)));
+        return color.dup().gamma(1 - Math.pow(d, exp));
+    }
+}

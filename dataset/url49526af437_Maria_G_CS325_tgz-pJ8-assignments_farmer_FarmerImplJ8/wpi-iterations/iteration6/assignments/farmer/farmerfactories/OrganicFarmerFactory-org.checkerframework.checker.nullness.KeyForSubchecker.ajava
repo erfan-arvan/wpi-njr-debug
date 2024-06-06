@@ -1,0 +1,47 @@
+package assignments.farmer.farmerfactories;
+
+import assignments.farmer.Farmer;
+import assignments.farmer.FarmerFactory;
+import assignments.farmer.FarmerImpl;
+import assignments.farmer.actionstrategies.*;
+import assignments.farmer.actionstrategies.harveststrategies.OrganicHarvestStrategy;
+import assignments.farmer.actionstrategies.marketstrategies.OrganicMarketStrategy;
+import assignments.farmer.actionstrategies.plantstrategies.OrganicPlantStrategy;
+import assignments.farmer.actionstrategies.plowstrategies.OrganicPlowStrategy;
+import assignments.farmer.actionstrategies.weedcontrolstrategies.OrganicWeedControlStrategy;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class OrganicFarmerFactory implements FarmerFactory {
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  Farmer create( OrganicFarmerFactory this,  String str) {
+        FarmerImpl f = new FarmerImpl();
+        f.setStrategies(createPlowStrategy(), createPlantStrategy(), createWeedControlStrategy(), createHarvestStrategy(), createMarketStrategy());
+        return f;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  PlowStrategy createPlowStrategy( OrganicFarmerFactory this) {
+        return new OrganicPlowStrategy();
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  PlantStrategy createPlantStrategy( OrganicFarmerFactory this) {
+        return new OrganicPlantStrategy();
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  WeedControlStrategy createWeedControlStrategy( OrganicFarmerFactory this) {
+        return new OrganicWeedControlStrategy();
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  HarvestStrategy createHarvestStrategy( OrganicFarmerFactory this) {
+        return new OrganicHarvestStrategy();
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  MarketStrategy createMarketStrategy( OrganicFarmerFactory this) {
+        return new OrganicMarketStrategy();
+    }
+}

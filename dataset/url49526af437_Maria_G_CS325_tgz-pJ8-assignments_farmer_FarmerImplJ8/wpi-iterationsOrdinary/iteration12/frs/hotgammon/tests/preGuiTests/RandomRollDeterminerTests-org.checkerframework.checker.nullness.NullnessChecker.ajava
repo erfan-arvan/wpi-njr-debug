@@ -1,0 +1,41 @@
+package frs.hotgammon.tests.preGuiTests;
+
+import static org.junit.Assert.*;
+import java.util.Arrays;
+import java.util.Collection;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
+import frs.hotgammon.MonFactory;
+import frs.hotgammon.common.GameImpl;
+import frs.hotgammon.tests.preGuiTests.stubs.Fixed_BlackStarts_EpsilonMonFactory;
+import frs.hotgammon.tests.preGuiTests.stubs.Fixed_BlackStarts_SemiMonFactory;
+import frs.hotgammon.tests.preGuiTests.stubs.Fixed_RedStarts_EpsilonMonFactory;
+import frs.hotgammon.tests.preGuiTests.stubs.Fixed_RedStarts_SemiMonFactory;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class RandomRollDeterminerTests {
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull GameImpl game;
+
+    @org.checkerframework.dataflow.qual.Impure
+    public RandomRollDeterminerTests(MonFactory factory) {
+        game = new GameImpl(factory);
+        game.newGame();
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public static @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Collection<MonFactory[]> data() {
+        MonFactory[][] data = new MonFactory[][] { { new Fixed_BlackStarts_EpsilonMonFactory() }, { new Fixed_RedStarts_EpsilonMonFactory() }, { new Fixed_BlackStarts_SemiMonFactory() }, { new Fixed_RedStarts_SemiMonFactory() } };
+        return Arrays.asList(data);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void shouldDoubleMovesIfDoublesRolled() {
+        game.nextTurn();
+        game.nextTurn();
+        game.nextTurn();
+        assertEquals(4, game.getNumberOfMovesLeft());
+    }
+}

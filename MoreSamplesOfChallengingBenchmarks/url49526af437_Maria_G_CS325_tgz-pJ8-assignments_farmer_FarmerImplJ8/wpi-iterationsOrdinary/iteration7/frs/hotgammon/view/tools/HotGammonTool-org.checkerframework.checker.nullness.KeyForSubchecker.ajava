@@ -1,0 +1,49 @@
+package frs.hotgammon.view.tools;
+
+import java.awt.event.MouseEvent;
+import java.util.HashMap;
+import frs.hotgammon.framework.Game;
+import minidraw.framework.DrawingEditor;
+import minidraw.framework.Tool;
+import minidraw.standard.AbstractTool;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class HotGammonTool extends AbstractTool {
+
+    private  Tool currentTool;
+
+    final public static  String DIE_ROLL_TOOL = "DIE_ROLL_TOOL";
+
+    final public static  String MOVE_TOOL = "MOVE_TOOL";
+
+    final public static  String GAME_OVER_TOOL = "GAME_OVER_TOOL";
+
+    private  HashMap<String, Tool> states;
+
+    @org.checkerframework.dataflow.qual.Impure
+    public HotGammonTool( DrawingEditor editor,  Game game,  String initialState,  HashMap<String, Tool> states) {
+        super(editor);
+        this.states = states;
+        setState(initialState);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void mouseUp( HotGammonTool this,  MouseEvent e,   int x,   int y) {
+        this.currentTool.mouseUp(e, x, y);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void mouseDrag( HotGammonTool this,  MouseEvent e,   int x,   int y) {
+        this.currentTool.mouseDrag(e, x, y);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void mouseDown( HotGammonTool this,  MouseEvent e,   int x,   int y) {
+        this.currentTool.mouseDown(e, x, y);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setState( HotGammonTool this,  String toolKey) {
+        this.currentTool = states.get(toolKey);
+    }
+}

@@ -1,0 +1,22 @@
+package frs.hotgammon;
+
+import frs.hotgammon.framework.Game;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public interface MonFactory {
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull MoveValidator createMoveValidator();
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull TurnDeterminer createTurnDeterminer();
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull WinnerDeterminer createWinnerDeterminer();
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull RollDeterminer createRollDeterminer();
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setGame(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Game game);
+}

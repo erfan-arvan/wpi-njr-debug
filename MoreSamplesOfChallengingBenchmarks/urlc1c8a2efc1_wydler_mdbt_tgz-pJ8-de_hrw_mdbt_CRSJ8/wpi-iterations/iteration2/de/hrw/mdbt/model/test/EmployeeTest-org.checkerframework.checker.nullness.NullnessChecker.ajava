@@ -1,0 +1,89 @@
+package de.hrw.mdbt.model.test;
+
+import static org.junit.Assert.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import com.db4o.Db4oEmbedded;
+import com.db4o.ObjectContainer;
+import com.db4o.ObjectSet;
+import com.db4o.config.EmbeddedConfiguration;
+import com.db4o.internal.ReflectException;
+import de.hrw.mdbt.model.Address;
+import de.hrw.mdbt.model.Employee;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class EmployeeTest {
+
+    private static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String DB_TESTFILE = "EmployeeTest.db4o";
+
+    private static @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull ObjectContainer db;
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static void setUpBeforeClass() throws Exception {
+        Files.deleteIfExists(Paths.get(DB_TESTFILE));
+        EmbeddedConfiguration config;
+        config = Db4oEmbedded.newConfiguration();
+        //Employee.configure( config );
+        db = Db4oEmbedded.openFile(config, DB_TESTFILE);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static void tearDownAfterClass() {
+        db.close();
+    }
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public void setUp() throws Exception {
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void tearDown() throws Exception {
+        db.rollback();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void testEmployee() {
+        Address a1 = new Address("New York", "Harbour Street 5", "Blackforest", "4567", "Private");
+        Address a2 = new Address("New York", "Main Street 7", "Whitewater", "4555", "Work");
+        Employee p = new Employee(1, "Mustermann");
+        p.addAddress(a1);
+        p.addAddress(a2);
+        p.setSex("male");
+        try {
+            db.store(p);
+        } catch (ReflectException e) {
+            e.printStackTrace();
+        }
+        ObjectSet<Employee> allPersons = db.queryByExample(Employee.class);
+        assertEquals("Store simple person", 1, allPersons.size());
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void testEmployeeWithMail() {
+        Employee p = new Employee(2, "Mustermann");
+        p.setEmail("test@crc.com");
+        try {
+            db.store(p);
+        } catch (ReflectException e) {
+            e.printStackTrace();
+        }
+        ObjectSet<Employee> allPersons = db.queryByExample(Employee.class);
+        assertEquals("Store simple person", 1, allPersons.size());
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void testEmployeeWithInvalidMail() {
+        Employee p = new Employee(2, "Mustermann");
+        p.setEmail("test@test.com");
+        try {
+            db.store(p);
+        } catch (ReflectException e) {
+            assertNotNull(e);
+        }
+    }
+}

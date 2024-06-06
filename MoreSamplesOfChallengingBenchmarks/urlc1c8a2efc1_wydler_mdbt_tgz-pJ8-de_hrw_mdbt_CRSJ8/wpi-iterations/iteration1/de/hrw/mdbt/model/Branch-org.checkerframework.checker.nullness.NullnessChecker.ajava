@@ -1,0 +1,155 @@
+package de.hrw.mdbt.model;
+
+import java.sql.Time;
+import java.util.ArrayList;
+import com.db4o.ObjectContainer;
+import com.db4o.config.CommonConfigurationProvider;
+import com.db4o.constraints.UniqueFieldValueConstraint;
+import de.hrw.mdbt.model.Address;
+import de.hrw.mdbt.model.Vehicle;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class Branch {
+
+    private static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Time MIN_OPENINGTIME = Time.valueOf("5:0:0");
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean aboutToDelete = false;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull String name;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull Address address;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull Time openingTime;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull Time closingTime;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull String phone;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull ArrayList<Vehicle> vehicles = new ArrayList<Vehicle>();
+
+    @org.checkerframework.dataflow.qual.Impure
+    public Branch(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String name, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Address address, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Time openingTime, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Time closingTime, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String phone) {
+        setName(name);
+        setAddress(address);
+        setOpeningTime(openingTime);
+        setClosingTime(closingTime);
+        setPhone(phone);
+    }
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public Branch() {
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String getName() {
+        return name;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setName(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable String name) {
+        this.name = name;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Address getAddress() {
+        return address;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setAddress(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Address address) {
+        this.address = address;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Time getOpeningTime() {
+        return openingTime;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setOpeningTime(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable Time opening) {
+        if (opening != null && opening.before(MIN_OPENINGTIME)) {
+            throw new IllegalArgumentException("Opening time invalid!");
+        }
+        this.openingTime = opening;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Time getClosingTime() {
+        return closingTime;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setClosingTime(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable Time closing) {
+        this.closingTime = closing;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String getPhone() {
+        return phone;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setPhone(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable String phone) {
+        this.phone = phone;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull ArrayList<Vehicle> getVehicles() {
+        return vehicles;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    protected void addVehicle(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Vehicle vehicle) {
+        this.vehicles.add(vehicle);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    protected void removeVehicle(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Vehicle vehicle) {
+        this.vehicles.remove(vehicle);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static void configure(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull CommonConfigurationProvider config) {
+        config.common().objectClass(Branch.class).objectField("phone").indexed(true);
+        config.common().add(new UniqueFieldValueConstraint(Branch.class, "phone"));
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean checkConstraints() {
+        //HACK: prevent inserts/updates during objectOnDelete
+        if (aboutToDelete)
+            return false;
+        if (this.name == null)
+            return false;
+        if (this.phone == null)
+            return false;
+        return true;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean objectCanNew(ObjectContainer db) {
+        return checkConstraints();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean objectCanUpdate(ObjectContainer db) {
+        return checkConstraints();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void objectOnDelete(ObjectContainer db) {
+        aboutToDelete = true;
+        ArrayList<Vehicle> vehiclesToDelete = new ArrayList<Vehicle>(vehicles);
+        for (Vehicle v : vehiclesToDelete) {
+            if (v != null) {
+                db.activate(v, 1);
+                db.delete(v);
+            }
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String toString(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Branch this) {
+        return "--------Branch--------\n" + name + "\n" + address + "\nFrom " + openingTime.toString() + " to " + closingTime.toString() + "\nPhone: " + phone + "----------------------\n";
+    }
+}

@@ -1,0 +1,65 @@
+/**
+ * http://auzll.iteye.com/
+ */
+package com.gengweibo.web.param;
+
+import z.action.Context;
+import com.gengweibo.weibo.IParam;
+import com.gengweibo.weibo.IWeibo;
+
+/**
+ * @author auzll@msn.com
+ * @since 2011-3-28
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class MoreHomeTimelineParam implements IParam {
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull IWeibo weibo;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Context context;
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public MoreHomeTimelineParam(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull IWeibo weibo, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Context context) {
+        this.weibo = weibo;
+        this.context = context;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable String getParamValue(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull MoreHomeTimelineParam this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String key) {
+        if (null == key) {
+            return null;
+        }
+        String value = context.getRequestString(weibo.getWeiboId());
+        switch(weibo.getType()) {
+            case T_163:
+                if (key.endsWith("since_id")) {
+                    return value;
+                }
+                break;
+            case T_QQ:
+                if (key.endsWith("pagetime")) {
+                    return value;
+                }
+                if (key.endsWith("pageflag")) {
+                    return "1";
+                }
+                break;
+            case T_SINA:
+                if (key.endsWith("max_id")) {
+                    return value;
+                }
+                break;
+            case T_SOHU:
+                if (key.endsWith("max_id")) {
+                    return value;
+                }
+                break;
+            default:
+                break;
+        }
+        if (key.endsWith("count")) {
+            return context.getRequestString(weibo.getWeiboId() + "_count");
+        }
+        return context.getRequestString(key);
+    }
+}

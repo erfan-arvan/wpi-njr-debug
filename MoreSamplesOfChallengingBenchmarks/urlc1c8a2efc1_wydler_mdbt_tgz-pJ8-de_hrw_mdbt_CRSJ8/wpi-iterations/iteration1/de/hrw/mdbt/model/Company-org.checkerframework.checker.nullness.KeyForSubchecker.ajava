@@ -1,0 +1,37 @@
+package de.hrw.mdbt.model;
+
+import java.util.ArrayList;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class Company extends Customer {
+
+    private  String name;
+
+    private  ArrayList<Person> representatives = new ArrayList<Person>();
+
+    @org.checkerframework.dataflow.qual.Impure
+    public Company(  int id,  String name) {
+        super(id);
+        setName(name);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void addRepresentative(Person p) {
+        representatives.add(p);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void removeRepresentative(Person p) {
+        representatives.remove(p);
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  String getName() {
+        return name;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setName( Company this,  String name) {
+        this.name = name;
+    }
+}

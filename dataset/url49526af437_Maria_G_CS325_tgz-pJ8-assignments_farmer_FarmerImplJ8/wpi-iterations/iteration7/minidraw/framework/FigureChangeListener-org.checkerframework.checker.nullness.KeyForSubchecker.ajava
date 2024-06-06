@@ -1,0 +1,54 @@
+package minidraw.framework;
+
+import java.util.EventListener;
+
+/**
+ * Listener interested in Figure changes.
+ *
+ *   This source code is from the book
+ *     "Flexible, Reliable Software:
+ *       Using Patterns and Agile Development"
+ *     published 2010 by CRC Press.
+ *   Author:
+ *     Henrik B Christensen
+ *     Computer Science Department
+ *     Aarhus University
+ *
+ *   This source code is provided WITHOUT ANY WARRANTY either
+ *   expressed or implied. You may study, use, modify, and
+ *   distribute it for non-commercial purposes. For any
+ *   commercial use, see http://www.baerbak.com/
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public interface FigureChangeListener extends EventListener {
+
+    /**
+     *  Sent when an area is invalid
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void figureInvalidated( FigureChangeListener this,  FigureChangeEvent e);
+
+    /**
+     * Sent when a figure changed
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void figureChanged( FigureChangeListener this,  FigureChangeEvent e);
+
+    /**
+     * Sent when a figure was removed
+     */
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public void figureRemoved(FigureChangeEvent e);
+
+    /**
+     * Sent when requesting to remove a figure.
+     */
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public void figureRequestRemove(FigureChangeEvent e);
+
+    /**
+     * Sent when an update should happen.
+     */
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public void figureRequestUpdate(FigureChangeEvent e);
+}

@@ -1,0 +1,15 @@
+/**
+ * http://auzll.iteye.com/
+ */
+package com.gengweibo.weibo;
+
+/**
+ * @author auzll@msn.com
+ * @since 2011-3-28
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public interface IParam {
+
+    @org.checkerframework.dataflow.qual.Impure
+    @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable String getParamValue(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String key);
+}

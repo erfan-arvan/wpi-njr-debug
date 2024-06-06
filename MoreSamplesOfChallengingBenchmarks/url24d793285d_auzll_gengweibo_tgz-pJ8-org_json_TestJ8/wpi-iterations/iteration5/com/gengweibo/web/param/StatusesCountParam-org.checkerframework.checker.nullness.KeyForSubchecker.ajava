@@ -1,0 +1,34 @@
+/**
+ * http://auzll.iteye.com/
+ */
+package com.gengweibo.web.param;
+
+import z.action.Context;
+import com.gengweibo.weibo.IParam;
+import com.gengweibo.weibo.IWeibo;
+
+/**
+ * @author auzll@msn.com
+ * @since 2011-3-28
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class StatusesCountParam implements IParam {
+
+    private  IWeibo weibo;
+
+    private  Context context;
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public StatusesCountParam( IWeibo weibo,  Context context) {
+        this.weibo = weibo;
+        this.context = context;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  String getParamValue( StatusesCountParam this,  String key) {
+        if (null == key) {
+            return null;
+        }
+        return context.getRequestString(weibo.getWeiboId());
+    }
+}

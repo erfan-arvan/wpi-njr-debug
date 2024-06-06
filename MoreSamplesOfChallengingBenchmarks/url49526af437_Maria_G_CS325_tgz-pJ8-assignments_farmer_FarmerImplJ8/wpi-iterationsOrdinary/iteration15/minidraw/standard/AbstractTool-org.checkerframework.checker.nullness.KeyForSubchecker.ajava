@@ -1,0 +1,70 @@
+package minidraw.standard;
+
+import java.awt.event.MouseEvent;
+import java.awt.event.KeyEvent;
+import minidraw.framework.*;
+
+/**
+ * AbstractTool. Provides some rudimentary behaviour for
+ * other tools to override.
+ *
+ * Modeled over the schema from JHotDraw.
+ *
+ *   This source code is from the book
+ *     "Flexible, Reliable Software:
+ *       Using Patterns and Agile Development"
+ *     published 2010 by CRC Press.
+ *   Author:
+ *     Henrik B Christensen
+ *     Computer Science Department
+ *     Aarhus University
+ *
+ *   This source code is provided WITHOUT ANY WARRANTY either
+ *   expressed or implied. You may study, use, modify, and
+ *   distribute it for non-commercial purposes. For any
+ *   commercial use, see http://www.baerbak.com/
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public abstract class AbstractTool implements Tool {
+
+    protected  DrawingEditor editor;
+
+    protected int fAnchorX, fAnchorY;
+
+    /**
+     * Abstract base class for all tools.
+     *      @param editor the editor (object server) that this tool is
+     *      associated with.
+     */
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public AbstractTool( DrawingEditor editor) {
+        this.editor = editor;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void mouseDown( AbstractTool this,  MouseEvent e,   int x,   int y) {
+        fAnchorX = x;
+        fAnchorY = y;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void mouseDrag( AbstractTool this,  MouseEvent e,   int x,   int y) {
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void mouseUp( AbstractTool this,  MouseEvent e,   int x,   int y) {
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void mouseMove( AbstractTool this,  MouseEvent evt,   int x,   int y) {
+    }
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public void keyDown( AbstractTool this,  KeyEvent evt,   int key) {
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  DrawingEditor editor( AbstractTool this) {
+        return editor;
+    }
+}

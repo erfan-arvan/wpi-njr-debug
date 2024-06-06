@@ -1,0 +1,133 @@
+package com.ctriposs.bigmap;
+
+import java.io.IOException;
+
+/**
+ * Memory mapped file stats
+ *
+ * @author bulldog
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public interface IMMFStats {
+
+    /**
+     * Get total size of used back files(index and data files) of the big map
+     *
+     * @return total size of back files
+     * @throws IOException exception thrown if there was any IO error during the getBackFileSize operation
+     */
+    @org.checkerframework.dataflow.qual.Impure
+     @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull long getBackFileUsed() throws IOException;
+
+    /**
+     * Get total number of free entries
+     *
+     * @return total number of free entries
+     */
+    @org.checkerframework.dataflow.qual.Impure
+     @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull long getFreeEntryCount();
+
+    /**
+     * Get free entry count array
+     *
+     * @return an array
+     */
+    @org.checkerframework.dataflow.qual.Impure
+     @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull long @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] getFreeEntryCountArray();
+
+    /**
+     * Get total free slot size array
+     *
+     * @return an array
+     */
+    @org.checkerframework.dataflow.qual.Impure
+     @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull long @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] getTotalFreeSlotSizeArray();
+
+    /**
+     * Get total number of allocated(free + used) entries
+     *
+     * @return total number of entries
+     */
+    @org.checkerframework.dataflow.qual.Impure
+     @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull long getTotalEntryCount();
+
+    /**
+     * Get total free slot size
+     *
+     * @return total free slot size
+     */
+    @org.checkerframework.dataflow.qual.Impure
+     @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull long getTotalFreeSlotSize();
+
+    /**
+     * Get total slot size allocated(free + used)
+     *
+     * @return total slot size
+     */
+    @org.checkerframework.dataflow.qual.Impure
+     @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull long getTotalSlotSize();
+
+    /**
+     * Get currently used total slot size
+     *
+     * @return total slot size
+     */
+    @org.checkerframework.dataflow.qual.Impure
+     @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull long getTotalUsedSlotSize();
+
+    /**
+     * Get total really used slot size
+     *
+     * @return total slot size
+     */
+    @org.checkerframework.dataflow.qual.Impure
+     @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull long getTotalRealUsedSlotSize();
+
+    /**
+     * Get currently wasted total slot size
+     *
+     * @return total slot size
+     */
+    @org.checkerframework.dataflow.qual.Impure
+     @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull long getTotalWastedSlotSize();
+
+    /**
+     * Total number of acquire counter
+     *
+     * @return counter
+     */
+    @org.checkerframework.dataflow.qual.Impure
+     @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull long getTotalAcquireCounter();
+
+    /**
+     * Total number of release counter
+     *
+     * @return counter
+     */
+    @org.checkerframework.dataflow.qual.Impure
+     @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull long getTotalReleaseCounter();
+
+    /**
+     * Total number of exact match reuse counter
+     *
+     * @return counter
+     */
+    @org.checkerframework.dataflow.qual.Impure
+     @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull long getTotalExatchMatchReuseCounter();
+
+    /**
+     * Total number of approximate match reuse counter
+     *
+     * @return counter
+     */
+    @org.checkerframework.dataflow.qual.Impure
+     @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull long getTotalApproximateMatchReuseCounter();
+
+    /**
+     * Total number of acquire new counter
+     *
+     * @return counter
+     */
+    @org.checkerframework.dataflow.qual.Impure
+     @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull long getTotalAcquireNewCounter();
+}

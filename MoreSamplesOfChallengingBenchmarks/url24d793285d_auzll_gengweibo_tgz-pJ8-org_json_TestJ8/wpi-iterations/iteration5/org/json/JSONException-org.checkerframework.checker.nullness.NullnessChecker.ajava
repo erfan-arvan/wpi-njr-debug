@@ -1,0 +1,32 @@
+package org.json;
+
+/**
+ * The JSONException is thrown by the JSON.org classes then things are amiss.
+ * @author JSON.org
+ * @version 2008-09-18
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class JSONException extends Exception {
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull Throwable cause;
+
+    /**
+     * Constructs a JSONException with an explanatory message.
+     * @param message Detail about the reason for the exception.
+     */
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public JSONException(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String message) {
+        super(message);
+    }
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public JSONException(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Throwable t) {
+        super(t.getMessage());
+        this.cause = t;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable Throwable getCause(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull JSONException this) {
+        return this.cause;
+    }
+}

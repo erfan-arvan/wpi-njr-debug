@@ -1,0 +1,51 @@
+package sitsiplaseeraus.random;
+
+/**
+ * Toimii käyttöliittymänä nimien pyytämiseen
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class RandomNimi {
+
+    private  Sukunimet sukunimet;
+
+    private  EtunimetMiehen etunimetMiehen;
+
+    private  EtunimetNaisen etunimetNaisen;
+
+    /**
+     * Alustaa käyttöön
+     */
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public RandomNimi() {
+        sukunimet = new Sukunimet();
+        etunimetMiehen = new EtunimetMiehen();
+        etunimetNaisen = new EtunimetNaisen();
+    }
+
+    /**
+     * Palauttaa satunnaisen Sukunimen
+     * @return Sukunimi
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    protected  String palautaSukunimi( RandomNimi this) {
+        return this.sukunimet.palautaSukunimi();
+    }
+
+    /**
+     * Palauttaa satunnaisen miehen etunimen
+     * @return Miehen etunimi
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    protected  String palautaEtunimiMiehen( RandomNimi this) {
+        return this.etunimetMiehen.palautaEtunimi();
+    }
+
+    /**
+     * Palauttaa satunnaisen naisen etunimen
+     * @return Naisen etunimi
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    protected  String palautaEtunimiNaisen( RandomNimi this) {
+        return this.etunimetNaisen.palautaEtunimi();
+    }
+}

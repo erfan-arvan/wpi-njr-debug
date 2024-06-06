@@ -1,0 +1,40 @@
+package jatrace.skies;
+
+import jatrace.*;
+
+/**
+ * This Sky class has a very white color
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class White implements Sky {
+
+    protected @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Vector sun;
+
+    protected final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Color color = new Color(0.999, 0.999, 0.999);
+
+    /**
+     * Constructs a new White sky object.
+     */
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public White() {
+        sun = new Vector(0.0, 1.0, 0.0);
+    }
+
+    /**
+     * Gets color of sky in given direction.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Color getColor(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull White this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Vector direction) {
+        //double gamma = Math.pow(1 - direction.dot(sun), 99.0);
+        return color.dup();
+    }
+
+    /**
+     * Gets references to light vectors.
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Vector @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] getLight(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull White this) {
+        Vector[] L = { new Vector(0.0, 1.0, 0.0) };
+        return L;
+    }
+}

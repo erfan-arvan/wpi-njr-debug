@@ -1,0 +1,22 @@
+package assignments.farmer.actionstrategies.marketstrategies;
+
+import assignments.farmer.actionstrategies.MarketStrategy;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class ConventionalMarketStrategy implements MarketStrategy {
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void marketInTheSpring( ConventionalMarketStrategy this) {
+        System.out.println("Nothing to market.");
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void marketInTheSummer( ConventionalMarketStrategy this) {
+        System.out.println("Nothing to market.");
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void marketInTheFall( ConventionalMarketStrategy this) {
+        System.out.println("Feed corn to elevator.");
+    }
+}

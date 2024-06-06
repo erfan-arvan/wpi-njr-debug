@@ -1,0 +1,22 @@
+package assignments.farmer.actionstrategies.marketstrategies;
+
+import assignments.farmer.actionstrategies.MarketStrategy;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class AmishMarketStrategy implements MarketStrategy {
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void marketInTheSpring(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull AmishMarketStrategy this) {
+        System.out.println("Jams, jellies, peas & lettuce to auction.");
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void marketInTheSummer(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull AmishMarketStrategy this) {
+        System.out.println("Peas, carrots, early beans, roma tomatoes to auction.");
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void marketInTheFall(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull AmishMarketStrategy this) {
+        System.out.println("Beans, squash, tomatoes to auction.");
+    }
+}

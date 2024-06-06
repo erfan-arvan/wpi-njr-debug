@@ -1,0 +1,128 @@
+package minidraw.standard;
+
+import java.awt.event.MouseEvent;
+import minidraw.framework.*;
+import minidraw.standard.handlers.*;
+
+/**
+ *  Selection tool: Uses a internal state pattern to define what
+ * type of tool to use in the current situation.
+ *
+ *   This source code is from the book
+ *     "Flexible, Reliable Software:
+ *       Using Patterns and Agile Development"
+ *     published 2010 by CRC Press.
+ *   Author:
+ *     Henrik B Christensen
+ *     Computer Science Department
+ *     Aarhus University
+ *
+ *   This source code is provided WITHOUT ANY WARRANTY either
+ *   expressed or implied. You may study, use, modify, and
+ *   distribute it for non-commercial purposes. For any
+ *   commercial use, see http://www.baerbak.com/
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class SelectionTool extends AbstractTool implements Tool {
+
+    /**
+     * Subtool to delegate to. The selection tool is in itself
+     *     a state tool that may be in one of several states given
+     *     by the sub tool.
+     *     Class Invariant: fChild tool is never null
+     */
+    protected @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Tool fChild;
+
+    /**
+     * helper null tool to avoid creating and destroying objects
+     *     all the time
+     */
+    protected @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Tool cachedNullTool;
+
+    /**
+     * the figure that is being dragged. If null then its operation
+     *      is not that of dragging a figure (or a set of figures)
+     */
+    protected @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable Figure draggedFigure;
+
+    /**
+     * the rubber band selection strategy to use.
+     */
+    @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull RubberBandSelectionStrategy selectionStrategy;
+
+    @org.checkerframework.dataflow.qual.Impure
+    public SelectionTool(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull DrawingEditor editor) {
+        this(editor, new StandardRubberBandSelectionStrategy());
+    }
+
+    /**
+     * Define a selection tool where the SelectAreaTracker takes
+     *      a special RubberBandSelection strategy.
+     */
+    @org.checkerframework.framework.qual.EnsuresQualifier(expression = { "this.draggedFigure" }, qualifier = org.checkerframework.checker.initialization.qual.FBCBottom.class)
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public SelectionTool(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull DrawingEditor editor, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull RubberBandSelectionStrategy selectionStrategy) {
+        super(editor);
+        fChild = cachedNullTool = new NullTool();
+        draggedFigure = null;
+        this.selectionStrategy = selectionStrategy;
+    }
+
+    /**
+     * Handles mouse down events and starts the corresponding tracker.
+     */
+    @org.checkerframework.checker.nullness.qual.EnsuresNonNull({ "this.draggedFigure" })
+    @org.checkerframework.dataflow.qual.Impure
+    public void mouseDown(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull SelectionTool this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull MouseEvent e,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int x,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int y) {
+        Drawing model = editor().drawing();
+        model.lock();
+        draggedFigure = model.findFigure(e.getX(), e.getY());
+        if (draggedFigure != null) {
+            fChild = createDragTracker(draggedFigure);
+        } else {
+            if (!e.isShiftDown()) {
+                model.clearSelection();
+            }
+            fChild = createAreaTracker();
+        }
+        fChild.mouseDown(e, x, y);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void mouseDrag(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull SelectionTool this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull MouseEvent e,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int x,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int y) {
+        fChild.mouseDrag(e, x, y);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void mouseMove(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull SelectionTool this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull MouseEvent e,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int x,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int y) {
+        fChild.mouseMove(e, x, y);
+    }
+
+    @org.checkerframework.framework.qual.EnsuresQualifier(expression = { "this.draggedFigure" }, qualifier = org.checkerframework.checker.initialization.qual.FBCBottom.class)
+    @org.checkerframework.dataflow.qual.Impure
+    public void mouseUp(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull SelectionTool this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull MouseEvent e,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int x,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int y) {
+        editor().drawing().unlock();
+        fChild.mouseUp(e, x, y);
+        fChild = cachedNullTool;
+        draggedFigure = null;
+    }
+
+    /**
+     * Factory method to create a Drag tracker. It is used to drag a figure.
+     */
+    @org.checkerframework.checker.nullness.qual.RequiresNonNull({ "this.draggedFigure" })
+    @org.checkerframework.dataflow.qual.Pure
+    protected @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Tool createDragTracker(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Figure f) {
+        return new DragTracker(editor(), f);
+    }
+
+    /**
+     * Factory method to create an Area Tracker. It is used to select an area.
+     */
+    @org.checkerframework.checker.nullness.qual.RequiresNonNull({ "this.draggedFigure" })
+    @org.checkerframework.framework.qual.RequiresQualifier(expression = { "this.draggedFigure" }, qualifier = org.checkerframework.checker.initialization.qual.FBCBottom.class)
+    @org.checkerframework.dataflow.qual.Pure
+    protected @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Tool createAreaTracker() {
+        return new SelectAreaTracker(editor(), selectionStrategy);
+    }
+}

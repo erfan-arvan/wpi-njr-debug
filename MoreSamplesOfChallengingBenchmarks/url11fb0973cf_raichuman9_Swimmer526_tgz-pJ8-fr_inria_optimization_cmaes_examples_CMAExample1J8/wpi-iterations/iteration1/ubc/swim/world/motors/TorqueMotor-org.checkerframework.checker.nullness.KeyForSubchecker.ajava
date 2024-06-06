@@ -1,0 +1,21 @@
+package ubc.swim.world.motors;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public abstract class TorqueMotor {
+
+    /**
+     * Applies torque to the bodies under this motor's control
+     * with the magnitude based on given runtime value.
+     * Returns the magnitude of the applied torque.
+     * @param time
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public abstract   float applyTorque( TorqueMotor this,   float runtime);
+
+    /**
+     * Returns torque applied at most recent call to applyTorque().
+     * @return
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public abstract   float getPrevTorque();
+}

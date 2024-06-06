@@ -1,0 +1,63 @@
+package core;
+
+/**
+ * The state of a square - a point in the board.
+ * The state can be:
+ * <ul>
+ * <li>Black - the square is colored black
+ * <li>White - the square is colored white
+ * <li>Pssbl - the square is a next possible move
+ * <li>Empty - the square is empty.
+ * </ul>
+ * Each state is represented with a state-symbol.
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public enum EstadoCasilla {
+
+    BLACK('B'), WHITE('W'), PSSBL('P'), EMPTY('E'), WALL('M');
+
+    private final  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull char symbol;
+
+    @org.checkerframework.dataflow.qual.Impure
+    EstadoCasilla( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull char symbol) {
+        this.symbol = symbol;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull char symbol() {
+        return this.symbol;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull EstadoCasilla opposite() {
+        return this == BLACK ? WHITE : BLACK;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String toString(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull EstadoCasilla this) {
+        return String.valueOf(symbol);
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public static @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull EstadoCasilla obtenerEstado(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String estado) {
+        EstadoCasilla estadoCasilla;
+        switch(estado) {
+            case "B":
+                estadoCasilla = BLACK;
+                break;
+            case "W":
+                estadoCasilla = WHITE;
+                break;
+            case "P":
+                estadoCasilla = PSSBL;
+                break;
+            case "M":
+                estadoCasilla = WALL;
+                break;
+            default:
+                estadoCasilla = EMPTY;
+                break;
+        }
+        return estadoCasilla;
+    }
+}

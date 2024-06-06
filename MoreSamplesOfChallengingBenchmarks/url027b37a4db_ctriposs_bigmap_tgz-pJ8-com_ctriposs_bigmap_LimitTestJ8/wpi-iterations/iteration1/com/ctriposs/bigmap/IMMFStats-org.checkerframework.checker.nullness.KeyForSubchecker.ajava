@@ -1,0 +1,133 @@
+package com.ctriposs.bigmap;
+
+import java.io.IOException;
+
+/**
+ * Memory mapped file stats
+ *
+ * @author bulldog
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public interface IMMFStats {
+
+    /**
+     * Get total size of used back files(index and data files) of the big map
+     *
+     * @return total size of back files
+     * @throws IOException exception thrown if there was any IO error during the getBackFileSize operation
+     */
+    @org.checkerframework.dataflow.qual.Impure
+      long getBackFileUsed( IMMFStats this) throws IOException;
+
+    /**
+     * Get total number of free entries
+     *
+     * @return total number of free entries
+     */
+    @org.checkerframework.dataflow.qual.Impure
+      long getFreeEntryCount( IMMFStats this);
+
+    /**
+     * Get free entry count array
+     *
+     * @return an array
+     */
+    @org.checkerframework.dataflow.qual.Impure
+      long  [] getFreeEntryCountArray();
+
+    /**
+     * Get total free slot size array
+     *
+     * @return an array
+     */
+    @org.checkerframework.dataflow.qual.Impure
+      long  [] getTotalFreeSlotSizeArray();
+
+    /**
+     * Get total number of allocated(free + used) entries
+     *
+     * @return total number of entries
+     */
+    @org.checkerframework.dataflow.qual.Impure
+      long getTotalEntryCount( IMMFStats this);
+
+    /**
+     * Get total free slot size
+     *
+     * @return total free slot size
+     */
+    @org.checkerframework.dataflow.qual.Impure
+      long getTotalFreeSlotSize( IMMFStats this);
+
+    /**
+     * Get total slot size allocated(free + used)
+     *
+     * @return total slot size
+     */
+    @org.checkerframework.dataflow.qual.Impure
+      long getTotalSlotSize();
+
+    /**
+     * Get currently used total slot size
+     *
+     * @return total slot size
+     */
+    @org.checkerframework.dataflow.qual.Impure
+      long getTotalUsedSlotSize( IMMFStats this);
+
+    /**
+     * Get total really used slot size
+     *
+     * @return total slot size
+     */
+    @org.checkerframework.dataflow.qual.Impure
+      long getTotalRealUsedSlotSize( IMMFStats this);
+
+    /**
+     * Get currently wasted total slot size
+     *
+     * @return total slot size
+     */
+    @org.checkerframework.dataflow.qual.Impure
+      long getTotalWastedSlotSize( IMMFStats this);
+
+    /**
+     * Total number of acquire counter
+     *
+     * @return counter
+     */
+    @org.checkerframework.dataflow.qual.Impure
+      long getTotalAcquireCounter( IMMFStats this);
+
+    /**
+     * Total number of release counter
+     *
+     * @return counter
+     */
+    @org.checkerframework.dataflow.qual.Impure
+      long getTotalReleaseCounter( IMMFStats this);
+
+    /**
+     * Total number of exact match reuse counter
+     *
+     * @return counter
+     */
+    @org.checkerframework.dataflow.qual.Impure
+      long getTotalExatchMatchReuseCounter( IMMFStats this);
+
+    /**
+     * Total number of approximate match reuse counter
+     *
+     * @return counter
+     */
+    @org.checkerframework.dataflow.qual.Impure
+      long getTotalApproximateMatchReuseCounter( IMMFStats this);
+
+    /**
+     * Total number of acquire new counter
+     *
+     * @return counter
+     */
+    @org.checkerframework.dataflow.qual.Impure
+      long getTotalAcquireNewCounter( IMMFStats this);
+}

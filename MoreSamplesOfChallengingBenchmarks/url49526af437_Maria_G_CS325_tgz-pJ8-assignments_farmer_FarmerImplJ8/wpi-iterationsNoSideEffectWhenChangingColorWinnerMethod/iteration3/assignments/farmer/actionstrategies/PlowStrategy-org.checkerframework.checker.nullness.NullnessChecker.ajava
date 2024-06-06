@@ -1,0 +1,14 @@
+package assignments.farmer.actionstrategies;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public interface PlowStrategy {
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void plowInTheSpring();
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void plowInTheSummer();
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void plowInTheFall();
+}

@@ -1,0 +1,34 @@
+/**
+ * http://auzll.iteye.com/
+ */
+package com.gengweibo.util;
+
+/**
+ * @author auzll@msn.com
+ * @since 2011-3-23
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public final class Utils {
+
+    /**
+     * 每个用户最多可以同时连接多少个微博账户
+     */
+    public static final  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int MAX_LINKING_NUM = 20;
+
+    @org.checkerframework.dataflow.qual.Pure
+    public static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getMaxLinkingNum() {
+        return MAX_LINKING_NUM;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean isStringEmpty(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String str) {
+        if (null == str) {
+            return true;
+        }
+        str = str.trim();
+        if (0 == str.length()) {
+            return true;
+        }
+        return false;
+    }
+}

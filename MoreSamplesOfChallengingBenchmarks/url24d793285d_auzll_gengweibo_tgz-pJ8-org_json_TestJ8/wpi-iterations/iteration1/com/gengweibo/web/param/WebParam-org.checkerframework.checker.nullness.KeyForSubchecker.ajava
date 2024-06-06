@@ -1,0 +1,30 @@
+/**
+ * http://auzll.iteye.com/
+ */
+package com.gengweibo.web.param;
+
+import z.action.Context;
+import com.gengweibo.weibo.IParam;
+
+/**
+ * @author auzll@msn.com
+ * @since 2011-3-28
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class WebParam implements IParam {
+
+    private  Context context;
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public WebParam( Context context) {
+        this.context = context;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  String getParamValue( WebParam this,  String key) {
+        if (null != key && key.endsWith("clientip")) {
+            return context.getRequestIp();
+        }
+        return context.getRequestString(key);
+    }
+}

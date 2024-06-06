@@ -1,0 +1,436 @@
+/*
+ * Copyright 2007 Netflix, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package net.oauth;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Miscellaneous constants, methods and types.
+ *
+ * @author John Kristian
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class OAuth {
+
+    public static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String VERSION_1_0 = "1.0";
+
+    /**
+     * The encoding used to represent characters as bytes.
+     */
+    public static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String ENCODING = "UTF-8";
+
+    /**
+     * The MIME type for a sequence of OAuth parameters.
+     */
+    public static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String FORM_ENCODED = "application/x-www-form-urlencoded";
+
+    public static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String OAUTH_CONSUMER_KEY = "oauth_consumer_key";
+
+    public static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String OAUTH_TOKEN = "oauth_token";
+
+    public static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String OAUTH_TOKEN_SECRET = "oauth_token_secret";
+
+    public static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String OAUTH_SIGNATURE_METHOD = "oauth_signature_method";
+
+    public static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String OAUTH_SIGNATURE = "oauth_signature";
+
+    public static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String OAUTH_TIMESTAMP = "oauth_timestamp";
+
+    public static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String OAUTH_NONCE = "oauth_nonce";
+
+    public static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String OAUTH_VERSION = "oauth_version";
+
+    public static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String OAUTH_CALLBACK = "oauth_callback";
+
+    public static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String OAUTH_CALLBACK_CONFIRMED = "oauth_callback_confirmed";
+
+    public static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String OAUTH_VERIFIER = "oauth_verifier";
+
+    public static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String HMAC_SHA1 = "HMAC-SHA1";
+
+    public static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String RSA_SHA1 = "RSA-SHA1";
+
+    /**
+     * Strings used for <a href="http://wiki.oauth.net/ProblemReporting">problem
+     * reporting</a>.
+     */
+    public static class Problems {
+
+        public static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String VERSION_REJECTED = "version_rejected";
+
+        public static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String PARAMETER_ABSENT = "parameter_absent";
+
+        public static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String PARAMETER_REJECTED = "parameter_rejected";
+
+        public static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String TIMESTAMP_REFUSED = "timestamp_refused";
+
+        public static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String NONCE_USED = "nonce_used";
+
+        public static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String SIGNATURE_METHOD_REJECTED = "signature_method_rejected";
+
+        public static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String SIGNATURE_INVALID = "signature_invalid";
+
+        public static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String CONSUMER_KEY_UNKNOWN = "consumer_key_unknown";
+
+        public static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String CONSUMER_KEY_REJECTED = "consumer_key_rejected";
+
+        public static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String CONSUMER_KEY_REFUSED = "consumer_key_refused";
+
+        public static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String TOKEN_USED = "token_used";
+
+        public static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String TOKEN_EXPIRED = "token_expired";
+
+        public static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String TOKEN_REVOKED = "token_revoked";
+
+        public static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String TOKEN_REJECTED = "token_rejected";
+
+        public static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String ADDITIONAL_AUTHORIZATION_REQUIRED = "additional_authorization_required";
+
+        public static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String PERMISSION_UNKNOWN = "permission_unknown";
+
+        public static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String PERMISSION_DENIED = "permission_denied";
+
+        public static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String USER_REFUSED = "user_refused";
+
+        public static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String OAUTH_ACCEPTABLE_VERSIONS = "oauth_acceptable_versions";
+
+        public static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String OAUTH_ACCEPTABLE_TIMESTAMPS = "oauth_acceptable_timestamps";
+
+        public static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String OAUTH_PARAMETERS_ABSENT = "oauth_parameters_absent";
+
+        public static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String OAUTH_PARAMETERS_REJECTED = "oauth_parameters_rejected";
+
+        public static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String OAUTH_PROBLEM_ADVICE = "oauth_problem_advice";
+
+        /**
+         * A map from an <a
+         * href="http://wiki.oauth.net/ProblemReporting">oauth_problem</a> value to
+         * the appropriate HTTP response code.
+         */
+        public static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Map<String, Integer> TO_HTTP_CODE = mapToHttpCode();
+
+        @org.checkerframework.dataflow.qual.Impure
+        private static @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Map<String, Integer> mapToHttpCode() {
+            Integer badRequest = new Integer(400);
+            Integer unauthorized = new Integer(401);
+            Integer serviceUnavailable = new Integer(503);
+            Map<String, Integer> map = new HashMap<String, Integer>();
+            map.put(Problems.VERSION_REJECTED, badRequest);
+            map.put(Problems.PARAMETER_ABSENT, badRequest);
+            map.put(Problems.PARAMETER_REJECTED, badRequest);
+            map.put(Problems.TIMESTAMP_REFUSED, badRequest);
+            map.put(Problems.SIGNATURE_METHOD_REJECTED, badRequest);
+            map.put(Problems.NONCE_USED, unauthorized);
+            map.put(Problems.TOKEN_USED, unauthorized);
+            map.put(Problems.TOKEN_EXPIRED, unauthorized);
+            map.put(Problems.TOKEN_REVOKED, unauthorized);
+            map.put(Problems.TOKEN_REJECTED, unauthorized);
+            map.put("token_not_authorized", unauthorized);
+            map.put(Problems.SIGNATURE_INVALID, unauthorized);
+            map.put(Problems.CONSUMER_KEY_UNKNOWN, unauthorized);
+            map.put(Problems.CONSUMER_KEY_REJECTED, unauthorized);
+            map.put(Problems.ADDITIONAL_AUTHORIZATION_REQUIRED, unauthorized);
+            map.put(Problems.PERMISSION_UNKNOWN, unauthorized);
+            map.put(Problems.PERMISSION_DENIED, unauthorized);
+            map.put(Problems.USER_REFUSED, serviceUnavailable);
+            map.put(Problems.CONSUMER_KEY_REFUSED, serviceUnavailable);
+            return Collections.unmodifiableMap(map);
+        }
+    }
+
+    private static @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String characterEncoding = ENCODING;
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static void setCharacterEncoding(String encoding) {
+        OAuth.characterEncoding = encoding;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String decodeCharacters( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull byte @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] from) {
+        if (characterEncoding != null) {
+            try {
+                return new String(from, characterEncoding);
+            } catch (UnsupportedEncodingException e) {
+                System.err.println(e + "");
+            }
+        }
+        return new String(from);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull byte @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] encodeCharacters(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String from) {
+        if (characterEncoding != null) {
+            try {
+                return from.getBytes(characterEncoding);
+            } catch (UnsupportedEncodingException e) {
+                System.err.println(e + "");
+            }
+        }
+        return from.getBytes();
+    }
+
+    /**
+     * Return true if the given Content-Type header means FORM_ENCODED.
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean isFormEncoded(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String contentType) {
+        if (contentType == null) {
+            return false;
+        }
+        int semi = contentType.indexOf(";");
+        if (semi >= 0) {
+            contentType = contentType.substring(0, semi);
+        }
+        return FORM_ENCODED.equalsIgnoreCase(contentType.trim());
+    }
+
+    /**
+     * Construct a form-urlencoded document containing the given sequence of
+     * name/value pairs. Use OAuth percent encoding (not exactly the encoding
+     * mandated by HTTP).
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public static @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String formEncode(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Iterable<? extends Map.Entry> parameters) throws IOException {
+        ByteArrayOutputStream b = new ByteArrayOutputStream();
+        formEncode(parameters, b);
+        return decodeCharacters(b.toByteArray());
+    }
+
+    /**
+     * Write a form-urlencoded document into the given stream, containing the
+     * given sequence of name/value pairs.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public static void formEncode(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Iterable<? extends Map.Entry> parameters, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull OutputStream into) throws IOException {
+        if (parameters != null) {
+            boolean first = true;
+            for (Map.Entry parameter : parameters) {
+                if (first) {
+                    first = false;
+                } else {
+                    into.write('&');
+                }
+                into.write(encodeCharacters(percentEncode(toString(parameter.getKey()))));
+                into.write('=');
+                into.write(encodeCharacters(percentEncode(toString(parameter.getValue()))));
+            }
+        }
+    }
+
+    /**
+     * Parse a form-urlencoded document.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public static @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull List<Parameter> decodeForm(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String form) {
+        List<Parameter> list = new ArrayList<Parameter>();
+        if (!isEmpty(form)) {
+            for (String nvp : form.split("\\&")) {
+                int equals = nvp.indexOf('=');
+                String name;
+                String value;
+                if (equals < 0) {
+                    name = decodePercent(nvp);
+                    value = null;
+                } else {
+                    name = decodePercent(nvp.substring(0, equals));
+                    value = decodePercent(nvp.substring(equals + 1));
+                }
+                list.add(new Parameter(name, value));
+            }
+        }
+        return list;
+    }
+
+    /**
+     * Construct a &-separated list of the given values, percentEncoded.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public static @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String percentEncode(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Iterable values) {
+        StringBuilder p = new StringBuilder();
+        for (Object v : values) {
+            if (p.length() > 0) {
+                p.append("&");
+            }
+            p.append(OAuth.percentEncode(toString(v)));
+        }
+        return p.toString();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String percentEncode(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String s) {
+        if (s == null) {
+            return "";
+        }
+        try {
+            return URLEncoder.encode(s, ENCODING).// OAuth encodes some characters differently:
+            replace("+", "%20").replace("*", "%2A").replace("%7E", "~");
+            // This could be done faster with more hand-crafted code.
+        } catch (UnsupportedEncodingException wow) {
+            throw new RuntimeException(wow.getMessage(), wow);
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String decodePercent(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable String s) {
+        try {
+            return URLDecoder.decode(s, ENCODING);
+            // This implements http://oauth.pbwiki.com/FlexibleDecoding
+        } catch (java.io.UnsupportedEncodingException wow) {
+            throw new RuntimeException(wow.getMessage(), wow);
+        }
+    }
+
+    /**
+     * Construct a Map containing a copy of the given parameters. If several
+     * parameters have the same name, the Map will contain the first value,
+     * only.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public static @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Map<String, String> newMap(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Iterable<? extends Map.Entry> from) {
+        Map<String, String> map = new HashMap<String, String>();
+        if (from != null) {
+            for (Map.Entry f : from) {
+                String key = toString(f.getKey());
+                if (!map.containsKey(key)) {
+                    map.put(key, toString(f.getValue()));
+                }
+            }
+        }
+        return map;
+    }
+
+    /**
+     * Construct a list of Parameters from name, value, name, value...
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public static @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull List<Parameter> newList(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull ... parameters) {
+        List<Parameter> list = new ArrayList<Parameter>(parameters.length / 2);
+        for (int p = 0; p + 1 < parameters.length; p += 2) {
+            list.add(new Parameter(parameters[p], parameters[p + 1]));
+        }
+        return list;
+    }
+
+    /**
+     * A name/value pair.
+     */
+    public static class Parameter implements Map.Entry<String, String> {
+
+        @org.checkerframework.dataflow.qual.SideEffectFree
+        public Parameter(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable String key, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable String value) {
+            this.key = key;
+            this.value = value;
+        }
+
+        private final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String key;
+
+        private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String value;
+
+        @org.checkerframework.dataflow.qual.Pure
+        public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String getKey(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Parameter this) {
+            return key;
+        }
+
+        @org.checkerframework.dataflow.qual.Pure
+        public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String getValue(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Parameter this) {
+            return value;
+        }
+
+        @org.checkerframework.dataflow.qual.Impure
+        public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String setValue(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Parameter this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String value) {
+            try {
+                return this.value;
+            } finally {
+                this.value = value;
+            }
+        }
+
+        @org.checkerframework.dataflow.qual.Impure
+        public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String toString(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Parameter this) {
+            return percentEncode(getKey()) + '=' + percentEncode(getValue());
+        }
+
+        @org.checkerframework.dataflow.qual.Pure
+        public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int hashCode(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Parameter this) {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + ((key == null) ? 0 : key.hashCode());
+            result = prime * result + ((value == null) ? 0 : value.hashCode());
+            return result;
+        }
+
+        @org.checkerframework.dataflow.qual.Pure
+        public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean equals(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Parameter this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable Object obj) {
+            if (this == obj)
+                return true;
+            if (obj == null)
+                return false;
+            if (getClass() != obj.getClass())
+                return false;
+            final Parameter that = (Parameter) obj;
+            if (key == null) {
+                if (that.key != null)
+                    return false;
+            } else if (!key.equals(that.key))
+                return false;
+            if (value == null) {
+                if (that.value != null)
+                    return false;
+            } else if (!value.equals(that.value))
+                return false;
+            return true;
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    private static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable String toString(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable Object from) {
+        return (from == null) ? null : from.toString();
+    }
+
+    /**
+     * Construct a URL like the given one, but with the given parameters added
+     * to its query string.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public static @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String addParameters(String url, String... parameters) throws IOException {
+        return addParameters(url, newList(parameters));
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String addParameters(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String url, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Iterable<? extends Map.Entry<String, String>> parameters) throws IOException {
+        String form = formEncode(parameters);
+        if (form == null || form.length() <= 0) {
+            return url;
+        } else {
+            return url + ((url.indexOf("?") < 0) ? '?' : '&') + form;
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean isEmpty(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String str) {
+        return (str == null) || (str.length() == 0);
+    }
+}

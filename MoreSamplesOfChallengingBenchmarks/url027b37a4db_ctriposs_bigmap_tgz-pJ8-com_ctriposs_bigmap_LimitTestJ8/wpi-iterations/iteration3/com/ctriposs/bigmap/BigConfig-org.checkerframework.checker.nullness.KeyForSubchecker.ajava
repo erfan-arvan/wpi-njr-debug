@@ -1,0 +1,75 @@
+package com.ctriposs.bigmap;
+
+/**
+ * Configuration for BigConcurrentHashMap
+ *
+ * @author bulldog
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class BigConfig {
+
+    private   int initialCapacity = BigConcurrentHashMapImpl.DEFAULT_INITIAL_CAPACITY;
+
+    private   int concurrencyLevel = BigConcurrentHashMapImpl.DEFAULT_CONCURRENCY_LEVEL;
+
+    private   float loadFactor = BigConcurrentHashMapImpl.DEFAULT_LOAD_FACTOR;
+
+    private   long purgeIntervalInMs = BigConcurrentHashMapImpl.DEFAULT_PURGE_INTERVAL;
+
+    private   boolean reloadOnStartup = BigConcurrentHashMapImpl.DEFAULT_RELOAD_ON_STARTUP;
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   boolean isReloadOnStartup( BigConfig this) {
+        return reloadOnStartup;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  BigConfig setReloadOnStartup( BigConfig this,   boolean reloadOnStartup) {
+        this.reloadOnStartup = reloadOnStartup;
+        return this;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   int getInitialCapacity( BigConfig this) {
+        return initialCapacity;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  BigConfig setInitialCapacity( BigConfig this,   int initialCapacity) {
+        this.initialCapacity = initialCapacity > BigConcurrentHashMapImpl.MAXIMUM_CAPACITY ? BigConcurrentHashMapImpl.MAXIMUM_CAPACITY : initialCapacity;
+        return this;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   int getConcurrencyLevel( BigConfig this) {
+        return concurrencyLevel;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  BigConfig setConcurrencyLevel( BigConfig this,   int concurrencyLevel) {
+        this.concurrencyLevel = concurrencyLevel > BigConcurrentHashMapImpl.MAX_SEGMENTS ? BigConcurrentHashMapImpl.MAX_SEGMENTS : concurrencyLevel;
+        return this;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   float getLoadFactor( BigConfig this) {
+        return loadFactor;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  BigConfig setLoadFactor( BigConfig this,   float loadFactor) {
+        this.loadFactor = loadFactor;
+        return this;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   long getPurgeIntervalInMs( BigConfig this) {
+        return purgeIntervalInMs;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  BigConfig setPurgeIntervalInMs( BigConfig this,   long purgeIntervalInMs) {
+        this.purgeIntervalInMs = purgeIntervalInMs;
+        return this;
+    }
+}

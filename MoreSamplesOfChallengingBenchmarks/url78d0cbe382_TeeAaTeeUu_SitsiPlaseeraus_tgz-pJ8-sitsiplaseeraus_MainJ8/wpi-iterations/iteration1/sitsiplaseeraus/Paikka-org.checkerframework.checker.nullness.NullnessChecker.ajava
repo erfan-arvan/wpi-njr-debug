@@ -1,0 +1,143 @@
+package sitsiplaseeraus;
+
+/**
+ * Paikan kaikki tiedot, eli missä pöydässä kyseinen "tuoli" on, millä paikalla ja mitkä tuolit ovat sen vieressä.
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class Paikka {
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int paikka;
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int poyta;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull Sitsaaja sitsaaja;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull Paikka naisenAvecinPaikka;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull Paikka puolisonPaikka;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull Paikka miehenAvecinPaikka;
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean miehenPaikka;
+
+    /**
+     * Alustaa pöydän paikoilleen
+     * @param poyta missä pöydässä
+     * @param paikka millä paikalla
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public Paikka( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int poyta,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int paikka) {
+        this.setPoyta(poyta);
+        this.setPaikka(paikka);
+    }
+
+    /**
+     * Palauttaa millä paikalla
+     * @return paikan luku
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getPaikka() {
+        return paikka;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void setPaikka( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int paikka) {
+        this.paikka = paikka;
+    }
+
+    /**
+     * Palauttaa monenessako pöydässä
+     * @return pöydän numero
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getPoyta() {
+        return poyta;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void setPoyta( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int poyta) {
+        this.poyta = poyta;
+    }
+
+    /**
+     * Asettaa paikalle sitsaajan
+     * @param sitsaaja
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void setSitsaaja(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Sitsaaja sitsaaja) {
+        this.sitsaaja = sitsaaja;
+    }
+
+    /**
+     * Palauttaa paikan sitsaajan
+     * @return Sitsaaja
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Sitsaaja getSitsaaja() {
+        return sitsaaja;
+    }
+
+    /**
+     * Palauttaa naisen avecin paikka-olion
+     * @return
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Paikka getNaisenAvecinPaikka() {
+        return naisenAvecinPaikka;
+    }
+
+    /**
+     * Asettaa naisen avecin paikan (tarvitsee tehdä vain kerran, kun tuolit eivät vaihda paikkaa)
+     * @param avecinPaikka
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void setNaisenAvecinPaikka(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Paikka avecinPaikka) {
+        this.naisenAvecinPaikka = avecinPaikka;
+    }
+
+    /**
+     * Palauttaa puolison paikka-olion, eli vastapäätä olevan
+     * @return
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Paikka getPuolisonPaikka() {
+        return puolisonPaikka;
+    }
+
+    /**
+     * Asettaa puolison paikan (tarvitsee tehdä vain kerran, kun tuolit eivät vaihda paikkaa)
+     * @param puolisonPaikka
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void setPuolisonPaikka(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Paikka puolisonPaikka) {
+        this.puolisonPaikka = puolisonPaikka;
+    }
+
+    /**
+     * Asettaa miehen avecin paikan (tarvitsee tehdä vain kerran, kun tuolit eivät vaihda paikkaa)
+     * @param avecinPaikka
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void setMiehenAvecinPaikka(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Paikka avecinPaikka) {
+        this.miehenAvecinPaikka = avecinPaikka;
+    }
+
+    /**
+     * Palauttaa miehen avecin paikka-olion
+     * @return
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Paikka getMiehenAvecinPaikka() {
+        return miehenAvecinPaikka;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean isMiehenPaikka() {
+        return miehenPaikka;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setMiehenPaikka( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean miehenPaikka) {
+        this.miehenPaikka = miehenPaikka;
+    }
+}

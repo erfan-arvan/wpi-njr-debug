@@ -1,0 +1,37 @@
+package shyview;
+
+import java.util.NoSuchElementException;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public interface IPicList extends java.util.List<IPicture> {
+
+    @org.checkerframework.dataflow.qual.Pure
+     String getName( IPicList this);
+
+    @org.checkerframework.dataflow.qual.Impure
+     IPicture next( IPicList this) throws NoSuchElementException;
+
+    @org.checkerframework.dataflow.qual.Pure
+     IPicture current( IPicList this) throws NoSuchElementException;
+
+    @org.checkerframework.dataflow.qual.Impure
+     IPicture previous( IPicList this) throws NoSuchElementException;
+
+    @org.checkerframework.dataflow.qual.Pure
+      int getIndex( IPicList this);
+
+    @org.checkerframework.dataflow.qual.Impure
+    void setIndex( IPicList this,   int i);
+
+    @org.checkerframework.dataflow.qual.Impure
+    void cleanup( IPicList this);
+
+    @org.checkerframework.dataflow.qual.Impure
+    void sort( IPicList this);
+
+    @org.checkerframework.dataflow.qual.Impure
+     ShyviewMenu getMenuItem( IPicList this);
+
+    public class NoRessourceAvailable extends Exception {
+    }
+}

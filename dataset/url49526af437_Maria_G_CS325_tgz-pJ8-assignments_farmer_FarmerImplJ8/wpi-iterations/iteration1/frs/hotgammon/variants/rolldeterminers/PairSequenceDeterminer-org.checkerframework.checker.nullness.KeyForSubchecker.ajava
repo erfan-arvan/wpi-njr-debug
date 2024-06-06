@@ -1,0 +1,26 @@
+package frs.hotgammon.variants.rolldeterminers;
+
+import frs.hotgammon.RollDeterminer;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class PairSequenceDeterminer implements RollDeterminer {
+
+    private final   int  []  [] DICE_ROLLS = { { 1, 2 }, { 3, 4 }, { 5, 6 } };
+
+    private   int diceRollIdx = 2;
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void rollDice( PairSequenceDeterminer this) {
+        diceRollIdx = ((diceRollIdx < 2) ? diceRollIdx + 1 : 0);
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   int  [] getDiceRoll( PairSequenceDeterminer this) {
+        return DICE_ROLLS[diceRollIdx];
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void reset( PairSequenceDeterminer this) {
+        diceRollIdx = 2;
+    }
+}

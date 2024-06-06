@@ -1,0 +1,31 @@
+package frs.hotgammon.variants.turndeterminers;
+
+import frs.hotgammon.TurnDeterminer;
+import frs.hotgammon.framework.Color;
+import frs.hotgammon.framework.Game;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class AlternatingTurnDeterminer implements TurnDeterminer {
+
+    private @org.checkerframework.checker.initialization.qual.UnknownInitialization(frs.hotgammon.framework.Game.class) @org.checkerframework.checker.nullness.qual.Nullable Game game;
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public AlternatingTurnDeterminer() {
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public AlternatingTurnDeterminer(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable Game game) {
+        this.setGame(game);
+    }
+
+    @org.checkerframework.checker.nullness.qual.EnsuresNonNull({ "this.game" })
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Color nextTurn(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull AlternatingTurnDeterminer this) {
+        return (this.game.getPlayerInTurn() == Color.BLACK) ? Color.RED : Color.BLACK;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setGame(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull AlternatingTurnDeterminer this, @org.checkerframework.checker.initialization.qual.UnknownInitialization(java.lang.Object.class) @org.checkerframework.checker.nullness.qual.Nullable Game game) {
+        this.game = game;
+    }
+}

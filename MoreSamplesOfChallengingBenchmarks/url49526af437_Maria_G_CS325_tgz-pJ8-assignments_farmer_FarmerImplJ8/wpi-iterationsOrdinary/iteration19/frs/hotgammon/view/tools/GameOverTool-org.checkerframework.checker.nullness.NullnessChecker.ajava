@@ -1,0 +1,13 @@
+package frs.hotgammon.view.tools;
+
+import minidraw.framework.DrawingEditor;
+import minidraw.standard.AbstractTool;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class GameOverTool extends AbstractTool {
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public GameOverTool(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull DrawingEditor editor) {
+        super(editor);
+    }
+}

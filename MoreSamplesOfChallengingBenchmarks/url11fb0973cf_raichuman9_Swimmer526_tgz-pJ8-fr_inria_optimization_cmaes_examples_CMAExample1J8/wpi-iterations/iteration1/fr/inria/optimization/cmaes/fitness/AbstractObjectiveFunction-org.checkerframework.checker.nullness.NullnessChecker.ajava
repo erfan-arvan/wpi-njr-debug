@@ -1,0 +1,25 @@
+package fr.inria.optimization.cmaes.fitness;
+
+/**
+ * extending from this abstract class implements a generic isFeasible method and adds the
+ * IObjectiveFunctionParallel interface to a class that implements
+ * the interface IObjectiveFunction
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public abstract class AbstractObjectiveFunction implements IObjectiveFunction, IObjectiveFunctionParallel {
+
+    @org.checkerframework.dataflow.qual.Impure
+    abstract public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull double valueOf( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull double @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] x);
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull double @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] valuesOf(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull AbstractObjectiveFunction this,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull double @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] pop) {
+        double[] res = new double[pop.length];
+        for (int i = 0; i < pop.length; ++i) res[i] = valueOf(pop[i]);
+        return res;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean isFeasible(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull AbstractObjectiveFunction this,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull double @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] x) {
+        return true;
+    }
+}

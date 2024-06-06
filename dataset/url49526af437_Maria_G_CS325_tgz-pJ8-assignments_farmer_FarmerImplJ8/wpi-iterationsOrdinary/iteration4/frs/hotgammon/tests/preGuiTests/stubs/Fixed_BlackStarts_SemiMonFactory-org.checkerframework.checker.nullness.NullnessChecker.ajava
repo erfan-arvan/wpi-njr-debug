@@ -1,0 +1,51 @@
+package frs.hotgammon.tests.preGuiTests.stubs;
+
+import frs.hotgammon.MonFactory;
+import frs.hotgammon.MoveValidator;
+import frs.hotgammon.RollDeterminer;
+import frs.hotgammon.TurnDeterminer;
+import frs.hotgammon.WinnerDeterminer;
+import frs.hotgammon.framework.Game;
+import frs.hotgammon.variants.movevalidators.CompleteMoveValidator;
+import frs.hotgammon.variants.movevalidators.PlayerDependentMoveValidator;
+import frs.hotgammon.variants.rolldeterminers.PairSequenceDeterminer;
+import frs.hotgammon.variants.rolldeterminers.RandomRollDeterminer;
+import frs.hotgammon.variants.turndeterminers.AlternatingTurnDeterminer;
+import frs.hotgammon.variants.winnerdeterminers.BearOffWinnerDeterminer;
+import frs.hotgammon.variants.winnerdeterminers.SixMoveWinnerDeterminer;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class Fixed_BlackStarts_SemiMonFactory implements MonFactory {
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull Game game;
+
+    @org.checkerframework.checker.nullness.qual.EnsuresNonNull({ "this.game" })
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull MoveValidator createMoveValidator(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Fixed_BlackStarts_SemiMonFactory this) {
+        return new CompleteMoveValidator(game);
+    }
+
+    @org.checkerframework.checker.nullness.qual.EnsuresNonNull({ "this.game" })
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull TurnDeterminer createTurnDeterminer(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Fixed_BlackStarts_SemiMonFactory this) {
+        return new AlternatingTurnDeterminer(game);
+    }
+
+    @org.checkerframework.checker.nullness.qual.EnsuresNonNull({ "this.game" })
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull WinnerDeterminer createWinnerDeterminer(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Fixed_BlackStarts_SemiMonFactory this) {
+        return new BearOffWinnerDeterminer(game);
+    }
+
+    @org.checkerframework.framework.qual.EnsuresQualifier(expression = { "this.game" }, qualifier = org.checkerframework.checker.nullness.qual.Nullable.class)
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull RollDeterminer createRollDeterminer(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Fixed_BlackStarts_SemiMonFactory this) {
+        return new FixedBlackStartsRandomRollDeterminer();
+    }
+
+    @org.checkerframework.checker.nullness.qual.EnsuresNonNull({ "this.game" })
+    @org.checkerframework.dataflow.qual.Impure
+    public void setGame(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Fixed_BlackStarts_SemiMonFactory this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Game game) {
+        this.game = game;
+    }
+}

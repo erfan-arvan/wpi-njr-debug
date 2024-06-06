@@ -1,0 +1,51 @@
+package frs.hotgammon.tests;
+
+import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
+import frs.hotgammon.framework.Color;
+import frs.hotgammon.framework.Location;
+import frs.hotgammon.common.BoardImpl;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class BoardTests {
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull BoardImpl b;
+
+    @org.checkerframework.checker.nullness.qual.EnsuresNonNull({ "this.b" })
+    @org.checkerframework.dataflow.qual.Impure
+    public void setup() {
+        b = new BoardImpl(25);
+    }
+
+    @org.checkerframework.checker.nullness.qual.EnsuresNonNull({ "this.b" })
+    @org.checkerframework.dataflow.qual.Impure
+    public void shouldBeAbleToPlaceSameColorOnGivenSquare() {
+        assertTrue(b.place(Color.BLACK, Location.R1.ordinal()));
+        assertTrue(b.place(Color.BLACK, Location.R1.ordinal()));
+    }
+
+    @org.checkerframework.checker.nullness.qual.EnsuresNonNull({ "this.b" })
+    @org.checkerframework.dataflow.qual.Impure
+    public void shouldReturnProperCountForGivenSquare() {
+        b.place(Color.BLACK, Location.R1.ordinal());
+        b.place(Color.BLACK, Location.R1.ordinal());
+        assertEquals(2, b.getSquare(Location.R1.ordinal()).occupants);
+    }
+
+    @org.checkerframework.checker.nullness.qual.EnsuresNonNull({ "this.b" })
+    @org.checkerframework.dataflow.qual.Impure
+    public void shouldNotBeAbleToRemovePlayerOfWrongColor() {
+        b.place(Color.BLACK, Location.R1.ordinal());
+        assertFalse(b.remove(Color.RED, Location.R1.ordinal()));
+        assertEquals(1, b.getSquare(Location.R1.ordinal()).occupants);
+    }
+
+    @org.checkerframework.checker.nullness.qual.EnsuresNonNull({ "this.b" })
+    @org.checkerframework.dataflow.qual.Impure
+    public void shouldBeAbleToRemovePlayerOfCorrectColor() {
+        b.place(Color.BLACK, Location.R1.ordinal());
+        assertTrue(b.remove(Color.BLACK, Location.R1.ordinal()));
+        assertEquals(0, b.getSquare(Location.R1.ordinal()).occupants);
+    }
+}

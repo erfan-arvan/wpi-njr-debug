@@ -1,0 +1,11 @@
+package simulation.logging;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public interface EventsLogger {
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void log(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String s);
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void close();
+}

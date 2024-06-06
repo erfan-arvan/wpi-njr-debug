@@ -1,0 +1,49 @@
+package shyview;
+
+import java.io.File;
+import java.util.ArrayList;
+import javax.swing.filechooser.FileFilter;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class ShyluxFileFilter extends FileFilter {
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull ArrayList<String> extensions = new ArrayList<String>();
+
+    @org.checkerframework.dataflow.qual.Impure
+    public ShyluxFileFilter(ArrayList<String> extensions) {
+        this.extensions.addAll(extensions);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public ShyluxFileFilter() {
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void addExtension(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String ext) {
+        this.extensions.add(ext);
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull ArrayList<String> getExtensions() {
+        return this.extensions;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean accept(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull ShyluxFileFilter this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull File f) {
+        String filename = f.getName().toLowerCase();
+        for (String ext : this.extensions) {
+            if (filename.endsWith(ext))
+                return true;
+        }
+        if (f.isDirectory()) {
+            return true;
+        }
+        return false;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.FBCBottom @org.checkerframework.checker.nullness.qual.Nullable String getDescription(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull ShyluxFileFilter this) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+}

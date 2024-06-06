@@ -1,0 +1,64 @@
+/**
+ * http://auzll.iteye.com/
+ */
+package com.gengweibo.dao.mysql;
+
+import java.beans.PropertyVetoException;
+import javax.sql.DataSource;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.google.inject.name.Named;
+import com.mchange.v2.c3p0.ComboPooledDataSource;
+
+/**
+ * @author auzll@msn.com
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class C3P0Provider implements Provider<DataSource> {
+
+    private String driverClass;
+
+    private String jdbcUrl;
+
+    private String user;
+
+    private String password;
+
+    private boolean autoCommitOnClose;
+
+    private int initialPoolSize;
+
+    private int minPoolSize;
+
+    private int maxPoolSize;
+
+    private int maxIdleTime;
+
+    private int acquireIncrement;
+
+    private int checkoutTimeout;
+
+    private int maxIdleTimeExcessConnections;
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  DataSource get( C3P0Provider this) {
+        try {
+            ComboPooledDataSource source = new ComboPooledDataSource();
+            source.setDriverClass(driverClass);
+            source.setJdbcUrl(jdbcUrl);
+            source.setUser(user);
+            source.setPassword(password);
+            source.setAutoCommitOnClose(autoCommitOnClose);
+            source.setInitialPoolSize(initialPoolSize);
+            source.setMinPoolSize(minPoolSize);
+            source.setMaxPoolSize(maxPoolSize);
+            source.setMaxIdleTime(maxIdleTime);
+            source.setAcquireIncrement(acquireIncrement);
+            source.setCheckoutTimeout(checkoutTimeout);
+            source.setMaxIdleTimeExcessConnections(maxIdleTimeExcessConnections);
+            return source;
+        } catch (PropertyVetoException e) {
+            throw new ExceptionInInitializerError(e);
+        }
+    }
+}

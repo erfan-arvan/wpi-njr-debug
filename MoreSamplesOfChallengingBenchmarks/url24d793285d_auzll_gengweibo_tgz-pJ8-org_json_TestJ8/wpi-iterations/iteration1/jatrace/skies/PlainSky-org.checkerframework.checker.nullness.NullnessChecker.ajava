@@ -1,0 +1,46 @@
+package jatrace.skies;
+
+import jatrace.*;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class PlainSky implements Sky {
+
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Color color;
+
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Vector sun;
+
+     @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull double delta;
+
+    @org.checkerframework.dataflow.qual.Impure
+    public PlainSky(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Vector sunDirection, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Color skyColor) {
+        sun = sunDirection.dup().norm();
+        color = skyColor.dup();
+        delta = 0.0;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setDelta(double d) {
+        if (d < 0.00001) {
+            delta = 0.0;
+        } else {
+            delta = d;
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Color getColor(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull PlainSky this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Vector direction) {
+        double exp = Math.pow(Math.max(0.0, direction.dot(sun)), 20.0);
+        return color.dup().gamma(1 - exp);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Vector @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] getLight(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull PlainSky this) {
+        Vector[] array = new Vector[1];
+        if (delta < 0.0001) {
+            array[0] = sun.dup();
+        } else {
+            array[0] = sun.dup().delta(delta).norm();
+        }
+        return array;
+    }
+}

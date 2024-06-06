@@ -1,0 +1,30 @@
+package frs.hotgammon.variants.turndeterminers;
+
+import frs.hotgammon.TurnDeterminer;
+import frs.hotgammon.framework.Color;
+import frs.hotgammon.framework.Game;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class AlternatingTurnDeterminer implements TurnDeterminer {
+
+    private  Game game;
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public AlternatingTurnDeterminer() {
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public AlternatingTurnDeterminer( Game game) {
+        this.setGame(game);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  Color nextTurn( AlternatingTurnDeterminer this) {
+        return (this.game.getPlayerInTurn() == Color.BLACK) ? Color.RED : Color.BLACK;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setGame( AlternatingTurnDeterminer this,  Game game) {
+        this.game = game;
+    }
+}

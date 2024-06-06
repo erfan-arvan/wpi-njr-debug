@@ -1,0 +1,61 @@
+package jatrace.bodies;
+
+import jatrace.*;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class CheckEllipse extends CheckPlane {
+
+    @org.checkerframework.dataflow.qual.Impure
+    public CheckEllipse(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Vector p, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Vector n, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Vector o) {
+        super(p, n, o);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public CheckEllipse() {
+        super();
+    }
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Vector xAxis = new Vector(1.0, 0.0, 0.0);
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Vector yAxis = new Vector(0.0, 1.0, 0.0);
+
+    @org.checkerframework.dataflow.qual.Impure
+    public final void setAxes(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Vector xDir, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Vector yDir) {
+        xLength = xDir.len();
+        xAxis = xDir.dup().norm();
+        yLength = yDir.len();
+        yAxis = yDir.dup().norm();
+        setNormal(xAxis.cross(yAxis));
+        axesSet = true;
+        setOrientation(xAxis);
+    }
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean axesSet = false;
+
+    private double xLength, yLength;
+
+    @org.checkerframework.dataflow.qual.Impure
+    public final void setAxisLengths(double x, double y) {
+        xLength = x;
+        yLength = y;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull double intersection(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull CheckEllipse this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Ray ray) {
+        if (!axesSet) {
+            return -1.0;
+        }
+        double distance = super.intersection(ray);
+        if (distance < 0.0)
+            return distance;
+        Vector p = ray.follow(distance);
+        p.trans(position, -1.0);
+        double xd = p.dot(xAxis);
+        double yd = p.dot(yAxis);
+        double distanceInPlane = xd * xd / xLength / xLength;
+        distanceInPlane += yd * yd / yLength / yLength;
+        if (distanceInPlane > 1.0)
+            return -1.0;
+        return distance;
+    }
+}

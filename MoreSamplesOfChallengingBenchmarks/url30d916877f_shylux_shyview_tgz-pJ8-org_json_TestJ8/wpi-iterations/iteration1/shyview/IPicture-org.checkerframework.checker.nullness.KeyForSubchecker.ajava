@@ -1,0 +1,44 @@
+package shyview;
+
+import java.awt.Dimension;
+import java.awt.Image;
+import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import shyview.Picture.StillLoadingException;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public interface IPicture {
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setName(String name);
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  String getName( IPicture this);
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  String getPath();
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  Image getPicture( IPicture this) throws StillLoadingException, FileNotFoundException;
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void interrupt( IPicture this);
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  Dimension getDimension();
+
+    /**
+     * Loads picture in cache.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void preload( IPicture this);
+
+    /**
+     * Removes picture from cache to save memory.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void flush( IPicture this);
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setActionListener( IPicture this,  ActionListener al);
+}

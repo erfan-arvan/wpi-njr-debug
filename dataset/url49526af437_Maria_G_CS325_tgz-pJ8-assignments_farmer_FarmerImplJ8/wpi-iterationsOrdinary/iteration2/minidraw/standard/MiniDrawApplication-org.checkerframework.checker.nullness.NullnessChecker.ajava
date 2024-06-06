@@ -1,0 +1,184 @@
+package minidraw.standard;
+
+import minidraw.framework.*;
+import javax.swing.*;
+import java.awt.*;
+
+/**
+ * MiniDraw Application is a standard implementation of the
+ * DrawingEditor role. It connects MiniDraw with Swing as it also
+ * fulfill the JFrame role. You have to provide it with an abstract
+ * factory for configuring the variability points of the application.
+ *
+ *   This source code is from the book
+ *     "Flexible, Reliable Software:
+ *       Using Patterns and Agile Development"
+ *     published 2010 by CRC Press.
+ *   Author:
+ *     Henrik B Christensen
+ *     Computer Science Department
+ *     Aarhus University
+ *
+ *   This source code is provided WITHOUT ANY WARRANTY either
+ *   expressed or implied. You may study, use, modify, and
+ *   distribute it for non-commercial purposes. For any
+ *   commercial use, see http://www.baerbak.com/
+ *
+ * Implementation note: MiniDrawApplication ASSUMES that the
+ * DrawingView returned from the factory is a subclass of JPanel. If
+ * not you have to override the createContents method to handle this!
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class MiniDrawApplication extends JFrame implements DrawingEditor {
+
+    /**
+     * the view that this application displays
+     */
+    protected @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull DrawingView fView;
+
+    /**
+     * the drawing that this application uses
+     */
+    protected @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull Drawing fDrawing;
+
+    /**
+     * the image manager of an application
+     */
+    protected @org.checkerframework.checker.initialization.qual.UnderInitialization(minidraw.standard.ImageManager.class) @org.checkerframework.checker.nullness.qual.NonNull ImageManager fImageManager;
+
+    /**
+     * the tool being used by this editor
+     */
+    protected @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Tool fTool;
+
+    /**
+     * abstract factory to make services
+     */
+    protected @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Factory factory;
+
+    /**
+     * the status field
+     */
+    protected @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable JTextField statusField;
+
+    /**
+     * Construct a minidraw editor that also acts as the
+     * JFrame application window.
+     * @param title the title to put in the frame bar
+     * @param f the factory to produce internal handlers
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public MiniDrawApplication(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String title, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Factory f) {
+        super(title);
+        try {
+            // Set System L&F
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            // Ignore exceptions as they just mean
+            // we run with the defaults
+        }
+        fImageManager = new ImageManager(this);
+        // create the (default) controller in MVC
+        fTool = new NullTool();
+        factory = f;
+        setLocation(100, 20);
+        setFrameCloseOperation();
+    }
+
+    /**
+     * define how the MiniDraw application responds to
+     * the user clicking the window close button. Defaults
+     * to exiting the application. Override if you need special
+     * handling like disconnecting a socket.
+     */
+    @org.checkerframework.framework.qual.EnsuresQualifier(expression = { "this.fDrawing" }, qualifier = org.checkerframework.checker.nullness.qual.Nullable.class)
+    @org.checkerframework.framework.qual.EnsuresQualifier(expression = { "this.fView" }, qualifier = org.checkerframework.checker.nullness.qual.Nullable.class)
+    @org.checkerframework.framework.qual.EnsuresQualifier(expression = { "this.statusField" }, qualifier = org.checkerframework.checker.nullness.qual.Nullable.class)
+    @org.checkerframework.dataflow.qual.Impure
+    protected void setFrameCloseOperation() {
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void open(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull MiniDrawApplication this) {
+        Container pane = getContentPane();
+        // create the underlying model in the MVC triad
+        fDrawing = factory.createDrawing(this);
+        // create a view for the MVC
+        fView = factory.createDrawingView(this);
+        statusField = factory.createStatusField(this);
+        JPanel panel = createContents(fView, statusField);
+        pane.add(panel);
+        pack();
+        setVisible(true);
+    }
+
+    /**
+     * given a drawing view return the JPanel that encapsulate it.
+     */
+    @org.checkerframework.checker.nullness.qual.RequiresNonNull({ "this.fDrawing" })
+    @org.checkerframework.checker.nullness.qual.RequiresNonNull({ "this.fView" })
+    @org.checkerframework.framework.qual.RequiresQualifier(expression = { "this.statusField" }, qualifier = org.checkerframework.checker.nullness.qual.Nullable.class)
+    @org.checkerframework.framework.qual.EnsuresQualifier(expression = { "this.fDrawing" }, qualifier = org.checkerframework.checker.nullness.qual.Nullable.class)
+    @org.checkerframework.framework.qual.EnsuresQualifier(expression = { "this.fView" }, qualifier = org.checkerframework.checker.nullness.qual.Nullable.class)
+    @org.checkerframework.framework.qual.EnsuresQualifier(expression = { "this.statusField" }, qualifier = org.checkerframework.checker.nullness.qual.Nullable.class)
+    @org.checkerframework.dataflow.qual.Impure
+    protected @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull JPanel createContents(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull DrawingView dv, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable JTextField tf) {
+        if (tf == null) {
+            return (JPanel) dv;
+        }
+        JPanel p = new JPanel();
+        p.setLayout(new BorderLayout());
+        p.add(BorderLayout.CENTER, (JPanel) dv);
+        p.add(BorderLayout.SOUTH, statusField);
+        return p;
+    }
+
+    /**
+     * set a tool for this editor.
+     *      @param t the tool to set. PRECondition: t must never be null; if
+     *      no tool is wanted, then set it to the null tool
+     */
+    @org.checkerframework.framework.qual.EnsuresQualifier(expression = { "this.fDrawing" }, qualifier = org.checkerframework.checker.nullness.qual.Nullable.class)
+    @org.checkerframework.framework.qual.EnsuresQualifier(expression = { "this.fView" }, qualifier = org.checkerframework.checker.nullness.qual.Nullable.class)
+    @org.checkerframework.framework.qual.EnsuresQualifier(expression = { "this.statusField" }, qualifier = org.checkerframework.checker.nullness.qual.Nullable.class)
+    @org.checkerframework.dataflow.qual.Impure
+    public void setTool(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull MiniDrawApplication this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Tool t) {
+        fTool = t;
+    }
+
+    @org.checkerframework.framework.qual.EnsuresQualifier(expression = { "this.fDrawing" }, qualifier = org.checkerframework.checker.nullness.qual.Nullable.class)
+    @org.checkerframework.framework.qual.EnsuresQualifier(expression = { "this.fView" }, qualifier = org.checkerframework.checker.nullness.qual.Nullable.class)
+    @org.checkerframework.framework.qual.EnsuresQualifier(expression = { "this.statusField" }, qualifier = org.checkerframework.checker.nullness.qual.Nullable.class)
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Tool tool(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull MiniDrawApplication this) {
+        return fTool;
+    }
+
+    @org.checkerframework.framework.qual.EnsuresQualifier(expression = { "this.fDrawing" }, qualifier = org.checkerframework.checker.nullness.qual.Nullable.class)
+    @org.checkerframework.framework.qual.EnsuresQualifier(expression = { "this.fView" }, qualifier = org.checkerframework.checker.nullness.qual.Nullable.class)
+    @org.checkerframework.framework.qual.EnsuresQualifier(expression = { "this.statusField" }, qualifier = org.checkerframework.checker.nullness.qual.Nullable.class)
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable DrawingView view(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull MiniDrawApplication this) {
+        return fView;
+    }
+
+    @org.checkerframework.framework.qual.EnsuresQualifier(expression = { "this.fDrawing" }, qualifier = org.checkerframework.checker.nullness.qual.Nullable.class)
+    @org.checkerframework.framework.qual.EnsuresQualifier(expression = { "this.fView" }, qualifier = org.checkerframework.checker.nullness.qual.Nullable.class)
+    @org.checkerframework.framework.qual.EnsuresQualifier(expression = { "this.statusField" }, qualifier = org.checkerframework.checker.nullness.qual.Nullable.class)
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable Drawing drawing(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull MiniDrawApplication this) {
+        return fDrawing;
+    }
+
+    @org.checkerframework.framework.qual.EnsuresQualifier(expression = { "this.fDrawing" }, qualifier = org.checkerframework.checker.nullness.qual.Nullable.class)
+    @org.checkerframework.framework.qual.EnsuresQualifier(expression = { "this.fView" }, qualifier = org.checkerframework.checker.nullness.qual.Nullable.class)
+    @org.checkerframework.framework.qual.EnsuresQualifier(expression = { "this.statusField" }, qualifier = org.checkerframework.checker.nullness.qual.Nullable.class)
+    @org.checkerframework.dataflow.qual.Impure
+    public void showStatus(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull MiniDrawApplication this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String message) {
+        if (statusField != null) {
+            statusField.setText(message);
+        }
+        // else status messages are simply ignored.
+    }
+}

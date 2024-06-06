@@ -1,0 +1,99 @@
+package de.hrw.mdbt.model;
+
+import java.util.ArrayList;
+import com.db4o.ObjectContainer;
+import com.db4o.config.CommonConfigurationProvider;
+import com.db4o.constraints.UniqueFieldValueConstraint;
+import com.db4o.ext.Db4oException;
+import de.hrw.mdbt.model.Branch;
+import de.hrw.mdbt.model.Person;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class Employee extends Person {
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull ArrayList<Task> tasks = new ArrayList<Task>();
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull float salary;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull String ssn;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull Branch branch;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull Employee supervisor;
+
+    @org.checkerframework.dataflow.qual.Impure
+    public Employee( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int id, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String lastname) {
+        super(id, lastname);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void addTask(Task t) {
+        tasks.add(t);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void removeTask(Task t) {
+        tasks.remove(t);
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull float getSalary() {
+        return salary;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setSalary(float salary) {
+        this.salary = salary;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String getSsn() {
+        return ssn;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setSsn(String ssn) {
+        this.ssn = ssn;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Branch getBranch() {
+        return branch;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setBranch(Branch branch) {
+        this.branch = branch;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Employee getSupervisor() {
+        return supervisor;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setSupervisor(Employee supervisor) {
+        this.supervisor = supervisor;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static void configure(CommonConfigurationProvider config) {
+        config.common().objectClass(Customer.class).objectField("id").indexed(true);
+        config.common().add(new UniqueFieldValueConstraint(Employee.class, "id"));
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean objectCanNew(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Employee this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull ObjectContainer container) throws Db4oException {
+        if (super.getEmail() != null)
+            if (!super.getEmail().endsWith("@crc.com"))
+                throw new Db4oException("E-Mail must end with @crc.com!");
+        return true;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean objectCanUpdate(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Employee this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull ObjectContainer container) throws Db4oException {
+        if (super.getEmail() == null || super.getEmail().endsWith("@crc.com"))
+            throw new Db4oException("E-Mail must end with @crc.com!");
+        return true;
+    }
+}

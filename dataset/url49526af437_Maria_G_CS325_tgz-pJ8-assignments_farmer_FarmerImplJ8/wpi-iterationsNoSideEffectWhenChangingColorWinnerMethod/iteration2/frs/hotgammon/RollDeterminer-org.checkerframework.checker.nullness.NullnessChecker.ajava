@@ -1,0 +1,14 @@
+package frs.hotgammon;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public interface RollDeterminer {
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void reset();
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void rollDice();
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] getDiceRoll();
+}

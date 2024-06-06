@@ -1,0 +1,17 @@
+/**
+ */
+package ubc.swim.dynamics.controllers;
+
+/**
+ * Template definition for a controller
+ *
+ * Adapted from http://personal.boristhebrave.com/project/b2buoyancycontroller
+ *
+ * @author Ben Humberston
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public abstract class DynamicsControllerDef {
+
+    @org.checkerframework.dataflow.qual.Pure
+    public abstract  DynamicsController create();
+}

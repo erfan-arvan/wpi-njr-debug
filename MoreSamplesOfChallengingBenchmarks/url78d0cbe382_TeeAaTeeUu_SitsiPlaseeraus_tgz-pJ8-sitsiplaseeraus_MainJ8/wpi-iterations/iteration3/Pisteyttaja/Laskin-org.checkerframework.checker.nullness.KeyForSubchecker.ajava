@@ -1,0 +1,36 @@
+package Pisteyttaja;
+
+import omatTietorakenteet.Hakemisto;
+
+/**
+ * Helpottaa etäisyyksien laskemista, eli luo tulosvaraston Math.hypot funktiolle, jotta samoja laskuja ei tarvitse laskea moneen kertaan
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class Laskin {
+
+    private final  Hakemisto<Double, Double> varasto;
+
+    private   int luku;
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public Laskin() {
+        this.varasto = new Hakemisto<Double, Double>();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public   double hypot( Laskin this,   double x,   double y) {
+        if (x == 0.0) {
+            return y;
+        } else if (x == 1.0) {
+            luku = this.varasto.getAvainIndexAvaimella(y);
+            if (luku >= 0) {
+                return this.varasto.getArvoIndexilla(luku);
+            } else {
+                this.varasto.add(y, Math.hypot(x, y));
+                return this.varasto.getArvo(y);
+            }
+        }
+        //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+}

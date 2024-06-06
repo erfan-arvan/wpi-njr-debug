@@ -1,0 +1,42 @@
+package logica.ia.buscadores;
+
+import java.awt.Point;
+
+/**
+ * Un resultado de búsqueda consiste en el mapeo de un movimiento al
+ * resultado obtenido por el método de evaluación que se eligió.
+ *
+ * Alternativamente, podríamos mantener una tabla hash movidas/llaves
+ * a resultados/valores, pero que en realidad no necesitamos almacenar
+ * más el resultado de la búsqueda con el mejor movimiento, al mismo
+ * tiempo. Ese mapa tendría siempre un tamańo de 1, pues si fuéramos
+ * a insertar una nueva asignación no necesitaríamos todas las anteriores.
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class ResultadoBusqueda {
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Point punto;
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull double puntaje;
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull double obtenerPuntaje() {
+        return puntaje;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Point obtenerPunto() {
+        return punto;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull ResultadoBusqueda negado() {
+        return new ResultadoBusqueda(punto, -puntaje);
+    }
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public ResultadoBusqueda(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable Point punto,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull double puntaje) {
+        this.punto = punto;
+        this.puntaje = puntaje;
+    }
+}

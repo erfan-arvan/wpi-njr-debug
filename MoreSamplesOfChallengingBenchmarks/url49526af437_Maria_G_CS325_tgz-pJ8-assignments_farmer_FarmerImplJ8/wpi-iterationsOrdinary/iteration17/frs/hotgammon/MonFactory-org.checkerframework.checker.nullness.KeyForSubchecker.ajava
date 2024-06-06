@@ -1,0 +1,22 @@
+package frs.hotgammon;
+
+import frs.hotgammon.framework.Game;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public interface MonFactory {
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  MoveValidator createMoveValidator( MonFactory this);
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  TurnDeterminer createTurnDeterminer( MonFactory this);
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  WinnerDeterminer createWinnerDeterminer( MonFactory this);
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  RollDeterminer createRollDeterminer( MonFactory this);
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setGame( MonFactory this,  Game game);
+}

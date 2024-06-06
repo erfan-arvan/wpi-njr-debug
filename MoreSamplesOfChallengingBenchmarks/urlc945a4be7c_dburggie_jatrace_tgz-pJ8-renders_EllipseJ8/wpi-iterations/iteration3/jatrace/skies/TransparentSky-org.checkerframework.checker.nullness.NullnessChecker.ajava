@@ -1,0 +1,39 @@
+package jatrace.skies;
+
+import jatrace.*;
+
+/**
+ * This class implements a very basic sky that is transparent in the png file
+ *  produced, yet still has a sun.
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class TransparentSky implements Sky {
+
+    @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Vector sun;
+
+    @org.checkerframework.dataflow.qual.Impure
+    public TransparentSky(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Vector s) {
+        sun = s.dup().norm();
+    }
+
+    /**
+     * Gets the color of the sky: fully transparent fading into full white
+     *  near the sun.
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Color getColor(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull TransparentSky this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Vector direction) {
+        double alpha;
+        alpha = Math.pow(Math.max(0.0, sun.dot(direction)), 99.0);
+        return new Color(1.0, 1.0, 1.0, alpha);
+    }
+
+    /**
+     * Returns references to the light sources within the sky.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Vector @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] getLight(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull TransparentSky this) {
+        Vector[] L = new Vector[1];
+        L[0] = sun.dup().delta(0.05).norm();
+        return L;
+    }
+}

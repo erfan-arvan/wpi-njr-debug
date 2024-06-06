@@ -1,0 +1,183 @@
+package Pisteyttaja;
+
+import omatTietorakenteet.ArrayList;
+import sitsiplaseeraus.Paikka;
+import sitsiplaseeraus.Sitsit;
+
+/**
+ * Laskee ja palauttaa koko sitsit pistemäärän, jota sitten verrataan muihin
+ * järjestyksiin.
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class Pisteet {
+
+    private  Sitsit sitsit;
+
+    private  ArrayList<PaikanPisteet> paikat;
+
+    private   double pisteet;
+
+    private   boolean onYhteyksia;
+
+    private  ArrayList<Paikka> paikkaLista;
+
+    private   int avec;
+
+    private   int puoliso;
+
+    private  Laskin laskin;
+
+    private   double pariPisteet;
+
+    private   double sukupuoliPisteet;
+
+    private   double yhteysPisteet;
+
+    /**
+     * Luo ja alustaa olion.
+     *
+     * @param sitsit
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public Pisteet( Sitsit sitsit) {
+        this.sitsit = sitsit;
+        this.paikat = new ArrayList<PaikanPisteet>();
+        this.laskin = new Laskin();
+        this.alustaPaikat();
+        this.onYhteyksia = false;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public   double palautaPisteet( Pisteet this) {
+        nollaaPisteet();
+        this.alustaSitsaajat();
+        kayLapiKaikkiPaikat(false);
+        return pisteet;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public   double palautaSukupuoliJaPariPisteet( Pisteet this) {
+        nollaaPisteet();
+        this.alustaSitsaajat();
+        kayLapiKaikkiPaikat(true);
+        return pisteet;
+    }
+
+    /**
+     * Palauttaa mahdolliset avec ja puolisopisteet.
+     *
+     * @return avec-pisteet
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public   double getPariPisteet( Pisteet this) {
+        return pariPisteet;
+    }
+
+    /**
+     * Palauttaa "tyttöpoika-järjestyksen" pisteet.
+     *
+     * @return
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public   double getSukupuoliPisteet( Pisteet this) {
+        return sukupuoliPisteet;
+    }
+
+    /**
+     * Palauttaa yhteyksien pisteet, eli kuinka hyvin järjestetty tykkäysten ja
+     * pienien riitojen maksimoimiseksi.
+     *
+     * @return yhteyspisteet.
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public   double getYhteysPisteet( Pisteet this) {
+        return yhteysPisteet;
+    }
+
+    /**
+     * Onko paikan sitsaajalla yhteyksiä muihin sitsaajiin.
+     *
+     * @return
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    protected   boolean onkoYhteyksia( Pisteet this) {
+        return this.onYhteyksia;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void alustaPaikat( Pisteet this) {
+        this.paikkaLista = this.sitsit.getPaikat();
+        for (Paikka paikka : this.paikkaLista) {
+            PaikanPisteet paikanPisteet = new PaikanPisteet(paikka, this.laskin);
+            this.paikat.add(paikanPisteet);
+        }
+    }
+
+    /**
+     * Asettaa sitsaajan tietämään, millä paikalla hän istuu.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void alustaSitsaajat( Pisteet this) {
+        for (Paikka paikka : this.paikkaLista) {
+            paikka.getSitsaaja().setPaikka(paikka);
+        }
+    }
+
+    /**
+     * Palauttaa vierekkäin olevien avecien määrän.
+     *
+     * @return vierekkäin olevien avecien määrä.
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public   int getAvecienMaara( Pisteet this) {
+        return avec;
+    }
+
+    /**
+     * Palauttaa vierekkäin olevien puolisojen määrän.
+     *
+     * @return vierekkäin olevien puolisojen määrä.
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public   int getPuolisojenMaara( Pisteet this) {
+        return puoliso;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void kayLapiKaikkiPaikat( Pisteet this,   boolean vainSukupuoliJaPariPisteet) {
+        for (PaikanPisteet sitsaajanPisteet : paikat) {
+            if (vainSukupuoliJaPariPisteet == false) {
+                this.pisteet += sitsaajanPisteet.palautaPisteet();
+            } else {
+                sitsaajanPisteet.nollaaPisteet();
+                this.pisteet += sitsaajanPisteet.tarkistaAvecJaPuoliso();
+                this.pisteet += sitsaajanPisteet.tarkistaYmparillaOlevienSukupuolet();
+            }
+            if (sitsaajanPisteet.isAvec()) {
+                this.avec++;
+            }
+            if (sitsaajanPisteet.isPuoliso()) {
+                this.puoliso++;
+            }
+            this.onYhteyksia = true;
+            asetaOsaPisteetOikein(sitsaajanPisteet);
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void asetaOsaPisteetOikein( Pisteet this,  PaikanPisteet sitsaajanPisteet) {
+        pariPisteet += sitsaajanPisteet.getPariPisteet();
+        sukupuoliPisteet += sitsaajanPisteet.getSukupuoliPisteet();
+        yhteysPisteet += sitsaajanPisteet.getYhteysPisteet();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void nollaaPisteet( Pisteet this) {
+        this.pisteet = 0.0;
+        this.avec = 0;
+        this.puoliso = 0;
+        pariPisteet = 0.0;
+        sukupuoliPisteet = 0.0;
+        yhteysPisteet = 0.0;
+    }
+}

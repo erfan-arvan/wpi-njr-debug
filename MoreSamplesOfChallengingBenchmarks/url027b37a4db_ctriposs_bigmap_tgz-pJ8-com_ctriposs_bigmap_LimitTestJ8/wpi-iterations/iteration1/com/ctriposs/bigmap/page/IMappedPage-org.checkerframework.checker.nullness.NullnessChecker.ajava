@@ -1,0 +1,77 @@
+package com.ctriposs.bigmap.page;
+
+import java.nio.ByteBuffer;
+
+/**
+ * Memory mapped page file ADT
+ *
+ * @author bulldog
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public interface IMappedPage {
+
+    /**
+     * Get a thread local copy of the mapped page buffer
+     *
+     * @param position start position(relative to the start position of source mapped page buffer) of the thread local buffer
+     * @return a byte buffer with specific position as start position.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull ByteBuffer getLocal( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int position);
+
+    /**
+     * Get a thread local copy of the mapped page buffer
+     *
+     * @return a byte buffer with specific position as start position.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull ByteBuffer getLocal();
+
+    /**
+     * Get data from a thread local copy of the mapped page buffer
+     *
+     * @param position start position(relative to the start position of source mapped page buffer) of the thread local buffer
+     * @param length the length to fetch
+     * @return byte data
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull byte @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] getLocal( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int position,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int length);
+
+    /**
+     * Check if this mapped page has been closed or not
+     *
+     * @return
+     */
+    @org.checkerframework.dataflow.qual.Pure
+     @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean isClosed();
+
+    /**
+     * Set if the mapped page has been changed or not
+     *
+     * @param dirty
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    void setDirty( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean dirty);
+
+    /**
+     * The back page file name of the mapped page
+     *
+     * @return
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String getPageFile();
+
+    /**
+     * The index of the mapped page
+     *
+     * @return the index
+     */
+    @org.checkerframework.dataflow.qual.Pure
+     @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull long getPageIndex();
+
+    /**
+     * Persist any changes to disk
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void flush();
+}

@@ -1,0 +1,43 @@
+package logica;
+
+import java.awt.Point;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public enum Direccion {
+
+    /* Ă˘â â */
+    NORTH(-1, 0),
+    /* Ă˘â â */
+    SOUTH(+1, 0),
+    /* Ă˘â ďż˝ */
+    WEST(0, -1),
+    /* Ă˘â â */
+    EAST(0, +1),
+    /* Ă˘â â */
+    NORTHWEST(-1, -1),
+    /* Ă˘â Ë */
+    SOUTHEAST(+1, +1),
+    /* Ă˘â â˘ */
+    SOUTHWEST(+1, -1),
+    /* Ă˘â â */
+    NORTHEAST(-1, +1);
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int pasoEnFila;
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int pasoEnColumna;
+
+    @org.checkerframework.dataflow.qual.Impure
+    private Direccion( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int pasoEnFila,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int pasoEnColumna) {
+        this.pasoEnFila = pasoEnFila;
+        this.pasoEnColumna = pasoEnColumna;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Point siguiente(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable Point point) {
+        /* */
+        if (point == null) {
+            System.out.println("El punto es nulooooo!!!");
+        }
+        return new Point(point.x + pasoEnFila, point.y + pasoEnColumna);
+    }
+}

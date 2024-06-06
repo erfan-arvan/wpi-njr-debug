@@ -1,0 +1,243 @@
+/**
+ * ****************************************************************************
+ *  Copyright (c) 2011, Daniel Murphy
+ *  All rights reserved.
+ *
+ *  Redistribution and use in source and binary forms, with or without modification,
+ *  are permitted provided that the following conditions are met:
+ *  	* Redistributions of source code must retain the above copyright notice,
+ *  	  this list of conditions and the following disclaimer.
+ *  	* Redistributions in binary form must reproduce the above copyright notice,
+ *  	  this list of conditions and the following disclaimer in the documentation
+ *  	  and/or other materials provided with the distribution.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ *  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ *  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ *  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+ *  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ *  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ *  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ *  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ *  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ *  POSSIBILITY OF SUCH DAMAGE.
+ * ****************************************************************************
+ */
+package ubc.swim.gui;
+
+import java.util.Vector;
+import javax.swing.DefaultComboBoxModel;
+import org.jbox2d.callbacks.DebugDraw;
+import org.jbox2d.common.Vec2;
+import ubc.swim.tests.SwimTest;
+
+/**
+ * GUI model for Swimmer App. Modeled on org.jbox2d.testbed.framework.TestbedModel by Daniel Murphy
+ * @author Ben Humberston
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class SwimModel {
+
+    private final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull DefaultComboBoxModel tests = new DefaultComboBoxModel();
+
+    private final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull SwimSettings settings = new SwimSettings();
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull DebugDraw draw;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull SwimTest test;
+
+    private final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Vec2 mouse = new Vec2();
+
+    private final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Vector<TestChangedListener> listeners = new Vector<TestChangedListener>();
+
+    private final  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] keys = new boolean[512];
+
+    private final  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] codedKeys = new boolean[512];
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull float calculatedFps;
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull float panelWidth;
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int currTestIndex;
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public SwimModel() {
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setCalculatedFps( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull float calculatedFps) {
+        this.calculatedFps = calculatedFps;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull float getCalculatedFps() {
+        return calculatedFps;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setPanelWidth(float panelWidth) {
+        this.panelWidth = panelWidth;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull float getPanelWidth() {
+        return panelWidth;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setDebugDraw(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull DebugDraw argDraw) {
+        draw = argDraw;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull DebugDraw getDebugDraw() {
+        return draw;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull SwimTest getCurrTest() {
+        return test;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Vec2 getMouse() {
+        return mouse;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setMouse(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Vec2 argMouse) {
+        mouse.set(argMouse);
+    }
+
+    /**
+     * Gets the array of keys, index corresponding to the char value.
+     *
+     * @return
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] getKeys() {
+        return keys;
+    }
+
+    /**
+     * Gets the array of coded keys, index corresponding to the coded key value.
+     *
+     * @return
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] getCodedKeys() {
+        return codedKeys;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setCurrTestIndex( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int argCurrTestIndex) {
+        if (argCurrTestIndex < 0 || argCurrTestIndex >= tests.getSize()) {
+            throw new IllegalArgumentException("Invalid test index");
+        }
+        if (currTestIndex == argCurrTestIndex) {
+            return;
+        }
+        if (!isTestAt(argCurrTestIndex)) {
+            throw new IllegalArgumentException("No test at " + argCurrTestIndex);
+        }
+        currTestIndex = argCurrTestIndex;
+        ListItem item = (ListItem) tests.getElementAt(argCurrTestIndex);
+        test = item.test;
+        for (TestChangedListener listener : listeners) {
+            listener.testChanged(test, currTestIndex);
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getCurrTestIndex() {
+        return currTestIndex;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void addTestChangeListener(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull TestChangedListener argListener) {
+        listeners.add(argListener);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void removeTestChangeListener(TestChangedListener argListener) {
+        listeners.remove(argListener);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void addTest(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull SwimTest argTest) {
+        tests.addElement(new ListItem(argTest));
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void addCategory(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String argName) {
+        tests.addElement(new ListItem(argName));
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable SwimTest getTestAt(int argIndex) {
+        ListItem item = (ListItem) tests.getElementAt(argIndex);
+        if (item.isCategory()) {
+            return null;
+        }
+        return item.test;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean isTestAt( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int argIndex) {
+        ListItem item = (ListItem) tests.getElementAt(argIndex);
+        return !item.isCategory();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void clearTestList() {
+        tests.removeAllElements();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getTestsSize() {
+        return tests.getSize();
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull DefaultComboBoxModel getComboModel() {
+        return tests;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull SwimSettings getSettings() {
+        return settings;
+    }
+
+    public class ListItem {
+
+        public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull String category;
+
+        public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull SwimTest test;
+
+        @org.checkerframework.dataflow.qual.SideEffectFree
+        public ListItem(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String argCategory) {
+            category = argCategory;
+        }
+
+        @org.checkerframework.dataflow.qual.SideEffectFree
+        public ListItem(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull SwimTest argTest) {
+            test = argTest;
+        }
+
+        @org.checkerframework.dataflow.qual.Pure
+        public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean isCategory() {
+            return category != null;
+        }
+
+        @org.checkerframework.dataflow.qual.Impure
+        public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String toString(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull ListItem this) {
+            return isCategory() ? category : test.getTestName();
+        }
+    }
+
+    public static interface TestChangedListener {
+
+        @org.checkerframework.dataflow.qual.Impure
+        public void testChanged(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull SwimTest argTest,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int argIndex);
+    }
+}

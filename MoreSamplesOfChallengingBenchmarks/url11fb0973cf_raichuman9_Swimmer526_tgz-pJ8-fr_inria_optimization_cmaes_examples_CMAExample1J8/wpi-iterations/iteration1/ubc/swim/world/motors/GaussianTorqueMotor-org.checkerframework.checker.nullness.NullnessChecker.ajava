@@ -1,0 +1,140 @@
+package ubc.swim.world.motors;
+
+import java.util.ArrayList;
+import org.jbox2d.dynamics.Body;
+
+/**
+ * A torque motor which uses a mixture of Gaussian functions
+ * to evaluate its current value
+ * @author Ben Humberston
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class GaussianTorqueMotor extends TorqueMotor {
+
+    protected  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull float ONE_OVER_SQRT_TWO_PI;
+
+    protected static final  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull float MIN_PERIOD = 0.00001f;
+
+    protected static final  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull float MIN_STD_DEV = 0.00001f;
+
+    protected @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Body bodyA;
+
+    protected @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Body bodyB;
+
+    /**
+     * Gaussian parameters (one entry to Gaussian function)
+     */
+    protected @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull ArrayList<Float> weights;
+
+    protected @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull ArrayList<Float> means;
+
+    protected @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull ArrayList<Float> stdDevs;
+
+    /**
+     * Max torque that may be applied by this motor
+     */
+    protected  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull float maxTorque;
+
+    /**
+     * Torque applied the last time applyTorque() was called.
+     */
+    protected  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull float prevTorque = 0.0f;
+
+    /**
+     * Period gives max time value for which function is evaluated
+     * If given time input is beyond the period, the input value is
+     * evaluated modulo the period.
+     */
+    protected  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull float period = MIN_PERIOD;
+
+    /**
+     * Creates a new motor that applies torques between given bodies using
+     * numGaussian functions to determine torque magnitude based on time.
+     * @param bodyA
+     * @param bodyB
+     * @param maxTorque
+     * @param numGaussians
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public GaussianTorqueMotor(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Body bodyA, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Body bodyB,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull float maxTorque,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int numGaussians) {
+        ONE_OVER_SQRT_TWO_PI = (float) (1 / Math.sqrt(2 * Math.PI));
+        this.bodyA = bodyA;
+        this.bodyB = bodyB;
+        this.maxTorque = maxTorque;
+        weights = new ArrayList<Float>();
+        means = new ArrayList<Float>();
+        stdDevs = new ArrayList<Float>();
+        for (int i = 0; i < numGaussians; i++) {
+            weights.add(0.0f);
+            means.add(0.0f);
+            stdDevs.add(MIN_STD_DEV);
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull float getPrevTorque(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull GaussianTorqueMotor this) {
+        return prevTorque;
+    }
+
+    /**
+     * Updates period used by this motor.
+     * If given value is less than MIN_PERIOD, sets period to MIN_PERIOD
+     * Returns final period value
+     * @param val
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull float setPeriod( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull float val) {
+        //only positive period allowed
+        this.period = Math.abs(val);
+        //Never allow tiny periods
+        if (this.period < MIN_PERIOD)
+            this.period = MIN_PERIOD;
+        return this.period;
+    }
+
+    /**
+     * Sets parameters for the funcNum'th Gaussian in this motor
+     * @param funcNum
+     * @param weight
+     * @param mean
+     * @param stdDev
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void setGaussianParams( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int funcNum,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull float weight,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull float mean,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull float stdDev) {
+        weights.set(funcNum, weight);
+        means.set(funcNum, mean);
+        if (stdDev < MIN_STD_DEV)
+            stdDev = MIN_STD_DEV;
+        stdDevs.set(funcNum, stdDev);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull float applyTorque(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull GaussianTorqueMotor this,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull float runtime) {
+        float time = runtime;
+        if (time > period)
+            time = time % period;
+        float torque = 0.0f;
+        //Add contribution from each Gaussian
+        for (int i = 0; i < weights.size(); i++) {
+            float w = weights.get(i);
+            float mean = means.get(i);
+            float stdDev = stdDevs.get(i);
+            float distFromMean = time - mean;
+            //The torque contribution is max torque weighted by Gaussian value (maps from [0,1] control range into larger torques)
+            float expTerm = -(distFromMean * distFromMean) / (2 * stdDev * stdDev);
+            float amplitudeTerm = maxTorque * w * (1 / stdDev) * ONE_OVER_SQRT_TWO_PI;
+            torque += amplitudeTerm * Math.exp(expTerm);
+        }
+        torque = Math.min(torque, maxTorque);
+        //Apply equal and opposite torques to each body
+        //TODO: not sure if this is quite correct yet...
+        //Should the torque be applied to both, or just one body?
+        //Is applying a torque at the body's CoM equivalent to applying it at the joint?
+        if (torque != 0.0f) {
+            bodyA.applyTorque(torque);
+            bodyB.applyTorque(-torque);
+        }
+        prevTorque = torque;
+        return torque;
+    }
+}

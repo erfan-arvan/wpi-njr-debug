@@ -1,0 +1,31 @@
+package de.hrw.mdbt.model;
+
+import java.util.Date;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class Report {
+
+    private  Date date;
+
+    private  String text;
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  Date getDate() {
+        return date;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  String getText() {
+        return text;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setText(String text) {
+        this.text = text;
+    }
+}

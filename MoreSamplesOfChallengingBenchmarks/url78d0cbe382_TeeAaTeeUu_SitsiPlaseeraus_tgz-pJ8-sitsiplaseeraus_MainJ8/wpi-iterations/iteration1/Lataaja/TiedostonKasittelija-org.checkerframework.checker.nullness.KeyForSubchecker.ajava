@@ -1,0 +1,246 @@
+package Lataaja;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import omatTietorakenteet.ArrayList;
+import omatTietorakenteet.Hakemisto;
+import omatTietorakenteet.Vektori;
+import sitsiplaseeraus.Sitsaaja;
+
+/**
+ * Lukee tiedostosta asetukset, joiden avulla asetusten mukainen sitsi-olio on
+ * mahdollista luoda.
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class TiedostonKasittelija {
+
+    private final  String file;
+
+    private  Sitsaaja sitsaaja;
+
+    private  Hakemisto<Sitsaaja, Hakemisto> yhteydet;
+
+    private  Hakemisto<String, Sitsaaja> sitsaajat;
+
+    private  String  [] tiedot;
+
+    private  Hakemisto<Sitsaaja, Integer> yhteys;
+
+    private  Sitsaaja kohdeSitsaaja;
+
+    private  Hakemisto<Sitsaaja, Integer> valiaikainenMap;
+
+    private  Hakemisto<Sitsaaja, Hakemisto> palautettavaMap;
+
+    private  ArrayList<Sitsaaja> sitsaajatLista;
+
+    private   int poytienMaara;
+
+    private  ArrayList<Integer> poytienKoot;
+
+    private   int arvo;
+
+    private int index;
+
+    /**
+     * Alustaa ja asettaa tiedoston, josta tiedot otetaan.
+     *
+     * @param tiedosto
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public TiedostonKasittelija( String tiedosto) {
+        this.file = tiedosto;
+        this.alustaLuokat();
+    }
+
+    /**
+     * Palauttaa asetustiedostosta löytyneet sitsaajat.
+     *
+     * @return Sitsaajat
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public  ArrayList<Sitsaaja> getSitsaajat( TiedostonKasittelija this) {
+        sitsaajatLista.clear();
+        for (Vektori<String, Sitsaaja> sitsaaja : sitsaajat) {
+            sitsaajatLista.add(sitsaaja.getValue());
+            if (sitsaaja.getValue().yhteyksienMaara() == 0) {
+                System.out.println("yhteyksiä nolla");
+            }
+        }
+        return sitsaajatLista;
+    }
+
+    /**
+     * Palauttaa pöytien määrän.
+     *
+     * @return Pöytien määrä.
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public   int getPoytienMaara( TiedostonKasittelija this) {
+        return poytienMaara;
+    }
+
+    /**
+     * Palauttaa pöytien koot taulukossa.
+     *
+     * @return Pöytien koot.
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public  ArrayList<Integer> getPoytienKoot( TiedostonKasittelija this) {
+        return poytienKoot;
+    }
+
+    /**
+     * Lukee tiedoston ja tallentaa muistiin siitä löytyvät tiedot.
+     *
+     * http://www.mkyong.com/java/how-to-read-and-parse-csv-file-in-java/
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void run( TiedostonKasittelija this) {
+        yhteydet.clear();
+        sitsaajat.clear();
+        String csvFile = file;
+        BufferedReader br = null;
+        String line = "";
+        String cvsSplitBy = ",";
+        try {
+            br = new BufferedReader(new FileReader(csvFile));
+        } catch (FileNotFoundException ex) {
+            System.out.println("tiedostoa ei löytynyt");
+            System.exit(0);
+        }
+        try {
+            poytienMaara(br, cvsSplitBy);
+            sitsaajat(br, cvsSplitBy);
+            avecit(br, cvsSplitBy);
+            puolisot(br, cvsSplitBy);
+            yhteydet(br, cvsSplitBy);
+        } catch (IOException ex) {
+            System.out.println("hässäkkää");
+        }
+        System.out.println("Tiedoston luku onnistui");
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private  Sitsaaja lisaaSitsaaja( TiedostonKasittelija this,  String nimi,  String sukupuoli2) {
+        int sukupuoli = sukupuoli(sukupuoli2);
+        if (sukupuoli == 0) {
+            return new Sitsaaja(tiedot[0]);
+        } else {
+            if (sukupuoli == 1) {
+                return new Sitsaaja(tiedot[0], true);
+            } else {
+                return new Sitsaaja(tiedot[0], false);
+            }
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private  Sitsaaja sitsaaja( TiedostonKasittelija this,  String nimi) {
+        return sitsaajat.get(nimi);
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    private   int sukupuoli( TiedostonKasittelija this,  String tieto) {
+        if (tieto.equals("1")) {
+            return 1;
+        } else if (tieto.equals("-1")) {
+            return -1;
+        } else {
+            return 0;
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void alustaLuokat( TiedostonKasittelija this) {
+        yhteydet = new Hakemisto<Sitsaaja, Hakemisto>();
+        sitsaajat = new Hakemisto<String, Sitsaaja>();
+        yhteys = new Hakemisto<Sitsaaja, Integer>();
+        valiaikainenMap = new Hakemisto<Sitsaaja, Integer>();
+        palautettavaMap = new Hakemisto<Sitsaaja, Hakemisto>();
+        sitsaajatLista = new ArrayList<Sitsaaja>();
+        poytienKoot = new ArrayList<Integer>();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void poytienMaara( TiedostonKasittelija this,  BufferedReader br,  String cvsSplitBy) throws NumberFormatException, IOException {
+        String line;
+        //poytien määrä
+        System.out.println("pöytien määrä");
+        while ((line = br.readLine()) != null && line.equals("--sitsaajat--") == false) {
+            tiedot = line.split(cvsSplitBy);
+            this.poytienMaara = Integer.parseInt(tiedot[0]);
+            for (int i = 0; i < getPoytienMaara(); i++) {
+                this.poytienKoot.add((int) Integer.parseInt(tiedot[i + 1]));
+                System.out.println(tiedot[i + 1]);
+            }
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void sitsaajat( TiedostonKasittelija this,  BufferedReader br,  String cvsSplitBy) throws IOException {
+        String line;
+        //sitsaajat
+        System.out.println("sitsaajat");
+        while ((line = br.readLine()) != null && line.equals("--avecit--") == false) {
+            tiedot = line.split(cvsSplitBy);
+            sitsaaja = lisaaSitsaaja(tiedot[0], tiedot[1]);
+            System.out.println(sitsaaja.getNimi());
+            sitsaajat.put(sitsaaja.getNimi(), sitsaaja);
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void avecit( TiedostonKasittelija this,  BufferedReader br,  String cvsSplitBy) throws IOException {
+        String line;
+        //avecit
+        System.out.println("avecit");
+        while ((line = br.readLine()) != null && line.equals("--puolisot--") == false) {
+            tiedot = line.split(cvsSplitBy);
+            sitsaaja = sitsaaja(tiedot[0]);
+            kohdeSitsaaja = sitsaaja(tiedot[1]);
+            sitsaaja.setAvec(kohdeSitsaaja);
+            System.out.println(sitsaaja.getNimi() + " ja " + sitsaaja.getAvec().getNimi());
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void puolisot( TiedostonKasittelija this,  BufferedReader br,  String cvsSplitBy) throws IOException {
+        String line;
+        //puolisot
+        System.out.println("puolisot");
+        while ((line = br.readLine()) != null && line.equals("--yhteydet--") == false) {
+            tiedot = line.split(cvsSplitBy);
+            sitsaaja = sitsaaja(tiedot[0]);
+            kohdeSitsaaja = sitsaaja(tiedot[1]);
+            sitsaaja.setPuoliso(kohdeSitsaaja);
+            System.out.println(sitsaaja.getNimi() + " ja " + sitsaaja.getPuoliso().getNimi());
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void yhteydet( TiedostonKasittelija this,  BufferedReader br,  String cvsSplitBy) throws NumberFormatException, IOException {
+        String line;
+        //yhteydet
+        System.out.println("yhteydet");
+        for (String string : tiedot) {
+        }
+        while ((line = br.readLine()) != null) {
+            tiedot = line.split(cvsSplitBy);
+            sitsaaja = sitsaaja(tiedot[0]);
+            kohdeSitsaaja = sitsaaja(tiedot[1]);
+            arvo = Integer.parseInt(tiedot[2]);
+            pyritaanLisaamaanYhteys();
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void pyritaanLisaamaanYhteys( TiedostonKasittelija this) {
+        sitsaaja.setYhteys(kohdeSitsaaja, arvo);
+        if (sitsaaja.yhteyksienMaara() == 0) {
+            System.out.println("yhteyden muodostus epäonnostui");
+        }
+    }
+}

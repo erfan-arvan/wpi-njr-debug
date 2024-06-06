@@ -1,0 +1,14 @@
+package frs.hotgammon;
+
+import frs.hotgammon.framework.Game;
+import frs.hotgammon.framework.Location;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public interface MoveValidator {
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean isValid(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Location from, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Location to);
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setGame(@org.checkerframework.checker.initialization.qual.UnknownInitialization(java.lang.Object.class) @org.checkerframework.checker.nullness.qual.NonNull Game game);
+}

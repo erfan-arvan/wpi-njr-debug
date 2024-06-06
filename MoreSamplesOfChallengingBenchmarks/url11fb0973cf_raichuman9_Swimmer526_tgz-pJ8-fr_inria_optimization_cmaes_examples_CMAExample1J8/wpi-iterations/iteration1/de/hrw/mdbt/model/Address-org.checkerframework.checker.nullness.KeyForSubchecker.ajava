@@ -1,0 +1,78 @@
+package de.hrw.mdbt.model;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class Address {
+
+    private  String state;
+
+    private  String city;
+
+    private  String street;
+
+    private  String zip;
+
+    private  String type;
+
+    @org.checkerframework.dataflow.qual.Impure
+    public Address( String state,  String city,  String street,  String zip,  String type) {
+        setState(state);
+        setCity(city);
+        setStreet(street);
+        setZip(zip);
+        setType(type);
+    }
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public Address() {
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  String getState() {
+        return state;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setState( Address this,  String state) {
+        this.state = state;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  String getCity() {
+        return city;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setCity( Address this,  String city) {
+        this.city = city;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  String getStreet() {
+        return street;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setStreet( Address this,  String street) {
+        this.street = street;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  String getZip() {
+        return zip;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setZip( Address this,  String zip) {
+        this.zip = zip;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  String getType() {
+        return type;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setType( Address this,  String type) {
+        this.type = type;
+    }
+}

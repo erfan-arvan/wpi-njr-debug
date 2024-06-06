@@ -1,0 +1,47 @@
+package assignments.farmer.farmerfactories;
+
+import assignments.farmer.Farmer;
+import assignments.farmer.FarmerFactory;
+import assignments.farmer.FarmerImpl;
+import assignments.farmer.actionstrategies.*;
+import assignments.farmer.actionstrategies.harveststrategies.OrganicHarvestStrategy;
+import assignments.farmer.actionstrategies.marketstrategies.OrganicMarketStrategy;
+import assignments.farmer.actionstrategies.plantstrategies.OrganicPlantStrategy;
+import assignments.farmer.actionstrategies.plowstrategies.OrganicPlowStrategy;
+import assignments.farmer.actionstrategies.weedcontrolstrategies.OrganicWeedControlStrategy;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class OrganicFarmerFactory implements FarmerFactory {
+
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Farmer create(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull OrganicFarmerFactory this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String str) {
+        FarmerImpl f = new FarmerImpl();
+        f.setStrategies(createPlowStrategy(), createPlantStrategy(), createWeedControlStrategy(), createHarvestStrategy(), createMarketStrategy());
+        return f;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull PlowStrategy createPlowStrategy(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull OrganicFarmerFactory this) {
+        return new OrganicPlowStrategy();
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull PlantStrategy createPlantStrategy(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull OrganicFarmerFactory this) {
+        return new OrganicPlantStrategy();
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull WeedControlStrategy createWeedControlStrategy(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull OrganicFarmerFactory this) {
+        return new OrganicWeedControlStrategy();
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull HarvestStrategy createHarvestStrategy(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull OrganicFarmerFactory this) {
+        return new OrganicHarvestStrategy();
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull MarketStrategy createMarketStrategy(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull OrganicFarmerFactory this) {
+        return new OrganicMarketStrategy();
+    }
+}

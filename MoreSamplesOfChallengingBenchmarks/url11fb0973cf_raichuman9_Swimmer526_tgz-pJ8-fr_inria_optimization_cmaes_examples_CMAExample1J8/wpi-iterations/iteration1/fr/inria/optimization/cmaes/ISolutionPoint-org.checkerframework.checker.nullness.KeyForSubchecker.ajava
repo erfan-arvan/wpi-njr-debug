@@ -1,0 +1,47 @@
+package fr.inria.optimization.cmaes;
+
+/**
+ * solution point in search space, single-objective case
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public interface ISolutionPoint {
+
+    /**
+     * objective function value (fitness) of the search point x
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public   double getFitness();
+
+    /**
+     * count at what evaluation number the search point x was evaluated
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public   long getEvaluationNumber();
+
+    /**
+     * value of the point in search space, that is in the
+     * preimage of the objective function to be optimized
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public   double  [] getX();
+
+    /**
+     * objective function value (fitness) of the search point x
+     */
+    // TODO better FunctionValue than Fitness ?
+    @org.checkerframework.dataflow.qual.Impure
+    public void setFitness(double fitness);
+
+    /**
+     * count at what evaluation number the search point x was evaluated
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void setEvaluationNumber(long evaluation);
+
+    /**
+     * value of the solution point in search space, the
+     * preimage of the objective function to be optimized
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void setX(double[] x);
+}

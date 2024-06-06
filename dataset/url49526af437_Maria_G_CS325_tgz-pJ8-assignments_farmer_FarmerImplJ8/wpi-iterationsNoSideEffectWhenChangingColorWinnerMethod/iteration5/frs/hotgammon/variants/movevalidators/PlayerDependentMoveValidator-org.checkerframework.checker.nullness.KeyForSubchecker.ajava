@@ -1,0 +1,44 @@
+package frs.hotgammon.variants.movevalidators;
+
+import frs.hotgammon.MoveValidator;
+import frs.hotgammon.framework.Color;
+import frs.hotgammon.framework.Game;
+import frs.hotgammon.framework.Location;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class PlayerDependentMoveValidator implements MoveValidator {
+
+    private  MoveValidator blackMoveValidator = new SimpleMoveValidator();
+
+    private  MoveValidator redMoveValidator = new CompleteMoveValidator();
+
+    private  Game game;
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public PlayerDependentMoveValidator() {
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public PlayerDependentMoveValidator( Game game) {
+        this.setGame(game);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public   boolean isValid( PlayerDependentMoveValidator this,  Location from,  Location to) {
+        Color player = this.game.getPlayerInTurn();
+        if (player == Color.BLACK) {
+            return blackMoveValidator.isValid(from, to);
+        }
+        if (player == Color.RED) {
+            return redMoveValidator.isValid(from, to);
+        }
+        return false;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setGame( PlayerDependentMoveValidator this,  Game game) {
+        this.game = game;
+        blackMoveValidator.setGame(game);
+        redMoveValidator.setGame(game);
+    }
+}

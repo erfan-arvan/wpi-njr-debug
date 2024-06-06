@@ -1,0 +1,34 @@
+package frs.hotgammon.variants.turndeterminers;
+
+import frs.hotgammon.TurnDeterminer;
+import frs.hotgammon.framework.Color;
+import frs.hotgammon.framework.Game;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class AceyDeuceyTurnDeterminer implements TurnDeterminer {
+
+    private  Game game;
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public AceyDeuceyTurnDeterminer() {
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public AceyDeuceyTurnDeterminer( Game game) {
+        this.setGame(game);
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  Color nextTurn( AceyDeuceyTurnDeterminer this) {
+        if (this.game.diceThrown()[0] == 1 && this.game.diceThrown()[1] == 2) {
+            return this.game.getPlayerInTurn();
+        } else {
+            return (this.game.getPlayerInTurn() == Color.BLACK) ? Color.RED : Color.BLACK;
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setGame( AceyDeuceyTurnDeterminer this,  Game game) {
+        this.game = game;
+    }
+}

@@ -1,0 +1,22 @@
+package assignments.farmer.actionstrategies.plantstrategies;
+
+import assignments.farmer.actionstrategies.PlantStrategy;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class ConventionalPlantStrategy implements PlantStrategy {
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void plantInTheSpring(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull ConventionalPlantStrategy this) {
+        System.out.println("No action.");
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void plantInTheSummer(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull ConventionalPlantStrategy this) {
+        System.out.println("Corn.");
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void plantInTheFall(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull ConventionalPlantStrategy this) {
+        System.out.println("No action.");
+    }
+}

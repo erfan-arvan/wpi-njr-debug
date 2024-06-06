@@ -1,0 +1,39 @@
+package ubc.swim.world.trajectory;
+
+import org.jbox2d.dynamics.joints.RevoluteJoint;
+
+/**
+ * Provides a time/phase dependent value that is target for some
+ * degree of freedom of character
+ * @author Ben Humberston
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public abstract class RefTrajectory {
+
+    //optional joint associated with this trajectory
+    protected  RevoluteJoint joint;
+
+    /**
+     * Returns current reference value, given current time
+     * @param runtime
+     * @return
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public abstract   float getValue( RefTrajectory this,   float time);
+
+    /**
+     * Optionally stores a joint associated with this trajectory.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void setJoint( RefTrajectory this,  RevoluteJoint joint) {
+        this.joint = joint;
+    }
+
+    /**
+     * Returns stored joint associated with this trajectory
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public  RevoluteJoint getJoint( RefTrajectory this) {
+        return joint;
+    }
+}

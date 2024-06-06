@@ -1,0 +1,44 @@
+package simulation.queue;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class Customer {
+
+    private static   int idGen = 1;
+
+    private   int id;
+
+    private   int accumlatedTime;
+
+    private   int type;
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public Customer() {
+        this.id = idGen++;
+        this.accumlatedTime = 0;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void accumlateTime( Customer this,   int time) {
+        this.accumlatedTime += time;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   int getAccumlatedTime( Customer this) {
+        return this.accumlatedTime;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   int getId( Customer this) {
+        return this.id;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setType( Customer this,   int route) {
+        this.type = route;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   int getType( Customer this) {
+        return this.type;
+    }
+}

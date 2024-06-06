@@ -1,0 +1,37 @@
+package jatrace.bodies;
+
+import jatrace.*;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class OneWayPlane extends Plane {
+
+    //Vector n;
+    /**
+     * Instantiates a plane with given positin, normal, and color.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public OneWayPlane(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Vector p, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Vector n, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Color c) {
+        super(p, n, c);
+        //n = super.getNormal(new Vector(0.0,0.0,0.0));
+    }
+
+    /**
+     * Instantiates a default plane (gray, at origin, pointing up).
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public OneWayPlane() {
+        super();
+        //n = super.getNormal(new Vector(0.0,0.0,0.0));
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull double intersection(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull OneWayPlane this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Ray ray) {
+        Vector d = ray.d();
+        //if (n.dot(d) > 0.0)
+        if (super.normal.dot(d) > 0.0) {
+            return -1.0;
+        } else {
+            return super.intersection(ray);
+        }
+    }
+}

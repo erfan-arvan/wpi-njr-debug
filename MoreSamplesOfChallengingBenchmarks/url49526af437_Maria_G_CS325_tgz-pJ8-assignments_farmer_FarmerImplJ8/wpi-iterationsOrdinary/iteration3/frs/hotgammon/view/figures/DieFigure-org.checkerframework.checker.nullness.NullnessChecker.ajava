@@ -1,0 +1,13 @@
+package frs.hotgammon.view.figures;
+
+import java.awt.Point;
+import minidraw.standard.ImageFigure;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class DieFigure extends ImageFigure {
+
+    @org.checkerframework.dataflow.qual.Impure
+    public DieFigure( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int val, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Point p) {
+        super("die" + val, p);
+    }
+}

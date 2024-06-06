@@ -1,0 +1,187 @@
+package jatrace.gui.body;
+
+import jatrace.*;
+import jatrace.gui.*;
+import jatrace.gui.builders.*;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class BodyButton extends JButton implements ActionListener, BodyPasser, WindowListener {
+
+    private  Body body;
+
+    private  String text;
+
+     BodyBuilder bb;
+
+      boolean builderLocked = false;
+
+    @org.checkerframework.dataflow.qual.Impure
+    public BodyButton() {
+        super();
+        setPreferredSize(new Dimension(0, 25));
+        body = null;
+        setText("Empty Body");
+        addActionListener(this);
+        bb = new BodyBuilder(this);
+        bb.addWindowListener(this);
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  Body getBody( BodyButton this) {
+        return body;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setBody( BodyButton this,  Body b) {
+        body = b;
+        builderLocked = false;
+        update();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void actionPerformed( BodyButton this,  ActionEvent e) {
+        if (e.getSource() == this) {
+            if (!builderLocked) {
+                bb.setVisible(true);
+                setEnabled(false);
+                builderLocked = true;
+                update();
+            }
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void update( BodyButton this) {
+        //change button highlight based on build lock
+        if (builderLocked) {
+            bb.setVisible(true);
+            setEnabled(false);
+        } else {
+            bb.setVisible(false);
+            setEnabled(true);
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setText( BodyButton this,  String name) {
+        super.setText(name);
+        text = name;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  String getText( BodyButton this) {
+        return text;
+    }
+
+    private BodyPasser nextBodyPasser = null, prevBodyPasser = null;
+
+    private  BodyButton nextBodyButton = null;
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  BodyButton getNext( BodyButton this) {
+        return nextBodyButton;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setNextBodyPasser( BodyButton this,  BodyPasser p) {
+        nextBodyPasser = p;
+        if (p instanceof BodyButton) {
+            nextBodyButton = (BodyButton) p;
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setPrevBodyPasser( BodyButton this,  BodyPasser p) {
+        prevBodyPasser = p;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void insertBefore( BodyButton this,  BodyPasser p) {
+        if (p != null) {
+            //forwards
+            p.setNextBodyPasser(this);
+            if (prevBodyPasser != null) {
+                prevBodyPasser.setNextBodyPasser(p);
+            }
+            //backwards
+            p.setPrevBodyPasser(prevBodyPasser);
+            this.prevBodyPasser = p;
+        } else {
+            prevBodyPasser = null;
+            prevBodyPasser.insertAfter(null);
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void insertAfter( BodyButton this,  BodyPasser p) {
+        if (p != null) {
+            //backwards
+            if (nextBodyPasser != null) {
+                nextBodyPasser.setPrevBodyPasser(p);
+            }
+            p.setPrevBodyPasser(this);
+            //forwards
+            p.setNextBodyPasser(nextBodyPasser);
+            nextBodyPasser = p;
+        } else {
+            nextBodyPasser = null;
+            nextBodyPasser.insertAfter(null);
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void remove( BodyButton this) {
+        if (prevBodyPasser != null) {
+            prevBodyPasser.insertAfter(nextBodyPasser);
+            prevBodyPasser = null;
+            nextBodyPasser = null;
+        } else if (nextBodyPasser != null) {
+            nextBodyPasser.insertBefore(prevBodyPasser);
+            prevBodyPasser = null;
+            nextBodyPasser = null;
+        }
+    }
+
+    //Window listener interface
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public void windowActivated( BodyButton this,  WindowEvent e) {
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void windowClosed( BodyButton this,  WindowEvent e) {
+        //when window has been closed by calling dispose
+        if (e.getSource() == bb) {
+            //remove this button
+            remove();
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void windowClosing( BodyButton this,  WindowEvent e) {
+        //hide the window instead
+        if (e.getSource() == bb) {
+            builderLocked = false;
+            update();
+        }
+    }
+
+    //satisfy WindowListener interface with the below.
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public void windowDeactivated( BodyButton this,  WindowEvent e) {
+    }
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public void windowDeiconified( BodyButton this,  WindowEvent e) {
+    }
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public void windowIconified( BodyButton this,  WindowEvent e) {
+    }
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public void windowOpened( BodyButton this,  WindowEvent e) {
+    }
+}

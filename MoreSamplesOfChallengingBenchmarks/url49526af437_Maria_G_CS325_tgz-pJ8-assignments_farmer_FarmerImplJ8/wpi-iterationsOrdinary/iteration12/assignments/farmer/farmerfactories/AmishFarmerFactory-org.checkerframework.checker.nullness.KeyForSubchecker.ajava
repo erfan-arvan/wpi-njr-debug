@@ -1,0 +1,51 @@
+package assignments.farmer.farmerfactories;
+
+import assignments.farmer.Farmer;
+import assignments.farmer.FarmerFactory;
+import assignments.farmer.FarmerImpl;
+import assignments.farmer.actionstrategies.HarvestStrategy;
+import assignments.farmer.actionstrategies.MarketStrategy;
+import assignments.farmer.actionstrategies.PlantStrategy;
+import assignments.farmer.actionstrategies.PlowStrategy;
+import assignments.farmer.actionstrategies.WeedControlStrategy;
+import assignments.farmer.actionstrategies.harveststrategies.AmishHarvestStrategy;
+import assignments.farmer.actionstrategies.marketstrategies.AmishMarketStrategy;
+import assignments.farmer.actionstrategies.plantstrategies.AmishPlantStrategy;
+import assignments.farmer.actionstrategies.plowstrategies.AmishPlowStrategy;
+import assignments.farmer.actionstrategies.weedcontrolstrategies.AmishWeedControlStrategy;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class AmishFarmerFactory implements FarmerFactory {
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  Farmer create( AmishFarmerFactory this,  String str) {
+        FarmerImpl f = new FarmerImpl();
+        f.setStrategies(createPlowStrategy(), createPlantStrategy(), createWeedControlStrategy(), createHarvestStrategy(), createMarketStrategy());
+        return f;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  PlowStrategy createPlowStrategy( AmishFarmerFactory this) {
+        return new AmishPlowStrategy();
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  PlantStrategy createPlantStrategy( AmishFarmerFactory this) {
+        return new AmishPlantStrategy();
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  WeedControlStrategy createWeedControlStrategy( AmishFarmerFactory this) {
+        return new AmishWeedControlStrategy();
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  HarvestStrategy createHarvestStrategy( AmishFarmerFactory this) {
+        return new AmishHarvestStrategy();
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  MarketStrategy createMarketStrategy( AmishFarmerFactory this) {
+        return new AmishMarketStrategy();
+    }
+}

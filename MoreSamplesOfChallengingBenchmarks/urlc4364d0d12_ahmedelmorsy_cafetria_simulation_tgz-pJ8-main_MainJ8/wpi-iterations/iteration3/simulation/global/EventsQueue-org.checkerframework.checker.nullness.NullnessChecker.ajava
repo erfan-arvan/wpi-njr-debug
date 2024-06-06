@@ -1,0 +1,54 @@
+package simulation.global;
+
+import java.util.PriorityQueue;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class EventsQueue {
+
+    private static @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull PriorityQueue<Node> queue = new PriorityQueue<Node>();
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static void enqueue( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int time, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Event event) {
+        Node n = new Node();
+        n.time = time;
+        n.e = event;
+        queue.add(n);
+        System.out.println("[EventsQueue] an event is added for time " + time);
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getSize() {
+        return queue.size();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int peekTime() {
+        if (queue.size() == 0)
+            return Integer.MAX_VALUE;
+        return queue.peek().time;
+    }
+
+    private static class Node implements Comparable<Node> {
+
+        public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int time;
+
+        public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull Event e;
+
+        @org.checkerframework.dataflow.qual.Pure
+        public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int compareTo(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Node this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Node arg0) {
+            if (this.time < arg0.time)
+                return -1;
+            if (this.time > arg0.time)
+                return 1;
+            return 0;
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static void executeEvent() {
+        SimulationClk.clock = peekTime();
+        Event e = queue.poll().e;
+        System.out.println("[" + SimulationClk.clock + "] " + e.getDescription());
+        e.execute();
+    }
+}

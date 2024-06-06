@@ -1,0 +1,78 @@
+package assignments.farmer;
+
+import assignments.farmer.actionstrategies.*;
+import assignments.farmer.farmerfactories.*;
+import assignments.farmer.seasonstates.*;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class FarmerImpl implements Farmer {
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull SeasonState season = new SpringState();
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull PlowStrategy plowStrategy;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull PlantStrategy plantStrategy;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull WeedControlStrategy weedControlStrategy;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull HarvestStrategy harvestStrategy;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull MarketStrategy marketStrategy;
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void plow(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull FarmerImpl this) {
+        season.plow(plowStrategy);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void plant(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull FarmerImpl this) {
+        season.plant(plantStrategy);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void weedControl(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull FarmerImpl this) {
+        season.weedControl(weedControlStrategy);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void harvest(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull FarmerImpl this) {
+        season.harvest(harvestStrategy);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void market(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull FarmerImpl this) {
+        season.market(marketStrategy);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setSeasonState(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull FarmerImpl this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull SeasonState seasonState) {
+        this.season = seasonState;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setStrategies(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull PlowStrategy plowStrategy, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull PlantStrategy plantStrategy, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull WeedControlStrategy weedControlStrategy, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull HarvestStrategy harvestStrategy, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull MarketStrategy marketStrategy) {
+        this.plowStrategy = plowStrategy;
+        this.plantStrategy = plantStrategy;
+        this.weedControlStrategy = weedControlStrategy;
+        this.harvestStrategy = harvestStrategy;
+        this.marketStrategy = marketStrategy;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static void main(String[] args) {
+        Farmer[] farmers = { new AmishFarmerFactory().create("Amish"), new OrganicFarmerFactory().create("Organic"), new ConventionalFarmerFactory().create("Conv") };
+        SeasonState[] seasons = { new SummerState(), new FallState(), new SpringState() };
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 3; j++) {
+                for (int k = 0; k < 3; k++) {
+                    farmers[j].plow();
+                    farmers[j].plant();
+                    farmers[j].weedControl();
+                    farmers[j].harvest();
+                    farmers[j].market();
+                    farmers[j].setSeasonState(seasons[k]);
+                }
+            }
+        }
+    }
+}

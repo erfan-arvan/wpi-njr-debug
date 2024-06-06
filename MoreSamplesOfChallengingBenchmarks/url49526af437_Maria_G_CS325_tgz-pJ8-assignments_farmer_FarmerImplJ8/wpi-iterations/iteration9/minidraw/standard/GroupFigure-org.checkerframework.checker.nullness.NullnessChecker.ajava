@@ -1,0 +1,28 @@
+package minidraw.standard;
+
+import minidraw.framework.*;
+import java.util.*;
+import java.awt.Rectangle;
+
+/**
+ * A Group figure is a fully operational figure containing other figures.
+ *
+ * Implementation based on JHotDraw 5.1
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class GroupFigure extends CompositeFigure {
+
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Rectangle displayBox(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull GroupFigure this) {
+        if (fFigures.size() > 0) {
+            Iterator<Figure> i = fFigures.iterator();
+            Rectangle r = (Rectangle) i.next().displayBox().clone();
+            while (i.hasNext()) {
+                r.add(i.next().displayBox());
+            }
+            return r;
+        } else {
+            return new Rectangle();
+        }
+    }
+}

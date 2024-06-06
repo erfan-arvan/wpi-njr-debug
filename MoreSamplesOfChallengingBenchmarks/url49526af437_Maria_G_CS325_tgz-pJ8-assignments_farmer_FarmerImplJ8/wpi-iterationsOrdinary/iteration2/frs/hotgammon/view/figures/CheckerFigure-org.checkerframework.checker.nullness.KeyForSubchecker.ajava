@@ -1,0 +1,22 @@
+package frs.hotgammon.view.figures;
+
+import java.awt.Point;
+import frs.hotgammon.framework.Color;
+import minidraw.standard.ImageFigure;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class CheckerFigure extends ImageFigure {
+
+    private  Color color;
+
+    @org.checkerframework.dataflow.qual.Impure
+    public CheckerFigure( Color color,  Point p) {
+        super(color.toString().toLowerCase() + "checker", p);
+        this.color = color;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  Color getColor() {
+        return color;
+    }
+}

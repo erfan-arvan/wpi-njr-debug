@@ -1,0 +1,39 @@
+package de.hrw.mdbt.model;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class LicenseClass {
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull String abbreviation;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull String description;
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public LicenseClass() {
+    }
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public LicenseClass(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String abbreviation, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String description) {
+        this.abbreviation = abbreviation;
+        this.description = description;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable String getAbbreviation() {
+        return abbreviation;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setAbbreviation(String abbreviation) {
+        this.abbreviation = abbreviation;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable String getDescription() {
+        return description;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setDescription(String description) {
+        this.description = description;
+    }
+}

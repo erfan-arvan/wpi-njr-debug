@@ -1,0 +1,48 @@
+package de.hrw.mdbt.model;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class Phone {
+
+    private  String type;
+
+    private  String prefix;
+
+    private  String number;
+
+    @org.checkerframework.dataflow.qual.Impure
+    public Phone( String prefix,  String number,  String type) {
+        this.setPrefix(prefix);
+        this.setNumber(number);
+        this.setType(type);
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  String getType() {
+        return type;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setType( Phone this,  String type) {
+        this.type = type;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  String getPrefix() {
+        return prefix;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setPrefix( Phone this,  String prefix) {
+        this.prefix = prefix;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  String getNumber() {
+        return number;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setNumber( Phone this,  String number) {
+        this.number = number;
+    }
+}

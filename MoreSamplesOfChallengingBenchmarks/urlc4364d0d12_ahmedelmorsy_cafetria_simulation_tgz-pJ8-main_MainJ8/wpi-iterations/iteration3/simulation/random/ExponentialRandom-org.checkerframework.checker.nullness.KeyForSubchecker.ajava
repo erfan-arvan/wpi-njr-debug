@@ -1,0 +1,23 @@
+package simulation.random;
+
+import java.util.Random;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class ExponentialRandom {
+
+    private  Random uGen;
+
+    private   int mean;
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public ExponentialRandom(  int mean) {
+        this.uGen = new Random();
+        this.mean = mean;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public   int nextInt( ExponentialRandom this) {
+        double u = uGen.nextDouble();
+        return (int) (-1 * mean * Math.log(u));
+    }
+}

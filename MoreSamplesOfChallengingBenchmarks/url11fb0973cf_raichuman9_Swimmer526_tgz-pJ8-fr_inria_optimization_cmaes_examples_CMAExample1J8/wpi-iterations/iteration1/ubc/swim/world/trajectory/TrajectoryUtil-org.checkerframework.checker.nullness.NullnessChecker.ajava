@@ -1,0 +1,25 @@
+package ubc.swim.world.trajectory;
+
+/**
+ * Static util functions for PD control trajectories
+ * @author Ben Humberston
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class TrajectoryUtil {
+
+    protected static final  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull float TWO_PI = (float) (2 * Math.PI);
+
+    /**
+     * Returns shortest distance in radians between given angles. Value will be
+     * in the range [-PI, PI]
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull float distanceBetweenAngles( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull float a,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull float b) {
+        float delta = (b - a) % TWO_PI;
+        if (delta > Math.PI)
+            delta = -TWO_PI + delta;
+        if (delta < -Math.PI)
+            delta = TWO_PI + delta;
+        return delta;
+    }
+}

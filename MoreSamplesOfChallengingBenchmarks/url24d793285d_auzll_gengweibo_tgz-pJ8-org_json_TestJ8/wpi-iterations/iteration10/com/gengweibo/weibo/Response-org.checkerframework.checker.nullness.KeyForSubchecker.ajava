@@ -1,0 +1,187 @@
+/**
+ * http://auzll.iteye.com/
+ */
+package com.gengweibo.weibo;
+
+import java.io.InputStream;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import net.oauth.OAuthAccessor;
+import net.oauth.OAuthMessage;
+
+/**
+ * OAuthMessage Wrapper
+ *
+ * @author auzll@msn.com
+ * @since 2011-3-16
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class Response {
+
+    private  OAuthMessage response;
+
+    public  String method;
+
+    public  String URL;
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public Response( OAuthMessage response) {
+        this.response = response;
+        this.method = response.method;
+        this.URL = response.URL;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  List<Entry<String, String>> getParameters() {
+        try {
+            return response.getParameters();
+        } catch (Exception e) {
+            throw new WeiException(e);
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void addParameter(String key, String value) {
+        response.addParameter(key, value);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void addParameter(Entry<String, String> parameter) {
+        response.addParameter(parameter);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void addParameters(Collection<? extends Entry<String, String>> parameters) {
+        response.addParameters(parameters);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  String getParameter( Response this,  String name) {
+        try {
+            return response.getParameter(name);
+        } catch (Exception e) {
+            throw new WeiException(e);
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  String getConsumerKey() {
+        try {
+            return response.getConsumerKey();
+        } catch (Exception e) {
+            throw new WeiException(e);
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  String getToken() {
+        try {
+            return response.getToken();
+        } catch (Exception e) {
+            throw new WeiException(e);
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  String getSignatureMethod() {
+        try {
+            return response.getSignatureMethod();
+        } catch (Exception e) {
+            throw new WeiException(e);
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  String getSignature() {
+        try {
+            return response.getSignature();
+        } catch (Exception e) {
+            throw new WeiException(e);
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  String getBodyType() {
+        return response.getBodyType();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  String getBodyEncoding() {
+        return response.getBodyEncoding();
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  String getHeader(String name) {
+        return response.getHeader(name);
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  List<Entry<String, String>> getHeaders() {
+        return response.getHeaders();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  String readBodyAsString( Response this) {
+        try {
+            return response.readBodyAsString();
+        } catch (Exception e) {
+            throw new WeiException(e);
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  InputStream getBodyAsStream() {
+        try {
+            return response.getBodyAsStream();
+        } catch (Exception e) {
+            throw new WeiException(e);
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  Map<String, Object> getDump() {
+        try {
+            return response.getDump();
+        } catch (Exception e) {
+            throw new WeiException(e);
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void requireParameters(String... names) {
+        try {
+            response.requireParameters(names);
+        } catch (Exception e) {
+            throw new WeiException(e);
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void addRequiredParameters(OAuthAccessor accessor) {
+        try {
+            response.addRequiredParameters(accessor);
+        } catch (Exception e) {
+            throw new WeiException(e);
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void sign(OAuthAccessor accessor) {
+        try {
+            response.sign(accessor);
+        } catch (Exception e) {
+            throw new WeiException(e);
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  String getAuthorizationHeader(String realm) {
+        try {
+            return response.getAuthorizationHeader(realm);
+        } catch (Exception e) {
+            throw new WeiException(e);
+        }
+    }
+}

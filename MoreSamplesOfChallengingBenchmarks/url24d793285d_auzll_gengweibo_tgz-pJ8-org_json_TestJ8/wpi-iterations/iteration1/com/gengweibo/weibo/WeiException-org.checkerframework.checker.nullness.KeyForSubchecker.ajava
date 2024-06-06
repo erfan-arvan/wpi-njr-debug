@@ -1,0 +1,47 @@
+/**
+ * http://auzll.iteye.com/
+ */
+package com.gengweibo.weibo;
+
+/**
+ * @author auzll@msn.com
+ * @since 2011-3-16
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class WeiException extends RuntimeException {
+
+    /**
+     */
+    private static final   long serialVersionUID = -5804811989255862380L;
+
+    /**
+     */
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public WeiException() {
+    }
+
+    /**
+     * @param message
+     */
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public WeiException( String message) {
+        super(message);
+    }
+
+    /**
+     * @param cause
+     */
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public WeiException( Throwable cause) {
+        super(cause);
+    }
+
+    /**
+     * @param message
+     * @param cause
+     */
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public WeiException(String message, Throwable cause) {
+        super(message, cause);
+    }
+}

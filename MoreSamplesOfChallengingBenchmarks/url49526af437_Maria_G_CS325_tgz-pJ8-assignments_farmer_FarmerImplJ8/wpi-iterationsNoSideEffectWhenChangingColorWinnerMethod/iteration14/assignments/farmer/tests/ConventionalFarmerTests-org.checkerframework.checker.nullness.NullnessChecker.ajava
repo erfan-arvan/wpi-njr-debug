@@ -1,0 +1,159 @@
+package assignments.farmer.tests;
+
+import static org.junit.Assert.*;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import assignments.farmer.Farmer;
+import assignments.farmer.FarmerFactory;
+import assignments.farmer.SeasonState;
+import assignments.farmer.farmerfactories.ConventionalFarmerFactory;
+import assignments.farmer.seasonstates.FallState;
+import assignments.farmer.seasonstates.SummerState;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class ConventionalFarmerTests {
+
+    @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull ByteArrayOutputStream printlnContent = new ByteArrayOutputStream();
+
+    @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull Farmer f;
+
+    @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull FarmerFactory factory = new ConventionalFarmerFactory();
+
+    @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull SeasonState summerState = new SummerState();
+
+    @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull SeasonState fallState = new FallState();
+
+    @org.checkerframework.checker.nullness.qual.EnsuresNonNull({ "this.f" })
+    @org.checkerframework.dataflow.qual.Impure
+    public void setup() {
+        System.setOut(new PrintStream(printlnContent));
+        f = factory.create("");
+    }
+
+    @org.checkerframework.framework.qual.EnsuresQualifier(expression = { "this.f" }, qualifier = org.checkerframework.checker.nullness.qual.Nullable.class)
+    @org.checkerframework.dataflow.qual.Impure
+    public void resetOutputToNormal() {
+        System.setOut(System.out);
+    }
+
+    //Spring Tests
+    @org.checkerframework.checker.nullness.qual.EnsuresNonNull({ "this.f" })
+    @org.checkerframework.dataflow.qual.Impure
+    public void testConventionalSpringPlow() {
+        f.plow();
+        assertEquals("Using no-till; no plowing.\r\n", printlnContent.toString());
+    }
+
+    @org.checkerframework.checker.nullness.qual.EnsuresNonNull({ "this.f" })
+    @org.checkerframework.dataflow.qual.Impure
+    public void testConventionalSpringPlant() {
+        f.plant();
+        assertEquals("No action.\r\n", printlnContent.toString());
+    }
+
+    @org.checkerframework.checker.nullness.qual.EnsuresNonNull({ "this.f" })
+    @org.checkerframework.dataflow.qual.Impure
+    public void testConventionalSpringWeedControl() {
+        f.weedControl();
+        assertEquals("No action.\r\n", printlnContent.toString());
+    }
+
+    @org.checkerframework.checker.nullness.qual.EnsuresNonNull({ "this.f" })
+    @org.checkerframework.dataflow.qual.Impure
+    public void testConventionalSpringHarvest() {
+        f.harvest();
+        assertEquals("Nothing to harvest.\r\n", printlnContent.toString());
+    }
+
+    @org.checkerframework.checker.nullness.qual.EnsuresNonNull({ "this.f" })
+    @org.checkerframework.dataflow.qual.Impure
+    public void testConventionalSpringMarket() {
+        f.market();
+        assertEquals("Nothing to market.\r\n", printlnContent.toString());
+    }
+
+    //Summer Tests
+    @org.checkerframework.checker.nullness.qual.EnsuresNonNull({ "this.f" })
+    @org.checkerframework.dataflow.qual.Impure
+    public void testConventionalSummerPlow() {
+        f.setSeasonState(summerState);
+        f.plow();
+        assertEquals("No action.\r\n", printlnContent.toString());
+    }
+
+    @org.checkerframework.checker.nullness.qual.EnsuresNonNull({ "this.f" })
+    @org.checkerframework.dataflow.qual.Impure
+    public void testConventionalSummerPlant() {
+        f.setSeasonState(summerState);
+        f.plant();
+        assertEquals("Corn.\r\n", printlnContent.toString());
+    }
+
+    @org.checkerframework.checker.nullness.qual.EnsuresNonNull({ "this.f" })
+    @org.checkerframework.dataflow.qual.Impure
+    public void testConventionalSummerWeedControl() {
+        f.setSeasonState(summerState);
+        f.weedControl();
+        assertEquals("Spray.\r\n", printlnContent.toString());
+    }
+
+    @org.checkerframework.checker.nullness.qual.EnsuresNonNull({ "this.f" })
+    @org.checkerframework.dataflow.qual.Impure
+    public void testConventionalSummerHarvest() {
+        f.setSeasonState(summerState);
+        f.harvest();
+        assertEquals("Nothing to harvest.\r\n", printlnContent.toString());
+    }
+
+    @org.checkerframework.checker.nullness.qual.EnsuresNonNull({ "this.f" })
+    @org.checkerframework.dataflow.qual.Impure
+    public void testConventionalSummerMarket() {
+        f.setSeasonState(summerState);
+        f.market();
+        assertEquals("Nothing to market.\r\n", printlnContent.toString());
+    }
+
+    //Fall Tests
+    @org.checkerframework.checker.nullness.qual.EnsuresNonNull({ "this.f" })
+    @org.checkerframework.dataflow.qual.Impure
+    public void testConventionalFallPlow() {
+        f.setSeasonState(fallState);
+        f.plow();
+        assertEquals("No action.\r\n", printlnContent.toString());
+    }
+
+    @org.checkerframework.checker.nullness.qual.EnsuresNonNull({ "this.f" })
+    @org.checkerframework.dataflow.qual.Impure
+    public void testConventionalFallPlant() {
+        f.setSeasonState(fallState);
+        f.plant();
+        assertEquals("No action.\r\n", printlnContent.toString());
+    }
+
+    @org.checkerframework.checker.nullness.qual.EnsuresNonNull({ "this.f" })
+    @org.checkerframework.dataflow.qual.Impure
+    public void testConventionalFallWeedControl() {
+        f.setSeasonState(fallState);
+        f.weedControl();
+        assertEquals("No action.\r\n", printlnContent.toString());
+    }
+
+    @org.checkerframework.checker.nullness.qual.EnsuresNonNull({ "this.f" })
+    @org.checkerframework.dataflow.qual.Impure
+    public void testConventionalFallHarvest() {
+        f.setSeasonState(fallState);
+        f.harvest();
+        assertEquals("Hire combine.\r\n", printlnContent.toString());
+    }
+
+    @org.checkerframework.checker.nullness.qual.EnsuresNonNull({ "this.f" })
+    @org.checkerframework.dataflow.qual.Impure
+    public void testConventionalFallMarket() {
+        f.setSeasonState(fallState);
+        f.market();
+        assertEquals("Feed corn to elevator.\r\n", printlnContent.toString());
+    }
+}

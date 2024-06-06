@@ -1,0 +1,51 @@
+package assignments.farmer.farmerfactories;
+
+import assignments.farmer.Farmer;
+import assignments.farmer.FarmerFactory;
+import assignments.farmer.FarmerImpl;
+import assignments.farmer.actionstrategies.HarvestStrategy;
+import assignments.farmer.actionstrategies.MarketStrategy;
+import assignments.farmer.actionstrategies.PlantStrategy;
+import assignments.farmer.actionstrategies.PlowStrategy;
+import assignments.farmer.actionstrategies.WeedControlStrategy;
+import assignments.farmer.actionstrategies.harveststrategies.ConventionalHarvestStrategy;
+import assignments.farmer.actionstrategies.marketstrategies.ConventionalMarketStrategy;
+import assignments.farmer.actionstrategies.plantstrategies.ConventionalPlantStrategy;
+import assignments.farmer.actionstrategies.plowstrategies.ConventionalPlowStrategy;
+import assignments.farmer.actionstrategies.weedcontrolstrategies.ConventionalWeedControlStrategy;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class ConventionalFarmerFactory implements FarmerFactory {
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  Farmer create( ConventionalFarmerFactory this,  String str) {
+        FarmerImpl f = new FarmerImpl();
+        f.setStrategies(createPlowStrategy(), createPlantStrategy(), createWeedControlStrategy(), createHarvestStrategy(), createMarketStrategy());
+        return f;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  PlowStrategy createPlowStrategy( ConventionalFarmerFactory this) {
+        return new ConventionalPlowStrategy();
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  PlantStrategy createPlantStrategy( ConventionalFarmerFactory this) {
+        return new ConventionalPlantStrategy();
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  WeedControlStrategy createWeedControlStrategy( ConventionalFarmerFactory this) {
+        return new ConventionalWeedControlStrategy();
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  HarvestStrategy createHarvestStrategy( ConventionalFarmerFactory this) {
+        return new ConventionalHarvestStrategy();
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  MarketStrategy createMarketStrategy( ConventionalFarmerFactory this) {
+        return new ConventionalMarketStrategy();
+    }
+}

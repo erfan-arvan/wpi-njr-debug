@@ -1,0 +1,41 @@
+package de.hrw.mdbt.model;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class Equipment {
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull String name;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull String description;
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull float price;
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String getName() {
+        return name;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String getDescription() {
+        return description;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull float getPrice() {
+        return price;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setPrice(float price) {
+        this.price = price;
+    }
+}

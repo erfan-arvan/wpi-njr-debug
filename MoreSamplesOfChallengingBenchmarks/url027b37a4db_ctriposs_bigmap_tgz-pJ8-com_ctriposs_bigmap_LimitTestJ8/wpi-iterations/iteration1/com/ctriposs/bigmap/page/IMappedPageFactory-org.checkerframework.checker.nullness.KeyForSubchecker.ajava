@@ -1,0 +1,152 @@
+package com.ctriposs.bigmap.page;
+
+import java.io.IOException;
+import java.util.Set;
+
+/**
+ * Memory mapped page management ADT
+ *
+ * @author bulldog
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public interface IMappedPageFactory {
+
+    /**
+     * Acquire a mapped page with specific index from the factory
+     *
+     * @param index the index of the page
+     * @return a mapped page
+     * @throws IOException exception thrown if there was any IO error during the acquire operation
+     */
+    @org.checkerframework.dataflow.qual.Impure
+     IMappedPage acquirePage( IMappedPageFactory this,   long index) throws IOException;
+
+    /**
+     * Current set page size, when creating pages, the factory will
+     * only create pages with this size.
+     *
+     * @return an integer number
+     */
+    @org.checkerframework.dataflow.qual.Pure
+      int getPageSize();
+
+    /**
+     * Current set page directory.
+     *
+     * @return
+     */
+    @org.checkerframework.dataflow.qual.Pure
+     String getPageDir();
+
+    /**
+     * delete a mapped page with specific index in this factory,
+     * this call will remove the page from the cache if it is cached and
+     * delete back file.
+     *
+     * @param index the index of the page
+     * @throws IOException exception thrown if there was any IO error during the delete operation.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    void deletePage( IMappedPageFactory this,   long index) throws IOException;
+
+    /**
+     * delete mapped pages with a set of specific indexes in this factory,
+     * this call will remove the pages from the cache if they ware cached and
+     * delete back files.
+     *
+     * @param indexes the indexes of the pages
+     * @throws IOException
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    void deletePages(Set<Long> indexes) throws IOException;
+
+    /**
+     * delete all mapped pages currently available in this factory,
+     * this call will remove all pages from the cache and delete all back files.
+     *
+     * @throws IOException exception thrown if there was any IO error during the delete operation.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    void deleteAllPages( IMappedPageFactory this) throws IOException;
+
+    /**
+     * remove all cached pages from the cache and close resources associated with the cached pages.
+     *
+     * @throws IOException exception thrown if there was any IO error during the release operation.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    void releaseCachedPages( IMappedPageFactory this) throws IOException;
+
+    /**
+     * Get all indexes of pages with last modified timestamp before the specific timestamp.
+     *
+     * @param timestamp the timestamp to check
+     * @return a set of indexes
+     */
+    @org.checkerframework.dataflow.qual.Impure
+     Set<Long> getPageIndexSetBefore( IMappedPageFactory this,   long timestamp);
+
+    /**
+     * Delete all pages with last modified timestamp before the specific timestamp.
+     *
+     * @param timestamp the timestamp to check
+     * @throws IOException exception thrown if there was any IO error during the delete operation.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    void deletePagesBefore( IMappedPageFactory this,   long timestamp) throws IOException;
+
+    /**
+     * Get last modified timestamp of page file index
+     *
+     * @param index page index
+     */
+    @org.checkerframework.dataflow.qual.Impure
+      long getPageFileLastModifiedTime( IMappedPageFactory this,   long index);
+
+    /**
+     * Get index of a page file with last modified timestamp closest to specific timestamp.
+     *
+     * @param timestamp the timestamp to check
+     * @return a page index
+     */
+    @org.checkerframework.dataflow.qual.Impure
+      long getFirstPageIndexBefore( IMappedPageFactory this,   long timestamp);
+
+    /**
+     * For test, get a list of indexes of current existing back files.
+     *
+     * @return a set of indexes
+     */
+    @org.checkerframework.dataflow.qual.Impure
+     Set<Long> getExistingBackFileIndexSet( IMappedPageFactory this);
+
+    /**
+     * For test, get current cache size
+     *
+     * @return an integer number
+     */
+    @org.checkerframework.dataflow.qual.Pure
+      int getCacheSize( IMappedPageFactory this);
+
+    /**
+     * Persist any changes in cached mapped pages
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    void flush( IMappedPageFactory this);
+
+    /**
+     * A set of back page file names
+     *
+     * @return file name set
+     */
+    @org.checkerframework.dataflow.qual.Impure
+     Set<String> getBackPageFileSet( IMappedPageFactory this);
+
+    /**
+     * Total size of all page files
+     *
+     * @return total size
+     */
+    @org.checkerframework.dataflow.qual.Pure
+      long getBackPageFileSize( IMappedPageFactory this);
+}

@@ -1,0 +1,15 @@
+package simulation.logging;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class ConsoleLogger implements EventsLogger {
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void log( ConsoleLogger this,  String s) {
+        System.out.println(s);
+    }
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public void close( ConsoleLogger this) {
+        //Do nothing
+    }
+}

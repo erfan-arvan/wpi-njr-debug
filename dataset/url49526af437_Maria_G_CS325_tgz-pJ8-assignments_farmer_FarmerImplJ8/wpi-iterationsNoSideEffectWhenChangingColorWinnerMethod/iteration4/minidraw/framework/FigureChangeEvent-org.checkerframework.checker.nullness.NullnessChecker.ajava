@@ -1,0 +1,65 @@
+package minidraw.framework;
+
+import java.awt.Rectangle;
+import java.util.EventObject;
+
+/**
+ * FigureChange event passed to FigureChangeListeners.
+ *
+ *   This source code is from the book
+ *     "Flexible, Reliable Software:
+ *       Using Patterns and Agile Development"
+ *     published 2010 by CRC Press.
+ *   Author:
+ *     Henrik B Christensen
+ *     Computer Science Department
+ *     Aarhus University
+ *
+ *   This source code is provided WITHOUT ANY WARRANTY either
+ *   expressed or implied. You may study, use, modify, and
+ *   distribute it for non-commercial purposes. For any
+ *   commercial use, see http://www.baerbak.com/
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class FigureChangeEvent extends EventObject {
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Rectangle rect;
+
+    private static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Rectangle emptyRect = new Rectangle(0, 0, 0, 0);
+
+    /**
+     * Constructs an event for the given source Figure. The rectangle is the
+     * area to be invalvidated.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public FigureChangeEvent(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Figure source, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Rectangle r) {
+        super(source);
+        rect = r;
+    }
+
+    /**
+     * Constructs an event for the given source Figure with an empty
+     * rectangle.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public FigureChangeEvent(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Figure source) {
+        super(source);
+        rect = emptyRect;
+    }
+
+    /**
+     *  Gets the changed figure.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Figure getFigure() {
+        return (Figure) getSource();
+    }
+
+    /**
+     *  Gets the changed rectangle.
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Rectangle getInvalidatedRectangle() {
+        return rect;
+    }
+}

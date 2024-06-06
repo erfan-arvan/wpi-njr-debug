@@ -1,0 +1,38 @@
+package ubc.swim.gui;
+
+import javax.swing.JSlider;
+
+/**
+ * A JSlider that allows non-integer double values
+ *
+ * Source: http://stackoverflow.com/questions/1548606/java-link-jslider-and-jtextfield-for-float-value
+ *
+ * @author Ben Humberston
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+class JSliderDouble extends JSlider {
+
+    private static final  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull long serialVersionUID = 1L;
+
+    protected  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull double rangeScale;
+
+    @org.checkerframework.dataflow.qual.Impure
+    public JSliderDouble( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull double min,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull double max,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull double value,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int numStops) {
+        //Convert to integer ranges
+        super((int) (min * numStops / (max - min)), (int) (max * numStops / (max - min)), (int) (value * numStops / (max - min)));
+        rangeScale = numStops / (max - min);
+        //        //Update labels to show double values
+        //        Enumeration e = this.getLabelTable().keys();
+        //
+        //        while (e.hasMoreElements()) {
+        //            Integer i = (Integer) e.nextElement();
+        //            JLabel label = (JLabel) this.getLabelTable().get(i);
+        //            label.setText(String.valueOf(i / rangeScale));
+        //        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull double getScaledValue() {
+        return ((double) super.getValue()) / this.rangeScale;
+    }
+}

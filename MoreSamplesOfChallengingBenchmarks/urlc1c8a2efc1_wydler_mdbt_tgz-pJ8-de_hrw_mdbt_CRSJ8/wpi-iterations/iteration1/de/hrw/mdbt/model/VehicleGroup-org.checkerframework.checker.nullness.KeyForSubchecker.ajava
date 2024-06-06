@@ -1,0 +1,170 @@
+package de.hrw.mdbt.model;
+
+import java.util.Date;
+import java.util.ArrayList;
+import com.db4o.ObjectContainer;
+import de.hrw.mdbt.model.Model;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class VehicleGroup {
+
+    private   boolean aboutToDelete = false;
+
+    private   int power;
+
+    private  String fuelType;
+
+    private  Date purchaseDate;
+
+    private  String color;
+
+    private  Model model;
+
+    private  PriceClass priceClass;
+
+    private  ArrayList<Vehicle> vehicles = new ArrayList<Vehicle>();
+
+    private  ArrayList<Equipment> equipment = new ArrayList<Equipment>();
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public VehicleGroup() {
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public VehicleGroup(  int power,  String fuelType,  Date purchaseDate,  String color,  Model model,  PriceClass priceClass) {
+        setPower(power);
+        setFuelType(fuelType);
+        setPurchaseDate(purchaseDate);
+        setColor(color);
+        setModel(model);
+        setPriceClass(priceClass);
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   int getPower( VehicleGroup this) {
+        return power;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setPower( VehicleGroup this,   int power) {
+        this.power = power;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  String getFuelType() {
+        return fuelType;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setFuelType( VehicleGroup this,  String fuelType) {
+        this.fuelType = fuelType;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  Date getPurchaseDate() {
+        return purchaseDate;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setPurchaseDate( VehicleGroup this,  Date purchaseDate) {
+        this.purchaseDate = purchaseDate;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  String getColor() {
+        return color;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setColor( VehicleGroup this,  String color) {
+        this.color = color;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  Model getModel( VehicleGroup this) {
+        return model;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setModel( VehicleGroup this,  Model model) {
+        this.model = model;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  PriceClass getPriceClass( VehicleGroup this) {
+        return priceClass;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setPriceClass( VehicleGroup this,  PriceClass priceClass) {
+        this.priceClass = priceClass;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  ArrayList<Equipment> getEquipment() {
+        return equipment;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setEquipment(ArrayList<Equipment> equipments) {
+        this.equipment = equipments;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  ArrayList<Vehicle> getVehicles( VehicleGroup this) {
+        return vehicles;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    protected void setVehicles(ArrayList<Vehicle> vehicles) {
+        this.vehicles = vehicles;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    protected void addVehicle( VehicleGroup this,  Vehicle vehicle) {
+        this.vehicles.add(vehicle);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    protected void removeVehicle( VehicleGroup this,  Vehicle vehicle) {
+        this.vehicles.remove(vehicle);
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    private   boolean checkConstraints( VehicleGroup this) {
+        //HACK: prevent inserts/updates during objectOnDelete
+        if (aboutToDelete)
+            return false;
+        if (this.power < 0)
+            return false;
+        if (this.fuelType == null)
+            return false;
+        if (this.model == null)
+            return false;
+        if (this.priceClass == null)
+            return false;
+        return true;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public   boolean objectCanNew(ObjectContainer db) {
+        return checkConstraints();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public   boolean objectCanUpdate(ObjectContainer db) {
+        return checkConstraints();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void objectOnDelete(ObjectContainer db) {
+        aboutToDelete = true;
+        ArrayList<Vehicle> vehiclesToDelete = new ArrayList<Vehicle>(vehicles);
+        for (Vehicle v : vehiclesToDelete) {
+            if (v != null) {
+                db.activate(v, 1);
+                db.delete(v);
+            }
+        }
+    }
+}

@@ -1,0 +1,182 @@
+package de.hrw.mdbt.model;
+
+import java.util.ArrayList;
+import java.util.Date;
+import com.db4o.ObjectContainer;
+import com.db4o.config.CommonConfigurationProvider;
+import com.db4o.constraints.UniqueFieldValueConstraint;
+import com.db4o.ext.Db4oException;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class Person extends Customer {
+
+    private  String firstname;
+
+    private  String secondname;
+
+    private  String lastname;
+
+    private  String salutation;
+
+    private  String title;
+
+    private  Date dateOfBirth;
+
+    private  String email;
+
+    private  String sex;
+
+    private  ArrayList<Phone> numbers = new ArrayList<Phone>();
+
+    private  ArrayList<Address> addresses = new ArrayList<Address>();
+
+    @org.checkerframework.dataflow.qual.Impure
+    public Person() {
+        super();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public Person(  int id,  String lastname) {
+        super(id);
+        this.lastname = lastname;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public Person(  int id,  String first,  String second,  String last,  String sal,  String title,  Date dob,  String sex) {
+        super(id);
+        this.firstname = first;
+        this.secondname = second;
+        this.lastname = last;
+        this.salutation = sal;
+        this.title = title;
+        this.dateOfBirth = dob;
+        this.sex = sex;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void addAddress( Person this,  Address adr) {
+        addresses.add(adr);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void removeAddress(Address adr) {
+        addresses.remove(adr);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void addPhone( Person this,  Phone ph) {
+        numbers.add(ph);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void removePhone(Phone ph) {
+        numbers.remove(ph);
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  String getFirstname() {
+        return firstname;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setFirstname( Person this,  String name) {
+        this.firstname = name;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  String getSecondname() {
+        return secondname;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setSecondname(String secondname) {
+        this.secondname = secondname;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  String getLastname( Person this) {
+        return lastname;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  String getSalutation() {
+        return salutation;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setSalutation(String salutation) {
+        this.salutation = salutation;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  String getTitle() {
+        return title;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  Date getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setDateOfBirth(Date dob) {
+        this.dateOfBirth = dob;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  String getEmail( Person this) {
+        return email;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setEmail( Person this,  String email) {
+        this.email = email;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  String getSex() {
+        return sex;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setSex( Person this,  String sex) {
+        this.sex = sex;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static void configure( CommonConfigurationProvider config) {
+        config.common().objectClass(Customer.class).objectField("id").indexed(true);
+        config.common().add(new UniqueFieldValueConstraint(Person.class, "id"));
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private   boolean checkConstraints( Person this) {
+        if (this.lastname == null)
+            throw new Db4oException("A person must have a last name!");
+        Date today = new Date();
+        if (this.dateOfBirth != null)
+            if (this.dateOfBirth.after(today))
+                throw new Db4oException("<dob> must not be in the future!");
+        return true;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public   boolean objectCanNew(ObjectContainer container) throws Db4oException {
+        return checkConstraints();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public   boolean objectCanUpdate(ObjectContainer container) throws Db4oException {
+        return checkConstraints();
+    }
+}

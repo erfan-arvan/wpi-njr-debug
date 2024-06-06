@@ -1,0 +1,128 @@
+/*
+ * Copyright 2007 Netflix, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package net.oauth;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+
+/**
+ * A pool of OAuthConsumers that are constructed from Properties. Each consumer
+ * has a name, which is a property of the OAuthConsumer. Other properties come
+ * from Properties whose names are prefixed with the consumer's name. For
+ * example, a consumer's credentials come from properties named
+ * [name].consumerKey and [name].consumerSecret.
+ *
+ * @author John Kristian
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class ConsumerProperties {
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull URL getResource(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String name, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull ClassLoader loader) throws IOException {
+        URL resource = loader.getResource(name);
+        if (resource == null) {
+            throw new IOException("resource not found: " + name);
+        }
+        return resource;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Properties getProperties(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull URL source) throws IOException {
+        InputStream input = source.openStream();
+        try {
+            Properties p = new Properties();
+            p.load(input);
+            return p;
+        } finally {
+            input.close();
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public ConsumerProperties(String resourceName, ClassLoader loader) throws IOException {
+        this(getProperties(getResource(resourceName, loader)));
+    }
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public ConsumerProperties(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Properties consumerProperties) {
+        this.consumerProperties = consumerProperties;
+    }
+
+    private final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Properties consumerProperties;
+
+    private final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Map<String, OAuthConsumer> pool = new HashMap<String, OAuthConsumer>();
+
+    /**
+     * Get the consumer with the given name.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull OAuthConsumer getConsumer(String name) throws MalformedURLException {
+        OAuthConsumer consumer;
+        synchronized (pool) {
+            consumer = pool.get(name);
+        }
+        if (consumer == null) {
+            consumer = newConsumer(name);
+        }
+        synchronized (pool) {
+            OAuthConsumer first = pool.get(name);
+            if (first == null) {
+                pool.put(name, consumer);
+            } else {
+                /*
+                 * Another thread just constructed an identical OAuthConsumer.
+                 * Use that one (and discard the one we just constructed).
+                 */
+                consumer = first;
+            }
+        }
+        return consumer;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    protected @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull OAuthConsumer newConsumer(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String name) throws MalformedURLException {
+        String base = consumerProperties.getProperty(name + ".serviceProvider.baseURL");
+        URL baseURL = (base == null) ? null : new URL(base);
+        OAuthServiceProvider serviceProvider = new OAuthServiceProvider(getURL(baseURL, name + ".serviceProvider.requestTokenURL"), getURL(baseURL, name + ".serviceProvider.userAuthorizationURL"), getURL(baseURL, name + ".serviceProvider.accessTokenURL"));
+        OAuthConsumer consumer = new OAuthConsumer(consumerProperties.getProperty(name + ".callbackURL"), consumerProperties.getProperty(name + ".consumerKey"), consumerProperties.getProperty(name + ".consumerSecret"), serviceProvider);
+        consumer.setProperty("name", name);
+        if (baseURL != null) {
+            consumer.setProperty("serviceProvider.baseURL", baseURL);
+        }
+        for (Map.Entry prop : consumerProperties.entrySet()) {
+            String propName = (String) prop.getKey();
+            if (propName.startsWith(name + ".consumer.")) {
+                String c = propName.substring(name.length() + 10);
+                consumer.setProperty(c, prop.getValue());
+            }
+        }
+        return consumer;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable String getURL(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable URL base, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String name) throws MalformedURLException {
+        String url = consumerProperties.getProperty(name);
+        if (base != null) {
+            url = (new URL(base, url)).toExternalForm();
+        }
+        return url;
+    }
+}

@@ -1,0 +1,14 @@
+package assignments.farmer.actionstrategies;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public interface MarketStrategy {
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void marketInTheSpring( MarketStrategy this);
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void marketInTheSummer( MarketStrategy this);
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void marketInTheFall( MarketStrategy this);
+}

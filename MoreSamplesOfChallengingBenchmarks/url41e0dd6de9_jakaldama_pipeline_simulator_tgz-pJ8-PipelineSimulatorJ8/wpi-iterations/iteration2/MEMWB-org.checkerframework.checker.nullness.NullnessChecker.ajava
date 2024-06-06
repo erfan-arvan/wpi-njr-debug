@@ -1,0 +1,247 @@
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class MEMWB {
+
+    //Pipeline register for MEM/WEB stage
+    private static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int readData;
+
+    private static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int writeData;
+
+    private static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int writeInstr;
+
+    private static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int readInstr;
+
+    private static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int writeRegS;
+
+    private static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int readRegS;
+
+    private static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int writeRegD;
+
+    private static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int readRegD;
+
+    private static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int writeRegT;
+
+    private static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int readRegT;
+
+    private static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int writeOffset;
+
+    private static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int readOffset;
+
+    //control signals
+    private static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int writeRegWrite;
+
+    private static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int readRegWrite;
+
+    private static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int writeMemtoReg;
+
+    private static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int readMemtoReg;
+
+    //sets which register will be written to
+    private static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int writeWriteRegister;
+
+    private static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int readWriteRegister;
+
+    //result of ALU operation to be written back if necessary
+    private static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int writeALUresult;
+
+    private static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int readALUresult;
+
+    @org.checkerframework.dataflow.qual.Pure
+    public static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getWriteRegS() {
+        return writeRegS;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static void setWriteRegS( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int writeRegS) {
+        MEMWB.writeRegS = writeRegS;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getReadRegS() {
+        return readRegS;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static void setReadRegS( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int readRegS) {
+        MEMWB.readRegS = readRegS;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getWriteRegD() {
+        return writeRegD;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static void setWriteRegD( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int writeRegD) {
+        MEMWB.writeRegD = writeRegD;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getReadRegD() {
+        return readRegD;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static void setReadRegD( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int readRegD) {
+        MEMWB.readRegD = readRegD;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getWriteRegT() {
+        return writeRegT;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static void setWriteRegT( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int writeRegT) {
+        MEMWB.writeRegT = writeRegT;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getReadRegT() {
+        return readRegT;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static void setReadRegT( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int readRegT) {
+        MEMWB.readRegT = readRegT;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getWriteOffset() {
+        return writeOffset;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static void setWriteOffset( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int writeOffset) {
+        MEMWB.writeOffset = writeOffset;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getReadOffset() {
+        return readOffset;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static void setReadOffset( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int readOffset) {
+        MEMWB.readOffset = readOffset;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getWriteALUresult() {
+        return writeALUresult;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static void setWriteALUresult( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int writeALUresult) {
+        MEMWB.writeALUresult = writeALUresult;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getReadALUresult() {
+        return readALUresult;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static void setReadALUresult( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int readALUresult) {
+        MEMWB.readALUresult = readALUresult;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getWriteWriteRegister() {
+        return writeWriteRegister;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static void setWriteWriteRegister( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int writeWriteRegister) {
+        MEMWB.writeWriteRegister = writeWriteRegister;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getReadWriteRegister() {
+        return readWriteRegister;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static void setReadWriteRegister( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int readWriteRegister) {
+        MEMWB.readWriteRegister = readWriteRegister;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getWriteRegWrite() {
+        return writeRegWrite;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static void setWriteRegWrite( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int writeRegWrite) {
+        MEMWB.writeRegWrite = writeRegWrite;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getReadRegWrite() {
+        return readRegWrite;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static void setReadRegWrite( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int readRegWrite) {
+        MEMWB.readRegWrite = readRegWrite;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getWriteMemtoReg() {
+        return writeMemtoReg;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static void setWriteMemtoReg( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int writeMemtoReg) {
+        MEMWB.writeMemtoReg = writeMemtoReg;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getReadMemtoReg() {
+        return readMemtoReg;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static void setReadMemtoReg( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int readMemtoReg) {
+        MEMWB.readMemtoReg = readMemtoReg;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getWriteInstr() {
+        return writeInstr;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static void setWriteInstr( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int writeInstr) {
+        MEMWB.writeInstr = writeInstr;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getReadInstr() {
+        return readInstr;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static void setReadInstr( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int readInstr) {
+        MEMWB.readInstr = readInstr;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getWriteData() {
+        return writeData;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static void setWriteData( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int writeData) {
+        MEMWB.writeData = writeData;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getReadData() {
+        return readData;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static void setReadData( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int readData) {
+        MEMWB.readData = readData;
+    }
+}

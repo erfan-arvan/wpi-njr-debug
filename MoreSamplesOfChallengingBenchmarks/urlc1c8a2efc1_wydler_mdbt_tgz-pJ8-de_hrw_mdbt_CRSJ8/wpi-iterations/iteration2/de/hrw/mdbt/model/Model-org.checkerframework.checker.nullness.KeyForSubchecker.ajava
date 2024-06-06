@@ -1,0 +1,78 @@
+package de.hrw.mdbt.model;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class Model {
+
+    private  String manufacturer;
+
+    private  String name;
+
+    private   int capacity;
+
+    private  String measure;
+
+    private  LicenseClass requiredLicense;
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public Model() {
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public Model( String manufacturer,  String name,   int capacity,  String measure,  LicenseClass requiredLicense) {
+        setManufacturer(manufacturer);
+        setName(name);
+        setCapacity(capacity);
+        setMeasure(measure);
+        setRequiredLicense(requiredLicense);
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  String getManufacturer() {
+        return manufacturer;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setManufacturer( Model this,  String manufacturer) {
+        this.manufacturer = manufacturer;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  String getName() {
+        return name;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setName( Model this,  String name) {
+        this.name = name;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   int getCapacity() {
+        return capacity;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setCapacity( Model this,   int capacity) {
+        this.capacity = capacity;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  String getMeasure() {
+        return measure;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setMeasure( Model this,  String measure) {
+        this.measure = measure;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  LicenseClass getRequiredLicense( Model this) {
+        return requiredLicense;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setRequiredLicense( Model this,  LicenseClass requiredLicense) {
+        this.requiredLicense = requiredLicense;
+    }
+}

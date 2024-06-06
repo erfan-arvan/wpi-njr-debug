@@ -1,0 +1,22 @@
+package assignments.farmer.actionstrategies.weedcontrolstrategies;
+
+import assignments.farmer.actionstrategies.WeedControlStrategy;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class AmishWeedControlStrategy implements WeedControlStrategy {
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void weedControlInTheSpring(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull AmishWeedControlStrategy this) {
+        System.out.println("Walking cultivator in garden.");
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void weedControlInTheSummer(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull AmishWeedControlStrategy this) {
+        System.out.println("Walking cultivator in garden, two-row, horse-drawn cultivator in fields.");
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void weedControlInTheFall(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull AmishWeedControlStrategy this) {
+        System.out.println("No action.");
+    }
+}

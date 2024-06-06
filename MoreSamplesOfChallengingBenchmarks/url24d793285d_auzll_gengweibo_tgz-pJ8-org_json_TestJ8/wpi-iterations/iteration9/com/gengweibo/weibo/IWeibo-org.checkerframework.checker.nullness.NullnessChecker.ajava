@@ -1,0 +1,195 @@
+/**
+ * http://auzll.iteye.com/
+ */
+package com.gengweibo.weibo;
+
+/**
+ * 主要是本系统需要用到的一些微博操作的接口
+ *
+ * @author auzll@msn.com
+ * @since 2011-3-16
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public interface IWeibo {
+
+    /**
+     * 从原微博厂商获取微博账户的信息，绑定到本系统中
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    void bindWeiboAccountContext();
+
+    /**
+     * 根据requestToken转换accessToken
+     *
+     * @param param
+     *            获取参数的接口，具体实现类根据实际需要从中获取
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    void convertAccessToken(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull IParam param);
+
+    /**
+     * 添加收藏
+     *
+     * @param param
+     *            获取参数的接口，具体实现类根据实际需要从中获取
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Response favoritesCreate(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull IParam param);
+
+    /**
+     * 关注指定用户
+     *
+     * @param param
+     *            获取参数的接口，具体实现类根据实际需要从中获取
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Response friendshipsCreate(IParam param);
+
+    /**
+     * 取消关注指定用户
+     *
+     * @param param
+     *            获取参数的接口，具体实现类根据实际需要从中获取
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Response friendshipsDestroy(IParam param);
+
+    /**
+     * 获取此微博所关联的账户ID
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable String getAccountId();
+
+    /**
+     * 获取微博类型
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull WeiboType getType();
+
+    /**
+     * 获取此微博所关联的账户昵称
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable String getWeiboAccountName();
+
+    /**
+     * 获取此微博在本系统中的ID，注意区别微博内容的ID
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable String getWeiboId();
+
+    /**
+     * 获取当前登录用户的微博列表
+     *
+     * @param param
+     *            获取参数的接口，具体实现类根据实际需要从中获取
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Response homeTimeline(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull IParam param);
+
+    /**
+     * 是否同步发送微博
+     */
+    @org.checkerframework.dataflow.qual.Pure
+     @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean isSynUpdate();
+
+    /**
+     * 生成用于oauth登录的url地址
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String makeClickUrl();
+
+    /**
+     * 设置此微博所关联的账户ID(如果该账户是第一次使用，用UUID来生成)
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    void setAccountId(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable String accountId);
+
+    /**
+     * 设置是否同步发送微博
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    void setSynUpdate( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean synUpdate);
+
+    /**
+     * 设置此微博所关联的账户昵称
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    void setWeiboAccountName(String accountName);
+
+    /**
+     * 设置此微博在本系统中的ID(由算法决定了每个账户的同一个微博的ID是相同的，每个ID
+     * 包含了微博类型和微博账户在原微博厂商的userId，例如T_163_123123, T_QQ_zzzz, T_SINA_1231235)
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    void setWeiboId(String weiboId);
+
+    /**
+     * 获取指定微博的所有评论
+     *
+     * @param param
+     *            获取参数的接口，具体实现类根据实际需要从中获取
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Response statusesComments(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull IParam param);
+
+    /**
+     * 删除一条新微博
+     *
+     * @param param
+     *            获取参数的接口，具体实现类根据实际需要从中获取
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Response statusesDestroy(IParam param);
+
+    /**
+     * 获取@评论当前登录用户的微博列表
+     *
+     * @param param
+     *            获取参数的接口，具体实现类根据实际需要从中获取
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Response statusesMentions(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull IParam param);
+
+    /**
+     * 获取我收到的评论列表
+     *
+     * @param param
+     *            获取参数的接口，具体实现类根据实际需要从中获取
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable Response statusesCommentsToMe(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull IParam param);
+
+    /**
+     * 评论一条微博
+     *
+     * @param param
+     *            获取参数的接口，具体实现类根据实际需要从中获取
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Response statusesReply(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull IParam param);
+
+    /**
+     * 转发一条微博
+     *
+     * @param param
+     *            获取参数的接口，具体实现类根据实际需要从中获取
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Response statusesRetweet(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull IParam param);
+
+    /**
+     * 发布一条新微博
+     *
+     * @param param
+     *            获取参数的接口，具体实现类根据实际需要从中获取
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Response statusesUpdate(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull IParam param);
+
+    /**
+     * 判断当前用户是否验证成功并返回该用户信息
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Response verifyCredentials();
+}

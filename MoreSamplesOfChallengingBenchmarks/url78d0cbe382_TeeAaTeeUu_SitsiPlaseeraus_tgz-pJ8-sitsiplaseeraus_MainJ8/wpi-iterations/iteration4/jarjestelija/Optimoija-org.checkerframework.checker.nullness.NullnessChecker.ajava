@@ -1,0 +1,268 @@
+package jarjestelija;
+
+import Pisteyttaja.Pisteet;
+import omatTietorakenteet.ArrayList;
+import omatTietorakenteet.Hakemisto;
+import sitsiplaseeraus.Paikka;
+import sitsiplaseeraus.Sitsaaja;
+import sitsiplaseeraus.Sitsit;
+import sitsiplaseeraus.random.Random;
+import sitsiplaseeraus.random.RandomGenerator;
+
+/**
+ * Pyrkii löytämään mahdollisimman nopeasti ja mahdollisimman hyvän
+ * järjestyksen.
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class Optimoija {
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Jarjestaja jarjestelija;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Sitsit sitsit;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Pisteet pisteet;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull ArrayList<Paikka> paikat;
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull long aika;
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull double VanhassaPisteita;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull Hakemisto<Paikka, Sitsaaja> vanhatPaikat;
+
+    private final  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int sitsaajienMaara;
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean muutosOnTapahtunut;
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull double time;
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean parempiLoytyi;
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int kuinkaMontaVaihtoa;
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int vaihtojenMaksimiMaara;
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int epaOnnistumisia;
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean vainParitJaSukupuolet;
+
+    /**
+     * Alustaa olion käyttöön.
+     *
+     * @param sitsit
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public Optimoija(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Sitsit sitsit) {
+        this.sitsit = sitsit;
+        this.sitsit.lisaaPaikoilleTiedotAvecinJaPuolisonPaikoista();
+        this.jarjestelija = new Jarjestaja(this.sitsit);
+        this.pisteet = new Pisteet(this.sitsit);
+        this.sitsaajienMaara = this.sitsit.sitsaajienMaara();
+        this.paikat = new ArrayList<Paikka>();
+    }
+
+    /**
+     * Käy läpi tietyllä toivottavasti fiksulla tavalla erinäisiä järjestyksiä
+     * läpi ja jatkaa siihen mennessä parhaasta löydetystä aina eteenpäin.
+     *
+     * @param sekunttia
+     * @return tämän haun parhaan järjestyksen.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable Hakemisto<Paikka, Sitsaaja> optimoiIstumapaikat( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int sekunttia,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull long aika,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull double parhaatPariJaSukupuoliPisteet) {
+        this.aika = aika;
+        long i = 0;
+        this.vaihtojenMaksimiMaara = 2;
+        this.vainParitJaSukupuolet = true;
+        do {
+            alustaJuttuja();
+            kokeileVaihtoaLoop(sekunttia, i);
+            System.out.println("vanhassa " + this.getVanhassaPariJaSukupuoliPisteita());
+            System.out.println("parhaassa " + parhaatPariJaSukupuoliPisteet);
+        } while (getVanhassaPariJaSukupuoliPisteita() <= parhaatPariJaSukupuoliPisteet - 10 && 1.0 * (System.currentTimeMillis() - this.aika) / 1000 < sekunttia);
+        this.vainParitJaSukupuolet = false;
+        kokeileVaihtoaLoop(sekunttia, i);
+        return this.vanhatPaikat;
+    }
+
+    /**
+     * Palauttaa tähän mennessä parhaan pisteet.
+     *
+     * @return pisteitä tähän mennessä parhaassa.
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    protected  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull double getVanhassaPisteita() {
+        // paripisteitä 160002.40000000002 sukupuolipisteitä 106000.0
+        return VanhassaPisteita;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setVaihtojenMaksimiMaara(int vaihtojenMaksimiMaara) {
+        this.vaihtojenMaksimiMaara = vaihtojenMaksimiMaara;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean kokeileVaihtoa() {
+        if (this.muutosOnTapahtunut = true) {
+            this.alustaVaihtoaVarten();
+        }
+        this.kuinkaMontaVaihtoa = Random.luo(this.vaihtojenMaksimiMaara, 1);
+        for (int i = 0; i <= kuinkaMontaVaihtoa; i++) {
+            this.jarjestelija.vaihdaRandom();
+        }
+        return this.tulostaOnnistumisviestiTaiPalautaVanha();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void tulostaLoppuTietoja( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull long kuinkaMontaKokeiltiin) {
+        if (this.vainParitJaSukupuolet == false) {
+            RandomGenerator.tulostaSitsaajat(this.sitsit);
+        }
+        if (vainParitJaSukupuolet) {
+            System.out.println(this.pisteet.palautaSukupuoliJaPariPisteet());
+        } else {
+            System.out.println(this.pisteet.palautaPisteet());
+        }
+        System.out.println("\nkuinka monta kertaa kokeiltiin paikkojen vaihtoa: " + kuinkaMontaKokeiltiin);
+        time = 1.0 * (System.currentTimeMillis() - this.aika) / 1000;
+        System.out.println((time) + " sekunttia kului ");
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void alustaVaihtoaVarten() {
+        if (vainParitJaSukupuolet) {
+            this.VanhassaPisteita = this.pisteet.palautaSukupuoliJaPariPisteet();
+        } else {
+            this.VanhassaPisteita = this.pisteet.palautaPisteet();
+        }
+        this.vanhatPaikat = this.sitsit.palautaPaikkaSitsaajaParit();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean tulostaOnnistumisviestiTaiPalautaVanha() {
+        Double pisteita;
+        if (vainParitJaSukupuolet) {
+            pisteita = this.pisteet.palautaSukupuoliJaPariPisteet();
+        } else {
+            pisteita = this.pisteet.palautaPisteet();
+        }
+        if (pisteita < this.VanhassaPisteita) {
+            this.palautaVanhat();
+            this.muutosOnTapahtunut = false;
+            return false;
+        } else if (pisteita > this.VanhassaPisteita) {
+            this.muutosOnTapahtunut = true;
+            tulostustaTiedot(pisteita);
+            this.parempiLoytyi = true;
+            return true;
+        }
+        return false;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void palautaVanhat() {
+        for (Paikka paikka : this.sitsit.getPaikat()) {
+            paikka.setSitsaaja(this.vanhatPaikat.get(paikka));
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void vaihdaKaikki() {
+        System.out.println("käydään kaikki yhdet vaihdot läpi");
+        if (this.vaihdaJarjestyksessa()) {
+            System.out.println("Koska löydettiin parempia, jatketaan.");
+        } else {
+            System.out.println("Koska ei löydetty parempia, aloitetaan alusta.");
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean vaihdaJarjestyksessa() {
+        int montakoLoytyi = 0;
+        for (Paikka paikka : sitsit.getPaikat()) {
+            for (Paikka kohdePaikka : sitsit.getPaikat()) {
+                if (paikka.equals(kohdePaikka) == false) {
+                    if (this.muutosOnTapahtunut = true) {
+                        this.alustaVaihtoaVarten();
+                    }
+                    jarjestelija.vaihdaPaikat(paikka, kohdePaikka);
+                    if (this.tulostaOnnistumisviestiTaiPalautaVanha()) {
+                        montakoLoytyi++;
+                        epaOnnistumisia = 0;
+                    }
+                }
+            }
+        }
+        if (montakoLoytyi == 0) {
+            this.parempiLoytyi = false;
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void tulostustaTiedot(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Double pisteita) {
+        time = 1.0 * (System.currentTimeMillis() - this.aika) / 1000;
+        System.out.print(pisteita + "\t");
+        System.out.print((time) + " sekunttia kulunut ");
+        System.out.print(this.pisteet.getAvecienMaara() + " avecja " + this.pisteet.getPuolisojenMaara() + " puolisoja ");
+        System.out.print(kuinkaMontaVaihtoa + " vaihtoja ");
+        System.out.println(" paripisteitä " + this.pisteet.getPariPisteet() + " sukupuolipisteitä " + this.pisteet.getSukupuoliPisteet() + " yhteyspisteitä " + this.pisteet.getYhteysPisteet());
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void alustaJuttuja() {
+        this.parempiLoytyi = true;
+        this.epaOnnistumisia = 0;
+        sijoitaAlkupaikat();
+        this.pisteet.alustaSitsaajat();
+        if (this.vainParitJaSukupuolet == false) {
+            RandomGenerator.tulostaSitsaajat(sitsit);
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void sijoitaAlkupaikat() {
+        //        sukupuoliJarjestaja.jarjestaPaikatSukupuolittain();
+        //
+        //        this.alkuSijoittaja.asetaAlkupaikat();
+        for (int i = 0; i < sitsaajienMaara * 10; i++) {
+            jarjestelija.vaihdaRandom();
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Pisteet getPisteet() {
+        return pisteet;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean kokeileVaihtoaLoop( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int sekunttia,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull long i) {
+        while (aika + 1000 * sekunttia > System.currentTimeMillis()) {
+            if (this.kokeileVaihtoa()) {
+                this.epaOnnistumisia = 0;
+            } else {
+                this.epaOnnistumisia++;
+            }
+            if (epaOnnistumisia == sitsaajienMaara * sitsaajienMaara / 5) {
+                if (parempiLoytyi == true) {
+                    do {
+                        vaihdaKaikki();
+                    } while (parempiLoytyi == true);
+                    this.epaOnnistumisia = 0;
+                } else {
+                    this.tulostaLoppuTietoja(i);
+                    return true;
+                }
+            }
+            i++;
+        }
+        return false;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    protected  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull double getVanhassaPariJaSukupuoliPisteita() {
+        return pisteet.getPariPisteet() + pisteet.getSukupuoliPisteet();
+    }
+}

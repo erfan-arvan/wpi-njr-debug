@@ -1,0 +1,243 @@
+/**
+ * ****************************************************************************
+ *  Copyright (c) 2011, Daniel Murphy
+ *  All rights reserved.
+ *
+ *  Redistribution and use in source and binary forms, with or without modification,
+ *  are permitted provided that the following conditions are met:
+ *  	* Redistributions of source code must retain the above copyright notice,
+ *  	  this list of conditions and the following disclaimer.
+ *  	* Redistributions in binary form must reproduce the above copyright notice,
+ *  	  this list of conditions and the following disclaimer in the documentation
+ *  	  and/or other materials provided with the distribution.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ *  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ *  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ *  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+ *  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ *  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ *  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ *  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ *  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ *  POSSIBILITY OF SUCH DAMAGE.
+ * ****************************************************************************
+ */
+package ubc.swim.gui;
+
+import java.util.Vector;
+import javax.swing.DefaultComboBoxModel;
+import org.jbox2d.callbacks.DebugDraw;
+import org.jbox2d.common.Vec2;
+import ubc.swim.tests.SwimTest;
+
+/**
+ * GUI model for Swimmer App. Modeled on org.jbox2d.testbed.framework.TestbedModel by Daniel Murphy
+ * @author Ben Humberston
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class SwimModel {
+
+    private final  DefaultComboBoxModel tests = new DefaultComboBoxModel();
+
+    private final  SwimSettings settings = new SwimSettings();
+
+    private  DebugDraw draw;
+
+    private  SwimTest test;
+
+    private final  Vec2 mouse = new Vec2();
+
+    private final  Vector<TestChangedListener> listeners = new Vector<TestChangedListener>();
+
+    private final   boolean  [] keys = new boolean[512];
+
+    private final   boolean  [] codedKeys = new boolean[512];
+
+    private   float calculatedFps;
+
+    private   float panelWidth;
+
+    private   int currTestIndex;
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public SwimModel() {
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setCalculatedFps( SwimModel this,   float calculatedFps) {
+        this.calculatedFps = calculatedFps;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   float getCalculatedFps( SwimModel this) {
+        return calculatedFps;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setPanelWidth(float panelWidth) {
+        this.panelWidth = panelWidth;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   float getPanelWidth( SwimModel this) {
+        return panelWidth;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setDebugDraw( SwimModel this,  DebugDraw argDraw) {
+        draw = argDraw;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  DebugDraw getDebugDraw( SwimModel this) {
+        return draw;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  SwimTest getCurrTest( SwimModel this) {
+        return test;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  Vec2 getMouse( SwimModel this) {
+        return mouse;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setMouse( SwimModel this,  Vec2 argMouse) {
+        mouse.set(argMouse);
+    }
+
+    /**
+     * Gets the array of keys, index corresponding to the char value.
+     *
+     * @return
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public   boolean  [] getKeys( SwimModel this) {
+        return keys;
+    }
+
+    /**
+     * Gets the array of coded keys, index corresponding to the coded key value.
+     *
+     * @return
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public   boolean  [] getCodedKeys( SwimModel this) {
+        return codedKeys;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setCurrTestIndex( SwimModel this,   int argCurrTestIndex) {
+        if (argCurrTestIndex < 0 || argCurrTestIndex >= tests.getSize()) {
+            throw new IllegalArgumentException("Invalid test index");
+        }
+        if (currTestIndex == argCurrTestIndex) {
+            return;
+        }
+        if (!isTestAt(argCurrTestIndex)) {
+            throw new IllegalArgumentException("No test at " + argCurrTestIndex);
+        }
+        currTestIndex = argCurrTestIndex;
+        ListItem item = (ListItem) tests.getElementAt(argCurrTestIndex);
+        test = item.test;
+        for (TestChangedListener listener : listeners) {
+            listener.testChanged(test, currTestIndex);
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   int getCurrTestIndex( SwimModel this) {
+        return currTestIndex;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void addTestChangeListener( SwimModel this,  TestChangedListener argListener) {
+        listeners.add(argListener);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void removeTestChangeListener(TestChangedListener argListener) {
+        listeners.remove(argListener);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void addTest( SwimModel this,  SwimTest argTest) {
+        tests.addElement(new ListItem(argTest));
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void addCategory( SwimModel this,  String argName) {
+        tests.addElement(new ListItem(argName));
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  SwimTest getTestAt(int argIndex) {
+        ListItem item = (ListItem) tests.getElementAt(argIndex);
+        if (item.isCategory()) {
+            return null;
+        }
+        return item.test;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public   boolean isTestAt( SwimModel this,   int argIndex) {
+        ListItem item = (ListItem) tests.getElementAt(argIndex);
+        return !item.isCategory();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void clearTestList() {
+        tests.removeAllElements();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public   int getTestsSize( SwimModel this) {
+        return tests.getSize();
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  DefaultComboBoxModel getComboModel( SwimModel this) {
+        return tests;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  SwimSettings getSettings( SwimModel this) {
+        return settings;
+    }
+
+    public class ListItem {
+
+        public  String category;
+
+        public  SwimTest test;
+
+        @org.checkerframework.dataflow.qual.SideEffectFree
+        public ListItem( String argCategory) {
+            category = argCategory;
+        }
+
+        @org.checkerframework.dataflow.qual.SideEffectFree
+        public ListItem( SwimTest argTest) {
+            test = argTest;
+        }
+
+        @org.checkerframework.dataflow.qual.Pure
+        public   boolean isCategory( ListItem this) {
+            return category != null;
+        }
+
+        @org.checkerframework.dataflow.qual.Impure
+        public  String toString( ListItem this) {
+            return isCategory() ? category : test.getTestName();
+        }
+    }
+
+    public static interface TestChangedListener {
+
+        @org.checkerframework.dataflow.qual.Impure
+        public void testChanged( TestChangedListener this,  SwimTest argTest,   int argIndex);
+    }
+}

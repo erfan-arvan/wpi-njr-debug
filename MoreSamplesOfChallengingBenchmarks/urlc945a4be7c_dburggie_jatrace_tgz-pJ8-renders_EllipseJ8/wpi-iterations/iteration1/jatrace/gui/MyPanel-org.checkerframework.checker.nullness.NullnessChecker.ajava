@@ -1,0 +1,102 @@
+package jatrace.gui;
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class MyPanel extends JPanel {
+
+    private int xpos, ypos, width, height;
+
+    @org.checkerframework.dataflow.qual.Pure
+    public static @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull MyPanel byHeightWidth(int w, int h) {
+        return new MyPanel(0, 0, w, h);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public MyPanel( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int x,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int y,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int w,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int h) {
+        super();
+        this.setLocation(x, y);
+        this.setSize(w, h);
+        this.setLayout(null);
+        nextInChain = null;
+        prevInChain = null;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setLocation(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull MyPanel this,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int x,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int y) {
+        super.setLocation(x, y);
+        xpos = x;
+        ypos = y;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setSize(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull MyPanel this,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int w,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int h) {
+        super.setSize(w, h);
+        width = w;
+        height = h;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getXposition() {
+        return xpos;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getYposition() {
+        return ypos;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getWidth(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull MyPanel this) {
+        return width;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getHeight(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull MyPanel this) {
+        return height;
+    }
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull MyPanel nextInChain;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull MyPanel prevInChain;
+
+    /**
+     * Get the next object in the chain.
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull MyPanel nextLink() {
+        return nextInChain;
+    }
+
+    /**
+     * Get the previous object in the chain.
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull MyPanel prevLink() {
+        return prevInChain;
+    }
+
+    /**
+     * Insert a new link before this one.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void insertBefore(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull MyPanel obj) {
+        if (prevInChain != obj) {
+            prevInChain = obj;
+            obj.insertAfter(this);
+        }
+    }
+
+    /**
+     * Insert a new link after this one.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void insertAfter(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull MyPanel obj) {
+        if (nextInChain != obj) {
+            nextInChain = obj;
+            obj.insertBefore(this);
+        }
+    }
+}

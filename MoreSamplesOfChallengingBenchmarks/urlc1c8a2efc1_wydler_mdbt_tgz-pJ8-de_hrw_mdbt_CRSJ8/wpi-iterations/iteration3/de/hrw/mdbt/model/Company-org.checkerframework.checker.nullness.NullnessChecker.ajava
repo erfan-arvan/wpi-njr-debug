@@ -1,0 +1,37 @@
+package de.hrw.mdbt.model;
+
+import java.util.ArrayList;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class Company extends Customer {
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull String name;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull ArrayList<Person> representatives = new ArrayList<Person>();
+
+    @org.checkerframework.dataflow.qual.Impure
+    public Company( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int id, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String name) {
+        super(id);
+        setName(name);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void addRepresentative(Person p) {
+        representatives.add(p);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void removeRepresentative(Person p) {
+        representatives.remove(p);
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable String getName() {
+        return name;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setName(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String name) {
+        this.name = name;
+    }
+}

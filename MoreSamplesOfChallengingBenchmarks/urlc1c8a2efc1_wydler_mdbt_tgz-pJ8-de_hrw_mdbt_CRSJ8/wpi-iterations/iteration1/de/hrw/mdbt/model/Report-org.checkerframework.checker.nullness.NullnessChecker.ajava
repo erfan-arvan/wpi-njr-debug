@@ -1,0 +1,31 @@
+package de.hrw.mdbt.model;
+
+import java.util.Date;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class Report {
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull Date date;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull String text;
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Date getDate() {
+        return date;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String getText() {
+        return text;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setText(String text) {
+        this.text = text;
+    }
+}

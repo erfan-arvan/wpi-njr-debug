@@ -1,0 +1,20 @@
+package assignments.safe;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public interface Safe {
+
+    public static final  String BLANK_DISPLAY = "      ";
+
+    public static final  String OPEN_DISPLAY = " OPEN ";
+
+    public static final   int DISPLAY_LENGTH = 6;
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   boolean isLocked( Safe this);
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  String readDisplay( Safe this);
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void enter( Safe this,   char c);
+}

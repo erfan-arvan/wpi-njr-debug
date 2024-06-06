@@ -1,0 +1,30 @@
+package simulation.logging;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class FileLogger implements EventsLogger {
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull PrintWriter out;
+
+    @org.checkerframework.dataflow.qual.Impure
+    public FileLogger(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull File f) {
+        try {
+            this.out = new PrintWriter(f);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void log(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull FileLogger this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String s) {
+        out.write(s + "\n");
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void close(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull FileLogger this) {
+        out.close();
+    }
+}

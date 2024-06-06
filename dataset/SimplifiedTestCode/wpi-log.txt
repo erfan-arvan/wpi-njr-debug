@@ -1,0 +1,2423 @@
+CF_BINARY: ../scripts/tools/checker-framework-3.34.0/checker/bin/javac
+I am in updateStorageLocationFromAtm
+new: MoveValidator
+cur: MoveValidator
+I am in updateStorageLocationFromAtm
+new: GameImpl
+cur: Game
+I am in updateStorageLocationFromAtm
+new: MoveValidator
+cur: MoveValidator
+I am in updateStorageLocationFromAtm
+new: Game
+cur: GameImpl
+I am in visitMethodInvocation --------- for Method: (this).<init>() in [NullnessStore#38(
+  mValidator > NV{@Initialized @NonNull, MoveValidator, poly nn/n=f/f}
+  this > NV{@UnknownInitialization @NonNull, Object, poly nn/n=f/f}
+  initialized fields = []
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in visitMethodInvocation --------- for Method: mValidator.setGame(this) in [NullnessStore#50(
+  mValidator > NV{@Initialized @NonNull, MoveValidator, poly nn/n=f/f}
+  this > NV{@UnknownInitialization @NonNull, Object, poly nn/n=f/f}
+  this.<init>() > NV{@UnderInitialization @NonNull, Object, poly nn/n=f/f}
+  initialized fields = []
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in updateStorageLocationFromAtm
+new: @UnderInitialization(GameImpl.class) @NonNull GameImpl
+cur: @UnknownInitialization @Nullable Game
+I am in updateStorageLocationFromAtm
+new: @Initialized @NonNull MoveValidator
+cur: @Initialized @MonotonicNonNull MoveValidator
+I am in visitMethodInvocation --------- for Method: (this).<init>() in [NullnessStore#61(
+  this > NV{@UnknownInitialization @NonNull, Object, poly nn/n=f/f}
+  initialized fields = []
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in updateStorageLocationFromAtm
+new: @Initialized @NonNull Game
+cur: @Initialized @NonNull GameImpl
+I am in processMethodTree for constructor: 
+public <init>(MoveValidator mValidator) {
+    super();
+    mValidator.setGame(this);
+    moveValidator = mValidator;
+}
+I am in checkFieldsInitialized for tree: 
+public <init>(MoveValidator mValidator) {
+    super();
+    mValidator.setGame(this);
+    moveValidator = mValidator;
+}
+I am in processMethodTree for constructor: 
+public <init>() {
+    super();
+}
+I am in checkFieldsInitialized for tree: 
+public <init>() {
+    super();
+}
+I am in updateStorageLocationFromAtm
+new: @Initialized @MonotonicNonNull NullType
+cur: @Initialized @MonotonicNonNull MoveValidator
+I am in checkFieldsInitialized for tree: 
+class GameImpl implements Game {
+    private MoveValidator moveValidator;
+    
+    public GameImpl(MoveValidator mValidator) {
+        super();
+        mValidator.setGame(this);
+        moveValidator = mValidator;
+    }
+    
+    public GameImpl() {
+        super();
+    }
+    
+    @Override
+    public void newGame() {
+    }
+}
+I am in updateStorageLocationFromAtm
+new: SimpleMoveValidator
+cur: MoveValidator
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+I am in updateStorageLocationFromAtm
+new: MoveValidator
+cur: PlayerDependentMoveValidator
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+I am in updateStorageLocationFromAtm
+new: PlayerDependentMoveValidator
+cur: PlayerDependentMoveValidator
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+I am in updateStorageLocationFromAtm
+new: MoveValidator
+cur: MoveValidator
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+I am in updateStorageLocationFromAtm
+new: @Initialized @NonNull SimpleMoveValidator
+cur: @Initialized @NonNull MoveValidator
+I am in updateStorageLocationFromAtm
+new: @UnknownInitialization @Nullable Game
+cur: @UnknownInitialization @Nullable Game
+I am in updateStorageLocationFromAtm
+new: @Initialized @NonNull MoveValidator
+cur: @Initialized @NonNull PlayerDependentMoveValidator
+I am in updateStorageLocationFromAtm
+new: @UnknownInitialization @Nullable Game
+cur: @UnknownInitialization @Nullable Game
+I am in visitMethodInvocation --------- for Method: (this).<init>() in [NullnessStore#153(
+  this > NV{@UnknownInitialization @NonNull, Object, poly nn/n=f/f}
+  this.blackMoveValidator > NV{@Initialized @NonNull, SimpleMoveValidator, poly nn/n=f/f}
+  initialized fields = [blackMoveValidator]
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in visitMethodInvocation --------- for Method: (this).<init>() in [NullnessStore#163(
+  game > NV{@UnknownInitialization @Nullable, Game, poly nn/n=f/f}
+  this > NV{@UnknownInitialization @NonNull, Object, poly nn/n=f/f}
+  this.blackMoveValidator > NV{@Initialized @NonNull, SimpleMoveValidator, poly nn/n=f/f}
+  initialized fields = [blackMoveValidator]
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in visitMethodInvocation --------- for Method: this.setGame(game) in [NullnessStore#171(
+  game > NV{@UnknownInitialization @Nullable, Game, poly nn/n=f/f}
+  this > NV{@UnknownInitialization @NonNull, PlayerDependentMoveValidator, poly nn/n=f/f}
+  this.blackMoveValidator > NV{@Initialized @NonNull, SimpleMoveValidator, poly nn/n=f/f}
+  this.<init>() > NV{@UnderInitialization @NonNull, Object, poly nn/n=f/f}
+  initialized fields = [blackMoveValidator]
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in updateStorageLocationFromAtm
+new: @UnknownInitialization @Nullable Game
+cur: @UnknownInitialization @Nullable Game
+I am in visitMethodInvocation --------- for Method: (this).blackMoveValidator.setGame(game) in [NullnessStore#184(
+  game > NV{@UnknownInitialization @Nullable, Game, poly nn/n=f/f}
+  this > NV{@UnknownInitialization @NonNull, PlayerDependentMoveValidator, poly nn/n=f/f}
+  this.blackMoveValidator > NV{@Initialized @NonNull, SimpleMoveValidator, poly nn/n=f/f}
+  this.<init>() > NV{@UnderInitialization @NonNull, Object, poly nn/n=f/f}
+  this.setGame(game) > NV{@NonNull, void, poly nn/n=f/f}
+  initialized fields = [blackMoveValidator]
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in updateStorageLocationFromAtm
+new: @UnknownInitialization @Nullable Game
+cur: @UnknownInitialization @Nullable Game
+I am in processMethodTree for constructor: 
+public <init>() {
+    super();
+}
+I am in checkFieldsInitialized for tree: 
+public <init>() {
+    super();
+}
+I am in updateStorageLocationFromAtm
+new: null (NullType)
+cur: @UnknownInitialization @Nullable Game
+I am in processMethodTree for constructor: 
+public <init>(Game game) {
+    super();
+    this.setGame(game);
+    blackMoveValidator.setGame(game);
+}
+I am in checkFieldsInitialized for tree: 
+public <init>(Game game) {
+    super();
+    this.setGame(game);
+    blackMoveValidator.setGame(game);
+}
+I am in updateStorageLocationFromAtm
+new: null (NullType)
+cur: @UnknownInitialization @Nullable Game
+I am in checkFieldsInitialized for tree: 
+class PlayerDependentMoveValidator implements MoveValidator {
+    private Game game;
+    private MoveValidator blackMoveValidator = new SimpleMoveValidator();
+    
+    @Override
+    public void setGame(Game game) {
+        this.game = game;
+    }
+    
+    public PlayerDependentMoveValidator() {
+        super();
+    }
+    
+    public PlayerDependentMoveValidator(Game game) {
+        super();
+        this.setGame(game);
+        blackMoveValidator.setGame(game);
+    }
+}
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+I am in updateStorageLocationFromAtm
+new: MoveValidator
+cur: SimpleMoveValidator
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+vvvvvvvvvvvvvvvv visitObjectCreation [(this).game]
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+I am in updateStorageLocationFromAtm
+new: PlayerDependentMoveValidator
+cur: MoveValidator
+I am in updateStorageLocationFromAtm
+new: @UnknownInitialization @Nullable Game
+cur: @UnknownInitialization @Nullable Game
+I am in updateStorageLocationFromAtm
+new: @Initialized @NonNull MoveValidator
+cur: @Initialized @NonNull SimpleMoveValidator
+I am in updateStorageLocationFromAtm
+new: @UnknownInitialization @Nullable Game
+cur: @UnknownInitialization @Nullable Game
+I am in visitMethodInvocation --------- for Method: (this).<init>() in [NullnessStore#225(
+  this > NV{@UnknownInitialization @NonNull, Object, poly nn/n=f/f}
+  initialized fields = []
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+vvvvvvvvvvvvvvvv visitObjectCreation [(this).game]
+I am in updateSto../dataset/SimplifiedTestCode/src/Game.java:39: warning: (method.invocation) $$ 3 $$ setGame(Game) $$ @UnderInitialization(PlayerDependentMoveValidator.class) @NonNull PlayerDependentMoveValidator $$ @Initialized @NonNull PlayerDependentMoveValidator $$ ( 825, 843 ) $$ call to setGame(Game) not allowed on the given receiver.
+        this.setGame(game);
+                    ^
+  found   : @UnderInitialization(PlayerDependentMoveValidator.class) @NonNull PlayerDependentMoveValidator
+  required: @Initialized @NonNull PlayerDependentMoveValidator
+1 warning
+rageLocationFromAtm
+new: @UnknownInitialization @Nullable Game
+cur: @UnknownInitialization @Nullable Game
+I am in updateStorageLocationFromAtm
+new: @UnderInitialization(PlayerDependentMoveValidator.class) @NonNull PlayerDependentMoveValidator
+cur: @UnderInitialization(PlayerDependentMoveValidator.class) @NonNull MoveValidator
+I am in processMethodTree for constructor: 
+public <init>() {
+    super();
+}
+I am in checkFieldsInitialized for tree: 
+public <init>() {
+    super();
+}
+I am in updateStorageLocationFromAtm
+new: null (NullType)
+cur: @UnknownInitialization @Nullable Game
+I am in checkFieldsInitialized for tree: 
+class SimpleMoveValidator implements MoveValidator {
+    private Game game;
+    
+    @Override
+    public void setGame(Game game) {
+        this.game = game;
+    }
+    
+    public SimpleMoveValidator() {
+        super();
+    }
+    
+    public MoveValidator createMoveValidator() {
+        return new PlayerDependentMoveValidator(game);
+    }
+}
+entering iteration 1
+I am in updateStorageLocationFromAtm
+new: MoveValidator
+cur: MoveValidator
+I am in updateStorageLocationFromAtm
+new: GameImpl
+cur: Game
+I am in updateStorageLocationFromAtm
+new: MoveValidator
+cur: MoveValidator
+I am in updateStorageLocationFromAtm
+new: Game
+cur: GameImpl
+I am in visitMethodInvocation --------- for Method: (this).<init>() in [NullnessStore#38(
+  mValidator > NV{@Initialized @NonNull, MoveValidator, poly nn/n=f/f}
+  this > NV{@UnknownInitialization @NonNull, Object, poly nn/n=f/f}
+  initialized fields = []
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in visitMethodInvocation --------- for Method: mValidator.setGame(this) in [NullnessStore#50(
+  mValidator > NV{@Initialized @NonNull, MoveValidator, poly nn/n=f/f}
+  this > NV{@UnknownInitialization @NonNull, Object, poly nn/n=f/f}
+  this.<init>() > NV{@UnderInitialization @NonNull, Object, poly nn/n=f/f}
+  initialized fields = []
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in updateStorageLocationFromAtm
+new: @UnderInitialization @NonNull GameImpl
+cur: @Initialized @NonNull Game
+I am in updateStorageLocationFromAtm
+new: @Initialized @NonNull MoveValidator
+cur: @Initialized @Nullable MoveValidator
+I am in visitMethodInvocation --------- for Method: (this).<init>() in [NullnessStore#61(
+  this > NV{@UnknownInitialization @NonNull, Object, poly nn/n=f/f}
+  initialized fields = []
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in updateStorageLocationFromAtm
+new: @Initialized @NonNull Game
+cur: @Initialized @NonNull GameImpl
+I am in processMethodTree for constructor: 
+public <init>(MoveValidator mValidator) {
+    super();
+    mValidator.setGame(this);
+    moveValidator = mValidator;
+}
+I am in checkFieldsInitialized for tree: 
+public <init>(MoveValidator mValidator) {
+    super();
+    mValidator.setGame(this);
+    moveValidator = mValidator;
+}
+I am in processMethodTree for constructor: 
+public <init>() {
+    super();
+}
+I am in checkFieldsInitialized for tree: 
+public <init>() {
+    super();
+}
+I am in updateStorageLocationFromAtm
+new: @Initialized @MonotonicNonNull NullType
+cur: @Initialized @NonNull MoveValidator
+I am in checkFieldsInitialized for tree: 
+class GameImpl implements Game {
+    private MoveValidator moveValidator;
+    
+    public GameImpl(MoveValidator mValidator) {
+        super();
+        mValidator.setGame(this);
+        moveValidator = mValidator;
+    }
+    
+    public GameImpl() {
+        super();
+    }
+    
+    @Override
+    public void newGame() {
+    }
+}
+I am in updateStorageLocationFromAtm
+new: SimpleMoveValidator
+cur: MoveValidator
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+I am in updateStorageLocationFromAtm
+new: MoveValidator
+cur: PlayerDependentMoveValidator
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+I am in updateStorageLocationFromAtm
+new: PlayerDependentMoveValidator
+cur: PlayerDependentMoveValidator
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+I am in updateStorageLocationFromAtm
+new: MoveValidator
+cur: MoveValidator
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+I am in updateStorageLocationFromAtm
+new: @Initialized @NonNull SimpleMoveValidator
+cur: @Initialized @NonNull MoveValidator
+I am in updateStorageLocationFromAtm
+new: @Initialized @NonNull Game
+cur: @Initialized @NonNull Game
+I am in updateStorageLocationFromAtm
+new: @Initialized @NonNull MoveValidator
+cur: @Initialized @NonNull PlayerDependentMoveValidator
+I am in updateStorageLocationFromAtm
+new: @Initialized @NonNull Game
+cur: @Initialized @NonNull Game
+I am in visitMethodInvocation --------- for Method: (this).<init>() in [NullnessStore#153(
+  this > NV{@UnknownInitialization @NonNull, Object, poly nn/n=f/f}
+  this.blackMoveValidator > NV{@Initialized @NonNull, SimpleMoveValidator, poly nn/n=f/f}
+  initialized fields = [blackMoveValidator]
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in visitMethodInvocation --------- for Method: (this).<init>() in [NullnessStore#163(
+  game > NV{@Initialized @NonNull, Game, poly nn/n=f/f}
+  this > NV{@UnknownInitialization @NonNull, Object, poly nn/n=f/f}
+  this.blackMoveValidator > NV{@Initialized @NonNull, SimpleMoveValidator, poly nn/n=f/f}
+  initialized fields = [blackMoveValidator]
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in visitMethodInvocation --------- for Method: this.setGame(game) in [NullnessStore#171(
+  game > NV{@Initialized @NonNull, Game, poly nn/n=f/f}
+  this > NV{@UnknownInitialization @NonNull, PlayerDependentMoveValidator, poly nn/n=f/f}
+  this.blackMoveValidator > NV{@Initialized @NonNull, SimpleMoveValidator, poly nn/n=f/f}
+  this.<init>() > NV{@UnderInitialization @NonNull, Object, poly nn/n=f/f}
+  initialized fields = [blackMoveValidator]
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in updateStorageLocationFromAtm
+new: @Initialized @NonNull Game
+cur: @Initialized @NonNull Game
+I am in visitMethodInvocation --------- for Method: (this).blackMoveValidator.setGame(game) in [NullnessStore#184(
+  game > NV{@Initialized @NonNull, Game, poly nn/n=f/f}
+  this > NV{@UnknownInitialization @NonNull, PlayerDependentMoveValidator, poly nn/n=f/f}
+  this.blackMoveValidator > NV{@Initialized @NonNull, SimpleMoveValidator, poly nn/n=f/f}
+  this.<init>() > NV{@UnderInitialization @NonNull, Object, poly nn/n=f/f}
+  this.setGame(game) > NV{@NonNull, void, poly nn/n=f/f}
+  initialized fields = [blackMoveValidator]
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in updateStorageLocationFromAtm
+new: @UnknownInitialization @NonNull Game
+cur: @Initialized @NonNull Game
+I am in processMethodTree for constructor: 
+public <init>() {
+    super();
+}
+I am in checkFieldsInitialized for tree: 
+public <init>() {
+    super();
+}
+I am in updateStorageLocationFromAtm
+new: @Initialized @MonotonicNonNull NullType
+cur: @Initialized @NonNull Game
+I am in processMethodTree for constructor: 
+public <init>(Game game) {
+    super();
+    this.setGame(game);
+    blackMoveValidator.setGame(game);
+}
+I am in checkFieldsInitialized for tree: 
+public <init>(Game game) {
+    super();
+    this.setGame(game);
+    blackMoveValidator.setGame(game);
+}
+I am in updateStorageLocationFromAtm
+new: @Initialized @MonotonicNonNull NullType
+cur: @Initialized @NonNull Game
+I am in checkFieldsInitialized for tree: 
+class PlayerDependentMoveValidator implements MoveValidator {
+    private Game game;
+    private MoveValidator blackMoveValidator = new SimpleMoveValidator();
+    
+    @Override
+    public void setGame(Game game) {
+        this.game = game;
+    }
+    
+    public PlayerDependentMoveValidator() {
+        super();
+    }
+    
+    public PlayerDependentMoveValidator(Game game) {
+        super();
+        this.setGame(game);
+        blackMoveValidator.setGame(game);
+    }
+}
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+I am in updateStorageLocationFromAtm
+new: MoveValidator
+cur: SimpleMoveValidator
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+vvvvvvvvvvvvvvvv visitObjectCreation [(this).game]
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+I am in updateStorageLocationFromAtm
+new: PlayerDependentMoveValidator
+cur: MoveValidator
+I am in updateStorageLocationFromAtm
+new: @Initialized @NonNull Game
+cur: @Initialized @NonNull Game
+I am in updateStorageLocationFromAtm
+new: @Initialized @NonNull MoveValidator
+cur: @Initialized @NonNull SimpleMoveValidator
+I am in updateStorageLocationFromAtm
+new: @Initialized @NonNull Game
+cur: @Initialized @NonNull Game
+I am in visitMethodInvocation --------- for Method: (this).<init>() in [NullnessStore#225(
+  this > NV{@UnknownInitialization @NonNull, Object, poly nn/n=f/f}
+  initialized fields = []
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+vvvvvvvvvvvvvvvv visitObjectCreation [(this).game]
+I am in updateStorageLocationFromAtm
+new: @Initialized @NonNull Game
+cur: @Initialized @NonNull Game
+I am in updateStorageLocationFromAtm
+new: @Initialized @NonNull PlayerDependentMoveValidator
+cur: @Initialized @NonNull MoveValidator
+I am in processMethodTree for constructor: 
+public <init>() {
+    super();
+}
+I am in checkFieldsInitialized for tree: 
+public <init>() {
+    super();
+}
+I am in updateStorageLocationFromAtm
+new: @Initialized @MonotonicNonNull NullType
+cur: @Initialized @NonNull Game
+I am in checkFieldsInitialized for tree: 
+class SimpleMoveValidator implements MoveValidator {
+    private Game game;
+    
+    @Override
+    public void setGame(Game game) {
+        this.game = game;
+    }
+    
+    public SimpleMoveValidator() {
+        super();
+    }
+    
+    public MoveValidator createMoveValidator() {
+        return new PlayerDependentMoveValidator(game);
+    }
+}
+../dataset/SimplifiedTestCode/src/Game.java:9: warning: (argument) $$ 4 $$ game $$ MoveValidator.setGame $$ @UnderInitialization @NonNull GameImpl $$ @Initialized @NonNull Game $$ ( 210, 214 ) $$ incompatible argument for parameter game of MoveValidator.setGame.
+        mValidator.setGame(this);
+                           ^
+  found   : @UnderInitialization @NonNull GameImpl
+  required: @Initialized @NonNull Game
+../dataset/SimplifiedTestCode/src/Game.java:13: warning: (initialization.fields.uninitialized) $$ 1 $$ moveValidator $$ ( 264, 289 ) $$ the constructor does not initialize fields: moveValidator
+    public GameImpl() {
+           ^
+../dataset/SimplifiedTestCode/src/Game.java:35: warning: (initialization.fields.uninitialized) $$ 1 $$ game $$ ( 717, 762 ) $$ the constructor does not initialize fields: game
+    public PlayerDependentMoveValidator() {
+           ^
+../dataset/SimplifiedTestCode/src/Game.java:38: warning: (initialization.fields.uninitialized) $$ 1 $$ game $$ ( 768, 892 ) $$ the constructor does not initialize fields: game
+    public PlayerDependentMoveValidator(Game game) {
+           ^
+../dataset/SimplifiedTestCode/src/Game.java:39: warning: (method.invocation) $$ 3 $$ setGame(Game) $$ @UnderInitialization @NonNull PlayerDependentMoveValidator $$ @Initialized @NonNull PlayerDependentMoveValidator $$ ( 825, 843 ) $$ call to setGame(Game) not allowed on the given receiver.
+        this.setGame(game);
+                    ^
+  found   : @UnderInitialization @NonNull PlayerDependentMoveValidator
+  required: @Initialized @NonNull PlayerDependentMoveValidator
+../dataset/SimplifiedTestCode/src/Game.java:52: warning: (initialization.fields.uninitialized) $$ 1 $$ game $$ ( 1081, 1117 ) $$ the constructor does not initialize fields: game
+    public SimpleMoveValidator() {
+           ^
+6 warnings
+realpath: iteration1.diff: No such file or directory
+putting the diff for iteration 1 into 
+ending iteration 1, time taken: 1 seconds
+
+entering iteration 2
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/Farmer-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 1,col 1): Package not found: assignments.farmer
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/Farmer-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 3,col 1): Type not found: assignments.farmer.Farmer
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/FarmerFactory-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 3,col 1): Imported package not found: assignments.farmer.actionstrategies
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/FarmerFactory-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 5,col 1): Type not found: assignments.farmer.FarmerFactory
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/FarmerImpl-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 4,col 1): Imported package not found: assignments.farmer.farmerfactories
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/FarmerImpl-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 5,col 1): Imported package not found: assignments.farmer.seasonstates
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/FarmerImpl-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 7,col 1): Type not found: assignments.farmer.FarmerImpl
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/SeasonState-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 5,col 1): Type not found: assignments.farmer.SeasonState
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/actionstrategies/HarvestStrategy-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 1,col 1): Package not found: assignments.farmer.actionstrategies
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/actionstrategies/HarvestStrategy-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 3,col 1): Type not found: assignments.farmer.actionstrategies.HarvestStrategy
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/actionstrategies/MarketStrategy-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 3,col 1): Type not found: assignments.farmer.actionstrategies.MarketStrategy
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/actionstrategies/PlantStrategy-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 3,col 1): Type not found: assignments.farmer.actionstrategies.PlantStrategy
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/actionstrategies/PlowStrategy-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 3,col 1): Type not found: assignments.farmer.actionstrategies.PlowStrategy
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/actionstrategies/WeedControlStrategy-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 3,col 1): Type not found: assignments.farmer.actionstrategies.WeedControlStrategy
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/actionstrategies/harveststrategies/AmishHarvestStrategy-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 3,col 1): Imported type not found: assignments.farmer.actionstrategies.HarvestStrategy
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/actionstrategies/harveststrategies/AmishHarvestStrategy-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 1,col 1): Package not found: assignments.farmer.actionstrategies.harveststrategies
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/actionstrategies/harveststrategies/AmishHarvestStrategy-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 5,col 1): Type not found: assignments.farmer.actionstrategies.harveststrategies.AmishHarvestStrategy
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/actionstrategies/harveststrategies/ConventionalHarvestStrategy-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 5,col 1): Type not found: assignments.farmer.actionstrategies.harveststrategies.ConventionalHarvestStrategy
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/actionstrategies/harveststrategies/OrganicHarvestStrategy-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 5,col 1): Type not found: assignments.farmer.actionstrategies.harveststrategies.OrganicHarvestStrategy
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/actionstrategies/marketstrategies/AmishMarketStrategy-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 3,col 1): Imported type not found: assignments.farmer.actionstrategies.MarketStrategy
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/actionstrategies/marketstrategies/AmishMarketStrategy-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 1,col 1): Package not found: assignments.farmer.actionstrategies.marketstrategies
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/actionstrategies/marketstrategies/AmishMarketStrategy-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 5,col 1): Type not found: assignments.farmer.actionstrategies.marketstrategies.AmishMarketStrategy
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/actionstrategies/marketstrategies/ConventionalMarketStrategy-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 5,col 1): Type not found: assignments.farmer.actionstrategies.marketstrategies.ConventionalMarketStrategy
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/actionstrategies/marketstrategies/OrganicMarketStrategy-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 5,col 1): Type not found: assignments.farmer.actionstrategies.marketstrategies.OrganicMarketStrategy
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/actionstrategies/plantstrategies/AmishPlantStrategy-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 3,col 1): Imported type not found: assignments.farmer.actionstrategies.PlantStrategy
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/actionstrategies/plantstrategies/AmishPlantStrategy-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 1,col 1): Package not found: assignments.farmer.actionstrategies.plantstrategies
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/actionstrategies/plantstrategies/AmishPlantStrategy-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 5,col 1): Type not found: assignments.farmer.actionstrategies.plantstrategies.AmishPlantStrategy
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/actionstrategies/plantstrategies/ConventionalPlantStrategy-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 5,col 1): Type not found: assignments.farmer.actionstrategies.plantstrategies.ConventionalPlantStrategy
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/actionstrategies/plantstrategies/OrganicPlantStrategy-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 5,col 1): Type not found: assignments.farmer.actionstrategies.plantstrategies.OrganicPlantStrategy
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/actionstrategies/plowstrategies/AmishPlowStrategy-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 3,col 1): Imported type not found: assignments.farmer.actionstrategies.PlowStrategy
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/actionstrategies/plowstrategies/AmishPlowStrategy-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 1,col 1): Package not found: assignments.farmer.actionstrategies.plowstrategies
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/actionstrategies/plowstrategies/AmishPlowStrategy-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 5,col 1): Type not found: assignments.farmer.actionstrategies.plowstrategies.AmishPlowStrategy
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/actionstrategies/plowstrategies/ConventionalPlowStrategy-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 5,col 1): Type not found: assignments.farmer.actionstrategies.plowstrategies.ConventionalPlowStrategy
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/actionstrategies/plowstrategies/OrganicPlowStrategy-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 5,col 1): Type not found: assignments.farmer.actionstrategies.plowstrategies.OrganicPlowStrategy
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/actionstrategies/weedcontrolstrategies/AmishWeedControlStrategy-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 3,col 1): Imported type not found: assignments.farmer.actionstrategies.WeedControlStrategy
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/actionstrategies/weedcontrolstrategies/AmishWeedControlStrategy-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 1,col 1): Package not found: assignments.farmer.actionstrategies.weedcontrolstrategies
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/actionstrategies/weedcontrolstrategies/AmishWeedControlStrategy-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 5,col 1): Type not found: assignments.farmer.actionstrategies.weedcontrolstrategies.AmishWeedControlStrategy
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/actionstrategies/weedcontrolstrategies/ConventionalWeedControlStrategy-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 5,col 1): Type not found: assignments.farmer.actionstrategies.weedcontrolstrategies.ConventionalWeedControlStrategy
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/actionstrategies/weedcontrolstrategies/OrganicWeedControlStrategy-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 5,col 1): Type not found: assignments.farmer.actionstrategies.weedcontrolstrategies.OrganicWeedControlStrategy
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/farmerfactories/AmishFarmerFactory-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 3,col 1): Imported type not found: assignments.farmer.Farmer
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/farmerfactories/AmishFarmerFactory-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 4,col 1): Imported type not found: assignments.farmer.FarmerFactory
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/farmerfactories/AmishFarmerFactory-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 5,col 1): Imported type not found: assignments.farmer.FarmerImpl
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/farmerfactories/AmishFarmerFactory-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 11,col 1): Imported type not found: assignments.farmer.actionstrategies.harveststrategies.AmishHarvestStrategy
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/farmerfactories/AmishFarmerFactory-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 12,col 1): Imported type not found: assignments.farmer.actionstrategies.marketstrategies.AmishMarketStrategy
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/farmerfactories/AmishFarmerFactory-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 13,col 1): Imported type not found: assignments.farmer.actionstrategies.plantstrategies.AmishPlantStrategy
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/farmerfactories/AmishFarmerFactory-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 14,col 1): Imported type not found: assignments.farmer.actionstrategies.plowstrategies.AmishPlowStrategy
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/farmerfactories/AmishFarmerFactory-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 15,col 1): Imported type not found: assignments.farmer.actionstrategies.weedcontrolstrategies.AmishWeedControlStrategy
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/farmerfactories/AmishFarmerFactory-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 1,col 1): Package not found: assignments.farmer.farmerfactories
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/farmerfactories/AmishFarmerFactory-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 17,col 1): Type not found: assignments.farmer.farmerfactories.AmishFarmerFactory
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/farmerfactories/ConventionalFarmerFactory-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 11,col 1): Imported type not found: assignments.farmer.actionstrategies.harveststrategies.ConventionalHarvestStrategy
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/farmerfactories/ConventionalFarmerFactory-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 12,col 1): Imported type not found: assignments.farmer.actionstrategies.marketstrategies.ConventionalMarketStrategy
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/farmerfactories/ConventionalFarmerFactory-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 13,col 1): Imported type not found: assignments.farmer.actionstrategies.plantstrategies.ConventionalPlantStrategy
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/farmerfactories/ConventionalFarmerFactory-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 14,col 1): Imported type not found: assignments.farmer.actionstrategies.plowstrategies.ConventionalPlowStrategy
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/farmerfactories/ConventionalFarmerFactory-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 15,col 1): Imported type not found: assignments.farmer.actionstrategies.weedcontrolstrategies.ConventionalWeedControlStrategy
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/farmerfactories/ConventionalFarmerFactory-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 17,col 1): Type not found: assignments.farmer.farmerfactories.ConventionalFarmerFactory
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/farmerfactories/OrganicFarmerFactory-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 7,col 1): Imported type not found: assignments.farmer.actionstrategies.harveststrategies.OrganicHarvestStrategy
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/farmerfactories/OrganicFarmerFactory-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 8,col 1): Imported type not found: assignments.farmer.actionstrategies.marketstrategies.OrganicMarketStrategy
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/farmerfactories/OrganicFarmerFactory-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 9,col 1): Imported type not found: assignments.farmer.actionstrategies.plantstrategies.OrganicPlantStrategy
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/farmerfactories/OrganicFarmerFactory-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 10,col 1): Imported type not found: assignments.farmer.actionstrategies.plowstrategies.OrganicPlowStrategy
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/farmerfactories/OrganicFarmerFactory-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 11,col 1): Imported type not found: assignments.farmer.actionstrategies.weedcontrolstrategies.OrganicWeedControlStrategy
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/farmerfactories/OrganicFarmerFactory-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 13,col 1): Type not found: assignments.farmer.farmerfactories.OrganicFarmerFactory
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/seasonstates/FallState-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 3,col 1): Imported type not found: assignments.farmer.SeasonState
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/seasonstates/FallState-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 1,col 1): Package not found: assignments.farmer.seasonstates
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/seasonstates/FallState-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 6,col 1): Type not found: assignments.farmer.seasonstates.FallState
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/seasonstates/SpringState-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 6,col 1): Type not found: assignments.farmer.seasonstates.SpringState
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/seasonstates/SummerState-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 6,col 1): Type not found: assignments.farmer.seasonstates.SummerState
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/tests/AmishFarmerTests-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 3,col 1): Imported type not found: org.junit.Assert
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/tests/AmishFarmerTests-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 6,col 1): Imported type not found: org.junit.After
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/tests/AmishFarmerTests-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 7,col 1): Imported type not found: org.junit.Before
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/tests/AmishFarmerTests-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 8,col 1): Imported type not found: org.junit.Test
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/tests/AmishFarmerTests-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 12,col 1): Imported type not found: assignments.farmer.farmerfactories.AmishFarmerFactory
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/tests/AmishFarmerTests-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 13,col 1): Imported type not found: assignments.farmer.seasonstates.FallState
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/tests/AmishFarmerTests-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 14,col 1): Imported type not found: assignments.farmer.seasonstates.SummerState
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/tests/AmishFarmerTests-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 1,col 1): Package not found: assignments.farmer.tests
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/tests/AmishFarmerTests-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 16,col 1): Type not found: assignments.farmer.tests.AmishFarmerTests
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/tests/ConventionalFarmerTests-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 12,col 1): Imported type not found: assignments.farmer.farmerfactories.ConventionalFarmerFactory
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/tests/ConventionalFarmerTests-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 16,col 1): Type not found: assignments.farmer.tests.ConventionalFarmerTests
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/tests/OrganicFarmerTests-org.checkerframework.I am in updateStorageLocationFromAtm
+new: MoveValidator
+cur: MoveValidator
+I am in updateStorageLocationFromAtm
+new: GameImpl
+cur: Game
+I am in updateStorageLocationFromAtm
+new: MoveValidator
+cur: MoveValidator
+I am in updateStorageLocationFromAtm
+new: Game
+cur: GameImpl
+I am in visitMethodInvocation --------- for Method: (this).<init>() in [NullnessStore#38(
+  mValidator > NV{@Initialized @NonNull, MoveValidator, poly nn/n=f/f}
+  this > NV{@UnknownInitialization @NonNull, Object, poly nn/n=f/f}
+  initialized fields = []
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in visitMethodInvocation --------- for Method: mValidator.setGame(this) in [NullnessStore#50(
+  mValidator > NV{@Initialized @NonNull, MoveValidator, poly nn/n=f/f}
+  this > NV{@UnknownInitialization @NonNull, Object, poly nn/n=f/f}
+  this.<init>() > NV{@UnderInitialization @NonNull, Object, poly nn/n=f/f}
+  initialized fields = []
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in updateStorageLocationFromAtm
+new: @UnderInitialization(GameImpl.class) @NonNull GameImpl
+cur: @UnknownInitialization @NonNull Game
+I am in updateStorageLocationFromAtm
+new: @Initialized @NonNull MoveValidator
+cur: @Initialized @MonotonicNonNull MoveValidator
+I am in visitMethodInvocation --------- for Method: (this).<init>() in [NullnessStore#61(
+  this > NV{@UnknownInitialization @NonNull, Object, poly nn/n=f/f}
+  initialized fields = []
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in updateStorageLocationFromAtm
+new: @Initialized @NonNull Game
+cur: @Initialized @NonNull GameImpl
+I am in processMethodTree for constructor: 
+public <init>(MoveValidator mValidator) {
+    super();
+    mValidator.setGame(this);
+    moveValidator = mValidator;
+}
+I am in checkFieldsInitialized for tree: 
+public <init>(MoveValidator mValidator) {
+    super();
+    mValidator.setGame(this);
+    moveValidator = mValidator;
+}
+I am in processMethodTree for constructor: 
+public <init>() {
+    super();
+}
+I am in checkFieldsInitialized for tree: 
+public <init>() {
+    super();
+}
+I am in updateStorageLocationFromAtm
+new: @Initialized @MonotonicNonNull NullType
+cur: @Initialized @MonotonicNonNull MoveValidator
+I am in checkFieldsInitialized for tree: 
+class GameImpl implements Game {
+    private MoveValidator moveValidator;
+    
+    public GameImpl(MoveValidator mValidator) {
+        super();
+        mValidator.setGame(this);
+        moveValidator = mValidator;
+    }
+    
+    public GameImpl() {
+        super();
+    }
+    
+    @Override
+    public void newGame() {
+    }
+}
+I am in updateStorageLocationFromAtm
+new: SimpleMoveValidator
+cur: MoveValidator
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+I am in updateStorageLocationFromAtm
+new: MoveValidator
+cur: PlayerDependentMoveValidator
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+I am in updateStorageLocationFromAtm
+new: PlayerDependentMoveValidator
+cur: PlayerDependentMoveValidator
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+I am in updateStorageLocationFromAtm
+new: MoveValidator
+cur: MoveValidator
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+I am in updateStorageLocationFromAtm
+new: @Initialized @NonNull SimpleMoveValidator
+cur: @Initialized @NonNull MoveValidator
+I am in updateStorageLocationFromAtm
+new: @UnknownInitialization @NonNull Game
+cur: @Initialized @NonNull Game
+I am in updateStorageLocationFromAtm
+new: @Initialized @NonNull MoveValidator
+cur: @Initialized @NonNull PlayerDependentMoveValidator
+I am in updateStorageLocationFromAtm
+new: @Initialized @NonNull Game
+cur: @Initialized @MonotonicNonNull Game
+I am in visitMethodInvocation --------- for Method: (this).<init>() in [NullnessStore#153(
+  this > NV{@UnknownInitialization @NonNull, Object, poly nn/n=f/f}
+  this.blackMoveValidator > NV{@Initialized @NonNull, SimpleMoveValidator, poly nn/n=f/f}
+  initialized fields = [blackMoveValidator]
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in visitMethodInvocation --------- for Method: (this).<init>() in [NullnessStore#163(
+  game > NV{@Initialized @NonNull, Game, poly nn/n=f/f}
+  this > NV{@UnknownInitialization @NonNull, Object, poly nn/n=f/f}
+  this.blackMoveValidator > NV{@Initialized @NonNull, SimpleMoveValidator, poly nn/n=f/f}
+  initialized fields = [blackMoveValidator]
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in visitMethodInvocation --------- for Method: this.setGame(game) in [NullnessStore#171(
+  game > NV{@Initialized @NonNull, Game, poly nn/n=f/f}
+  this > NV{@UnknownInitialization @NonNull, PlayerDependentMoveValidator, poly nn/n=f/f}
+  this.blackMoveValidator > NV{@Initialized @NonNull, SimpleMoveValidator, poly nn/n=f/f}
+  this.<init>() > NV{@UnderInitialization @NonNull, Object, poly nn/n=f/f}
+  initialized fields = [blackMoveValidator]
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in updateStorageLocationFromAtm
+new: @UnknownInitialization @NonNull Game
+cur: @Initialized @NonNull Game
+I am in visitMethodInvocation --------- for Method: (this).blackMoveValidator.setGame(game) in [NullnessStore#184(
+  game > NV{@Initialized @NonNull, Game, poly nn/n=f/f}
+  this > NV{@UnknownInitialization @NonNull, PlayerDependentMoveValidator, poly nn/n=f/f}
+  this.blackMoveValidator > NV{@Initialized @NonNull, SimpleMoveValidator, poly nn/n=f/f}
+  this.<init>() > NV{@UnderInitialization @NonNull, Object, poly nn/n=f/f}
+  this.setGame(game) > NV{@NonNull, void, poly nn/n=f/f}
+  initialized fields = [blackMoveValidator]
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in updateStorageLocationFromAtm
+new: @UnknownInitialization(GameImpl.class) @NonNull Game
+cur: @UnknownInitialization @NonNull Game
+I am in processMethodTree for constructor: 
+public <init>() {
+    super();
+}
+I am in checkFieldsInitialized for tree: 
+public <init>() {
+    super();
+}
+I am in updateStorageLocationFromAtm
+new: @Initialized @MonotonicNonNull NullType
+cur: @Initialized @MonotonicNonNull Game
+I am in processMethodTree for constructor: 
+public <init>(Game game) {
+    super();
+    this.setGame(game);
+    blackMoveValidator.setGame(game);
+}
+I am in checkFieldsInitialized for tree: 
+public <init>(Game game) {
+    super();
+    this.setGame(game);
+    blackMoveValidator.setGame(game);
+}
+I am in updateStorageLocationFromAtm
+new: @Initialized @MonotonicNonNull NullType
+cur: @Initialized @MonotonicNonNull Game
+I am in checkFieldsInitialized for tree: 
+class PlayerDependentMoveValidator implements MoveValidator {
+    private Game game;
+    private MoveValidator blackMoveValidator = new SimpleMoveValidator();
+    
+    @Override
+    public void setGame(Game game) {
+        this.game = game;
+    }
+    
+    public PlayerDependentMoveValidator() {
+        super();
+    }
+    
+    public PlayerDependentMoveValidator(Game game) {
+        super();
+        this.setGame(game);
+        blackMoveValidator.setGame(game);
+    }
+}
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+I am in updateStorageLocationFromAtm
+new: MoveValidator
+cur: SimpleMoveValidator
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+vvvvvvvvvvvvvvvv visitObjectCreation [(this).game]
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+I am in updateStorageLocationFromAtm
+new: PlayerDependentMoveValidator
+cur: MoveValidator
+I am in updateStorageLocationFromAtm
+new: @UnknownInitialization @NonNull Game
+cur: @Initialized @NonNull Game
+I am in updateStorageLocationFromAtm
+new: @Initialized @NonNull MoveValidator
+cur: @Initialized @NonNull SimpleMoveValidator
+I am in updateStorageLocationFromAtm
+new: @Initialized @NonNull Game
+cur: @Initialized @MonotonicNonNull Game
+I am in visitMethodInvocation --------- for Method: (this).<init>() in [NullnessStore#225(
+  this > NV{@UnknownInitialization @NonNull, Object, poly nn/n=f/f}
+  initialized fields = []
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+vvvvvvvvvvvvvvvv visitObjectCreation [(this).game]
+I am in updateStorageLocationFromAtm
+new: @Initialized checker.nullness.KeyForSubchecker.ajava:(line 12,col 1): Imported type not found: assignments.farmer.farmerfactories.OrganicFarmerFactory
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/farmer/tests/OrganicFarmerTests-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 16,col 1): Type not found: assignments.farmer.tests.OrganicFarmerTests
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/frs/chap2/EmailAddress-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 1,col 1): Package not found: assignments.frs.chap2
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/frs/chap2/EmailAddress-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 26,col 1): Type not found: assignments.frs.chap2.EmailAddress
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/frs/chap2/TestEmail-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 6,col 1): Type not found: assignments.frs.chap2.TestEmail
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/frs/chap30/SnapToGridDragTracker-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 3,col 1): Imported package not found: minidraw.framework
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/frs/chap30/SnapToGridDragTracker-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 4,col 1): Imported package not found: minidraw.standard
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/frs/chap30/SnapToGridDragTracker-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 1,col 1): Package not found: assignments.frs.chap30
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/frs/chap30/SnapToGridDragTracker-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 31,col 1): Type not found: assignments.frs.chap30.SnapToGridDragTracker
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/frs/chap30/SnapToGridLogoPuzzle-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 8,col 1): Type not found: assignments.frs.chap30.SnapToGridLogoPuzzle
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/frs/chap30/SnapToGridLogoPuzzle-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 31,col 1): Type not found: assignments.frs.chap30.PuzzleFactory
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/frs/chap30/SnapToGridSelectionTool-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 5,col 1): Imported type not found: minidraw.standard.AbstractTool
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/frs/chap30/SnapToGridSelectionTool-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 6,col 1): Imported type not found: minidraw.standard.NullTool
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/frs/chap30/SnapToGridSelectionTool-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 7,col 1): Imported package not found: minidraw.standard.handlers
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/frs/chap30/SnapToGridSelectionTool-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 9,col 1): Type not found: assignments.frs.chap30.SnapToGridSelectionTool
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/frs/chap5/Board-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 3,col 1): Imported type not found: assignments.frs.chap5.Breakthrough.PieceType
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/frs/chap5/Board-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 1,col 1): Package not found: assignments.frs.chap5
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/frs/chap5/Board-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 5,col 1): Type not found: assignments.frs.chap5.Board
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/frs/chap5/Breakthrough-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 24,col 1): Type not found: assignments.frs.chap5.Breakthrough
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/frs/chap5/BreakthroughImpl-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 22,col 1): Type not found: assignments.frs.chap5.BreakthroughImpl
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/frs/chap5/InvalidMoveException-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 3,col 1): Type not found: assignments.frs.chap5.InvalidMoveException
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/frs/chap5/TestBreakthrough-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 3,col 1): Imported package not found: org.junit
+warning: /Users/erfanarvan/Desktop/comparisonPaper/wpi-njr-debug/wpi/../dataset/SimplifiedTestCode/wpi-out/assignments/frs/chap5/TestBreakthrough-org.checkerframework.checker.nullness.KeyForSubchecker.ajava:(line 24,col 1): Type not found: assignments.frs.chap5.TestBreakthrough
+100 warnings
+only showing the first 100 warnings, of 311 total; use -Xmaxwarns if you would like to see more
+@Nullable Game
+cur: @Initialized @NonNull Game
+I am in updateStorageLocationFromAtm
+new: @Initialized @NonNull PlayerDependentMoveValidator
+cur: @Initialized @NonNull MoveValidator
+I am in processMethodTree for constructor: 
+public <init>() {
+    super();
+}
+I am in checkFieldsInitialized for tree: 
+public <init>() {
+    super();
+}
+I am in updateStorageLocationFromAtm
+new: @Initialized @MonotonicNonNull NullType
+cur: @Initialized @MonotonicNonNull Game
+I am in checkFieldsInitialized for tree: 
+class SimpleMoveValidator implements MoveValidator {
+    private Game game;
+    
+    @Override
+    public void setGame(Game game) {
+        this.game = game;
+    }
+    
+    public SimpleMoveValidator() {
+        super();
+    }
+    
+    public MoveValidator createMoveValidator() {
+        return new PlayerDependentMoveValidator(game);
+    }
+}
+realpath: iteration2.diff: No such file or directory
+putting the diff for iteration 2 into 
+ending iteration 2, time taken: 2 seconds
+
+entering iteration 3
+I am in updateStorageLocationFromAtm
+new: MoveValidator
+cur: MoveValidator
+I am in updateStorageLocationFromAtm
+new: GameImpl
+cur: Game
+I am in updateStorageLocationFromAtm
+new: MoveValidator
+cur: MoveValidator
+I am in updateStorageLocationFromAtm
+new: Game
+cur: GameImpl
+I am in visitMethodInvocation --------- for Method: (this).<init>() in [NullnessStore#38(
+  mValidator > NV{@Initialized @NonNull, MoveValidator, poly nn/n=f/f}
+  this > NV{@UnknownInitialization @NonNull, Object, poly nn/n=f/f}
+  initialized fields = []
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in visitMethodInvocation --------- for Method: mValidator.setGame(this) in [NullnessStore#50(
+  mValidator > NV{@Initialized @NonNull, MoveValidator, poly nn/n=f/f}
+  this > NV{@UnknownInitialization @NonNull, Object, poly nn/n=f/f}
+  this.<init>() > NV{@UnderInitialization @NonNull, Object, poly nn/n=f/f}
+  initialized fields = []
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in updateStorageLocationFromAtm
+new: @UnderInitialization(GameImpl.class) @NonNull GameImpl
+cur: @UnknownInitialization(GameImpl.class) @NonNull Game
+I am in updateStorageLocationFromAtm
+new: @Initialized @NonNull MoveValidator
+cur: @Initialized @MonotonicNonNull MoveValidator
+I am in visitMethodInvocation --------- for Method: (this).<init>() in [NullnessStore#61(
+  this > NV{@UnknownInitialization @NonNull, Object, poly nn/n=f/f}
+  initialized fields = []
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in updateStorageLocationFromAtm
+new: @Initialized @NonNull Game
+cur: @Initialized @NonNull GameImpl
+I am in processMethodTree for constructor: 
+public <init>(MoveValidator mValidator) {
+    super();
+    mValidator.setGame(this);
+    moveValidator = mValidator;
+}
+I am in checkFieldsInitialized for tree: 
+public <init>(MoveValidator mValidator) {
+    super();
+    mValidator.setGame(this);
+    moveValidator = mValidator;
+}
+I am in processMethodTree for constructor: 
+public <init>() {
+    super();
+}
+I am in checkFieldsInitialized for tree: 
+public <init>() {
+    super();
+}
+I am in updateStorageLocationFromAtm
+new: @Initialized @MonotonicNonNull NullType
+cur: @Initialized @MonotonicNonNull MoveValidator
+I am in checkFieldsInitialized for tree: 
+class GameImpl implements Game {
+    private MoveValidator moveValidator;
+    
+    public GameImpl(MoveValidator mValidator) {
+        super();
+        mValidator.setGame(this);
+        moveValidator = mValidator;
+    }
+    
+    public GameImpl() {
+        super();
+    }
+    
+    @Override
+    public void newGame() {
+    }
+}
+I am in updateStorageLocationFromAtm
+new: SimpleMoveValidator
+cur: MoveValidator
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+I am in updateStorageLocationFromAtm
+new: MoveValidator
+cur: PlayerDependentMoveValidator
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+I am in updateStorageLocationFromAtm
+new: PlayerDependentMoveValidator
+cur: PlayerDependentMoveValidator
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+I am in updateStorageLocationFromAtm
+new: MoveValidator
+cur: MoveValidator
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+I am in updateStorageLocationFromAtm
+new: @Initialized @NonNull SimpleMoveValidator
+cur: @Initialized @NonNull MoveValidator
+I am in updateStorageLocationFromAtm
+new: @UnknownInitialization(GameImpl.class) @NonNull Game
+cur: @UnknownInitialization @NonNull Game
+I am in updateStorageLocationFromAtm
+new: @Initialized @NonNull MoveValidator
+cur: @Initialized @NonNull PlayerDependentMoveValidator
+I am in updateStorageLocationFromAtm
+new: @UnknownInitialization @NonNull Game
+cur: @Initialized @MonotonicNonNull Game
+I am in visitMethodInvocation --------- for Method: (this).<init>() in [NullnessStore#153(
+  this > NV{@UnknownInitialization @NonNull, Object, poly nn/n=f/f}
+  this.blackMoveValidator > NV{@Initialized @NonNull, SimpleMoveValidator, poly nn/n=f/f}
+  initialized fields = [blackMoveValidator]
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in visitMethodInvocation --------- for Method: (this).<init>() in [NullnessStore#163(
+  game > NV{@Initialized @Nullable, Game, poly nn/n=f/f}
+  this > NV{@UnknownInitialization @NonNull, Object, poly nn/n=f/f}
+  this.blackMoveValidator > NV{@Initialized @NonNull, SimpleMoveValidator, poly nn/n=f/f}
+  initialized fields = [blackMoveValidator]
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in visitMethodInvocation --------- for Method: this.setGame(game) in [NullnessStore#171(
+  game > NV{@Initialized @Nullable, Game, poly nn/n=f/f}
+  this > NV{@UnknownInitialization @NonNull, PlayerDependentMoveValidator, poly nn/n=f/f}
+  this.blackMoveValidator > NV{@Initialized @NonNull, SimpleMoveValidator, poly nn/n=f/f}
+  this.<init>() > NV{@UnderInitialization @NonNull, Object, poly nn/n=f/f}
+  initialized fields = [blackMoveValidator]
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in updateStorageLocationFromAtm
+new: @UnknownInitialization(GameImpl.class) @Nullable Game
+cur: @UnknownInitialization @NonNull Game
+I am in visitMethodInvocation --------- for Method: (this).blackMoveValidator.setGame(game) in [NullnessStore#184(
+  game > NV{@Initialized @NonNull, Game, poly nn/n=f/f}
+  this > NV{@UnknownInitialization @NonNull, PlayerDependentMoveValidator, poly nn/n=f/f}
+  this.blackMoveValidator > NV{@Initialized @NonNull, SimpleMoveValidator, poly nn/n=f/f}
+  this.<init>() > NV{@UnderInitialization @NonNull, Object, poly nn/n=f/f}
+  this.setGame(game) > NV{@NonNull, void, poly nn/n=f/f}
+  initialized fields = [blackMoveValidator]
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in updateStorageLocationFromAtm
+new: @UnknownInitialization(GameImpl.class) @NonNull Game
+cur: @UnknownInitialization(GameImpl.class) @NonNull Game
+I am in processMethodTree for constructor: 
+public <init>() {
+    super();
+}
+I am in checkFieldsInitialized for tree: 
+public <init>() {
+    super();
+}
+I am in updateStorageLocationFromAtm
+new: @UnknownInitialization @MonotonicNonNull NullType
+cur: @Initialized @MonotonicNonNull Game
+I am in processMethodTree for constructor: 
+public <init>(Game game) {
+    super();
+    this.setGame(game);
+    blackMoveValidator.setGame(game);
+}
+I am in checkFieldsInitialized for tree: 
+public <init>(Game game) {
+    super();
+    this.setGame(game);
+    blackMoveValidator.setGame(game);
+}
+I am in updateStorageLocationFromAtm
+new: @UnknownInitialization @MonotonicNonNull NullType
+cur: @Initialized @MonotonicNonNull Game
+I am in checkFieldsInitialized for tree: 
+class PlayerDependentMoveValidator implements MoveValidator {
+    private Game game;
+    private MoveValidator blackMoveValidator = new SimpleMoveValidator();
+    
+    @Override
+    public void setGame(Game game) {
+        this.game = game;
+    }
+    
+    public PlayerDependentMoveValidator() {
+        super();
+    }
+    
+    public PlayerDependentMoveValidator(Game game) {
+        super();
+        this.setGame(game);
+        blackMoveValidator.setGame(game);
+    }
+}
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+I am in updateStorageLocationFromAtm
+new: MoveValidator
+cur: SimpleMoveValidator
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+vvvvvvvvvvvvvvvv visitObjectCreation [(this).game]
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+I am in updateStorageLocationFromAtm
+new: PlayerDependentMoveValidator
+cur: MoveValidator
+I am in updateStorageLocationFromAtm
+new: @UnknownInitialization(GameImpl.class) @NonNull Game
+cur: @UnknownInitialization @NonNull Game
+I am in updateStorageLocationFromAtm
+new: @Initialized @NonNull MoveValidator
+cur: @Initialized @NonNull SimpleMoveValidator
+I am in updateStorageLocationFromAtm
+new: @UnknownInitialization @NonNull Game
+cur: @Initialized @MonotonicNonNull Game
+I am in visitMethodInvocation --------- for Method: (this).<init>() in [NullnessStore#225(
+  this > NV{@UnknownInitialization @NonNull, Object, poly nn/n=f/f}
+  initialized fields = []
+  invariant fields = []
+  isPoly../dataset/SimplifiedTestCode/src/Game.java:32: warning: (initialization.field.write.initialized) $$ 1 $$ this.game $$ ( 688, 697 ) $$ storing values that are possibly under initialization in the field of initialized objects is not permitted
+        this.game = game;
+            ^
+../dataset/SimplifiedTestCode/src/Game.java:39: warning: (method.invocation) $$ 3 $$ setGame(Game) $$ @UnderInitialization(PlayerDependentMoveValidator.class) @NonNull PlayerDependentMoveValidator $$ @Initialized @NonNull PlayerDependentMoveValidator $$ ( 825, 843 ) $$ call to setGame(Game) not allowed on the given receiver.
+        this.setGame(game);
+                    ^
+  found   : @UnderInitialization(PlayerDependentMoveValidator.class) @NonNull PlayerDependentMoveValidator
+  required: @Initialized @NonNull PlayerDependentMoveValidator
+../dataset/SimplifiedTestCode/src/Game.java:39: warning: (argument) $$ 4 $$ game $$ PlayerDependentMoveValidator.setGame $$ @Initialized @Nullable Game $$ @UnknownInitialization @NonNull Game $$ ( 838, 842 ) $$ incompatible argument for parameter game of PlayerDependentMoveValidator.setGame.
+        this.setGame(game);
+                     ^
+  found   : @Initialized @Nullable Game
+  required: @UnknownInitialization @NonNull Game
+../dataset/SimplifiedTestCode/src/Game.java:49: warning: (initialization.field.write.initialized) $$ 1 $$ this.game $$ ( 1052, 1061 ) $$ storing values that are possibly under initialization in the field of initialized objects is not permitted
+        this.game = game;
+            ^
+4 warnings
+NullNonNull = false
+  isPolyNullNull = false)]
+vvvvvvvvvvvvvvvv visitObjectCreation [(this).game]
+I am in updateStorageLocationFromAtm
+new: @Initialized @Nullable Game
+cur: @Initialized @Nullable Game
+I am in updateStorageLocationFromAtm
+new: @Initialized @NonNull PlayerDependentMoveValidator
+cur: @Initialized @NonNull MoveValidator
+I am in processMethodTree for constructor: 
+public <init>() {
+    super();
+}
+I am in checkFieldsInitialized for tree: 
+public <init>() {
+    super();
+}
+I am in updateStorageLocationFromAtm
+new: @UnknownInitialization @MonotonicNonNull NullType
+cur: @Initialized @MonotonicNonNull Game
+I am in checkFieldsInitialized for tree: 
+class SimpleMoveValidator implements MoveValidator {
+    private Game game;
+    
+    @Override
+    public void setGame(Game game) {
+        this.game = game;
+    }
+    
+    public SimpleMoveValidator() {
+        super();
+    }
+    
+    public MoveValidator createMoveValidator() {
+        return new PlayerDependentMoveValidator(game);
+    }
+}
+realpath: iteration3.diff: No such file or directory
+putting the diff for iteration 3 into 
+ending iteration 3, time taken: 1 seconds
+
+entering iteration 4
+I am in updateStorageLocationFromAtm
+new: MoveValidator
+cur: MoveValidator
+I am in updateStorageLocationFromAtm
+new: GameImpl
+cur: Game
+I am in updateStorageLocationFromAtm
+new: MoveValidator
+cur: MoveValidator
+I am in updateStorageLocationFromAtm
+new: Game
+cur: GameImpl
+I am in visitMethodInvocation --------- for Method: (this).<init>() in [NullnessStore#38(
+  mValidator > NV{@Initialized @NonNull, MoveValidator, poly nn/n=f/f}
+  this > NV{@UnknownInitialization @NonNull, Object, poly nn/n=f/f}
+  initialized fields = []
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in visitMethodInvocation --------- for Method: mValidator.setGame(this) in [NullnessStore#50(
+  mValidator > NV{@Initialized @NonNull, MoveValidator, poly nn/n=f/f}
+  this > NV{@UnknownInitialization @NonNull, Object, poly nn/n=f/f}
+  this.<init>() > NV{@UnderInitialization @NonNull, Object, poly nn/n=f/f}
+  initialized fields = []
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in updateStorageLocationFromAtm
+new: @UnderInitialization(GameImpl.class) @NonNull GameImpl
+cur: @UnknownInitialization(GameImpl.class) @NonNull Game
+I am in updateStorageLocationFromAtm
+new: @Initialized @NonNull MoveValidator
+cur: @Initialized @MonotonicNonNull MoveValidator
+I am in visitMethodInvocation --------- for Method: (this).<init>() in [NullnessStore#61(
+  this > NV{@UnknownInitialization @NonNull, Object, poly nn/n=f/f}
+  initialized fields = []
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in updateStorageLocationFromAtm
+new: @Initialized @NonNull Game
+cur: @Initialized @NonNull GameImpl
+I am in processMethodTree for constructor: 
+public <init>(MoveValidator mValidator) {
+    super();
+    mValidator.setGame(this);
+    moveValidator = mValidator;
+}
+I am in checkFieldsInitialized for tree: 
+public <init>(MoveValidator mValidator) {
+    super();
+    mValidator.setGame(this);
+    moveValidator = mValidator;
+}
+I am in processMethodTree for constructor: 
+public <init>() {
+    super();
+}
+I am in checkFieldsInitialized for tree: 
+public <init>() {
+    super();
+}
+I am in updateStorageLocationFromAtm
+new: @Initialized @MonotonicNonNull NullType
+cur: @Initialized @MonotonicNonNull MoveValidator
+I am in checkFieldsInitialized for tree: 
+class GameImpl implements Game {
+    private MoveValidator moveValidator;
+    
+    public GameImpl(MoveValidator mValidator) {
+        super();
+        mValidator.setGame(this);
+        moveValidator = mValidator;
+    }
+    
+    public GameImpl() {
+        super();
+    }
+    
+    @Override
+    public void newGame() {
+    }
+}
+I am in updateStorageLocationFromAtm
+new: SimpleMoveValidator
+cur: MoveValidator
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+I am in updateStorageLocationFromAtm
+new: MoveValidator
+cur: PlayerDependentMoveValidator
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+I am in updateStorageLocationFromAtm
+new: PlayerDependentMoveValidator
+cur: PlayerDependentMoveValidator
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+I am in updateStorageLocationFromAtm
+new: MoveValidator
+cur: MoveValidator
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+I am in updateStorageLocationFromAtm
+new: @Initialized @NonNull SimpleMoveValidator
+cur: @Initialized @NonNull MoveValidator
+I am in updateStorageLocationFromAtm
+new: @UnknownInitialization(GameImpl.class) @NonNull Game
+cur: @UnknownInitialization(GameImpl.class) @Nullable Game
+I am in updateStorageLocationFromAtm
+new: @Initialized @NonNull MoveValidator
+cur: @Initialized @NonNull PlayerDependentMoveValidator
+I am in updateStorageLocationFromAtm
+new: @UnknownInitialization(GameImpl.class) @Nullable Game
+cur: @UnknownInitialization @MonotonicNonNull Game
+I am in visitMethodInvocation --------- for Method: (this).<init>() in [NullnessStore#153(
+  this > NV{@UnknownInitialization @NonNull, Object, poly nn/n=f/f}
+  this.blackMoveValidator > NV{@Initialized @NonNull, SimpleMoveValidator, poly nn/n=f/f}
+  initialized fields = [blackMoveValidator]
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in visitMethodInvocation --------- for Method: (this).<init>() in [NullnessStore#163(
+  game > NV{@Initialized @Nullable, Game, poly nn/n=f/f}
+  this > NV{@UnknownInitialization @NonNull, Object, poly nn/n=f/f}
+  this.blackMoveValidator > NV{@Initialized @NonNull, SimpleMoveValidator, poly nn/n=f/f}
+  initialized fields = [blackMoveValidator]
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in visitMethodInvocation --------- for Method: this.setGame(game) in [NullnessStore#171(
+  game > NV{@Initialized @Nullable, Game, poly nn/n=f/f}
+  this > NV{@UnknownInitialization @NonNull, PlayerDependentMoveValidator, poly nn/n=f/f}
+  this.blackMoveValidator > NV{@Initialized @NonNull, SimpleMoveValidator, poly nn/n=f/f}
+  this.<init>() > NV{@UnderInitialization @NonNull, Object, poly nn/n=f/f}
+  initialized fields = [blackMoveValidator]
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in updateStorageLocationFromAtm
+new: @UnknownInitialization(GameImpl.class) @Nullable Game
+cur: @UnknownInitialization(GameImpl.class) @Nullable Game
+I am in visitMethodInvocation --------- for Method: (this).blackMoveValidator.setGame(game) in [NullnessStore#184(
+  game > NV{@Initialized @Nullable, Game, poly nn/n=f/f}
+  this > NV{@UnknownInitialization @NonNull, PlayerDependentMoveValidator, poly nn/n=f/f}
+  this.blackMoveValidator > NV{@Initialized @NonNull, SimpleMoveValidator, poly nn/n=f/f}
+  this.<init>() > NV{@UnderInitialization @NonNull, Object, poly nn/n=f/f}
+  this.setGame(game) > NV{@NonNull, void, poly nn/n=f/f}
+  initialized fields = [blackMoveValidator]
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in updateStorageLocationFromAtm
+new: @UnknownInitialization(GameImpl.class) @Nullable Game
+cur: @UnknownInitialization(GameImpl.class) @NonNull Game
+I am in processMethodTree for constructor: 
+public <init>() {
+    super();
+}
+I am in checkFieldsInitialized for tree: 
+public <init>() {
+    super();
+}
+I am in updateStorageLocationFromAtm
+new: null (NullType)
+cur: @UnknownInitialization @MonotonicNonNull Game
+I am in processMethodTree for constructor: 
+public <init>(Game game) {
+    super();
+    this.setGame(game);
+    blackMoveValidator.setGame(game);
+}
+I am in checkFieldsInitialized for tree: 
+public <init>(Game game) {
+    super();
+    this.setGame(game);
+    blackMoveValidator.setGame(game);
+}
+I am in updateStorageLocationFromAtm
+new: null (NullType)
+cur: @UnknownInitialization @MonotonicNonNull Game
+I am in checkFieldsInitialized for tree: 
+class PlayerDependentMoveValidator implements MoveValidator {
+    private Game game;
+    private MoveValidator blackMoveValidator = new SimpleMoveValidator();
+    
+    @Override
+    public void setGame(Game game) {
+        this.game = game;
+    }
+    
+    public PlayerDependentMoveValidator() {
+        super();
+    }
+    
+    public PlayerDependentMoveValidator(Game game) {
+        super();
+        this.setGame(game);
+        blackMoveValidator.setGame(game);
+    }
+}
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+I am in updateStorageLocationFromAtm
+new: MoveValidator
+cur: SimpleMoveValidator
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+vvvvvvvvvvvvvvvv visitObjectCreation [(this).game]
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+I am in updateStorageLocationFromAtm
+new: PlayerDependentMoveValidator
+cur: MoveValidator
+I am in updateStorageLocationFromAtm
+new: @UnknownInitialization(GameImpl.class) @NonNull Game
+cur: @UnknownInitialization(GameImpl.class) @NonNull Game
+I am in updateStorageLocationFromAtm
+new: @Initialized @NonNull MoveValidator
+cur: @Initialized @NonNull SimpleMoveValidator
+I am in updateStorageLocationFromAtm
+new: @UnknownInitialization(GameImpl.class) @NonNull Game
+cur: @UnknownInitialization @MonotonicNonNull Game
+I am in visitMethodInvocation --------- for Method: (this).<init>() in [NullnessStore#225(
+  this > NV{@UnknownInitialization @NonNull, Object, poly nn/n=f/f}
+  initialized fields = []
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+vvvvvvvvvvvvvvvv visitObjectCreation [(this).game]
+I am in updateStorageLocationFromAtm
+new: @UnknownInitialization @Nullable Game
+cur: @Initialized @Nullable Game
+I am in updateStorageLocationFromAtm
+new: @UnderInitialization(PlayerDependentMoveValidator.class) @NonNull PlayerDependentMoveValidator
+cur: @Initialized @NonNull MoveValidator
+I am in processMethodTree for constructor: 
+public <init>() {
+    super();
+}
+I am in checkFieldsInitialized for tree: 
+public <init>() {
+    super();
+}
+I am in updateStorageLocationFromAtm
+new: @UnknownInitialization(GameImpl.class) @MonotonicNonNull NullType
+cur: @UnknownInitialization @MonotonicNonNull Game
+I am in checkFieldsInitialized for tree: 
+class SimpleMoveValidator implements MoveValidator {
+    private Game game;
+    
+    @Override
+    public void setGame(Game game) {
+        this.game = game;
+    }
+    
+    public SimpleMoveValidator() {
+        super();
+    }
+    
+    public MoveValidator createMoveValidator() {
+        return new PlayerDependentMoveValidator(game);
+    }
+}
+../dataset/SimplifiedTestCode/src/Game.java:32: warning: (assignment) $$ 2 $$ @UnknownInitialization(GameImpl.class) @Nullable Game $$ @UnknownInitialization @MonotonicNonNull Game $$ ( 700, 704 ) $$ incompatible types in assignment.
+        this.game = game;
+                    ^
+  found   : @UnknownInitialization(GameImpl.class) @Nullable Game
+  required: @UnknownInitialization @MonotonicNonNull Game
+../dataset/SimplifiedTestCode/src/Game.java:39: warning: (method.invocation) $$ 3 $$ setGame(Game) $$ @UnderInitialization(PlayerDependentMoveValidator.class) @NonNull PlayerDependentMoveValidator $$ @Initialized @NonNull PlayerDependentMoveValidator $$ ( 825, 843 ) $$ call to setGame(Game) not allowed on the given receiver.
+        this.setGame(game);
+                    ^
+  found   : @UnderInitialization(PlayerDependentMoveValidator.class) @NonNull PlayerDependentMoveValidator
+  required: @Initialized @NonNull PlayerDependentMoveValidator
+../dataset/SimplifiedTestCode/src/Game.java:40: warning: (argument) $$ 4 $$ game $$ MoveValidator.setGame $$ @Initialized @Nullable Game $$ @UnknownInitialization(GameImpl.class) @NonNull Game $$ ( 880, 884 ) $$ incompatible argument for parameter game of MoveValidator.setGame.
+        blackMoveValidator.setGame(game);
+                                   ^
+  found   : @Initialized @Nullable Game
+  required: @UnknownInitialization(GameImpl.class) @NonNull Game
+../dataset/SimplifiedTestCode/src/Game.java:56: warning: (return) $$ 2 $$ @UnderInitialization(PlayerDependentMoveValidator.class) @NonNull PlayerDependentMoveValidator $$ @Initialized @NonNull MoveValidator $$ ( 1183, 1221 ) $$ incompatible types in return.
+        return new PlayerDependentMoveValidator(game);
+               ^
+  type of expression: @UnderInitialization(PlayerDependentMoveValidator.class) @NonNull PlayerDependentMoveValidator
+  method return type: @Initialized @NonNull MoveValidator
+../dataset/SimplifiedTestCode/src/Game.java:56: warning: (argument) $$ 4 $$ game $$ PlayerDependentMoveValidator constructor $$ @UnknownInitialization @MonotonicNonNull Game $$ @Initialized @Nullable Game $$ ( 1216, 1220 ) $$ incompatible argument for parameter game of PlayerDependentMoveValidator constructor.
+        return new PlayerDependentMoveValidator(game);
+                                                ^
+  found   : @UnknownInitialization @MonotonicNonNull Game
+  required: @Initialized @Nullable Game
+5 warnings
+realpath: iteration4.diff: No such file or directory
+putting the diff for iteration 4 into 
+ending iteration 4, time taken: 2 seconds
+
+entering iteration 5
+I am in updateStorageLocationFromAtm
+new: MoveValidator
+cur: MoveValidator
+I am in updateStorageLocationFromAtm
+new: GameImpl
+cur: Game
+I am in updateStorageLocationFromAtm
+new: MoveValidator
+cur: MoveValidator
+I am in updateStorageLocationFromAtm
+new: Game
+cur: GameImpl
+I am in visitMethodInvocation --------- for Method: (this).<init>() in [NullnessStore#38(
+  mValidator > NV{@Initialized @NonNull, MoveValidator, poly nn/n=f/f}
+  this > NV{@UnknownInitialization @NonNull, Object, poly nn/n=f/f}
+  initialized fields = []
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in visitMethodInvocation --------- for Method: mValidator.setGame(this) in [NullnessStore#50(
+  mValidator > NV{@Initialized @NonNull, MoveValidator, poly nn/n=f/f}
+  this > NV{@UnknownInitialization @NonNull, Object, poly nn/n=f/f}
+  this.<init>() > NV{@UnderInitialization @NonNull, Object, poly nn/n=f/f}
+  initialized fields = []
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in updateStorageLocationFromAtm
+new: @UnderInitialization(GameImpl.class) @NonNull GameImpl
+cur: @UnknownInitialization(GameImpl.class) @Nullable Game
+I am in updateStorageLocationFromAtm
+new: @Initialized @NonNull MoveValidator
+cur: @Initialized @MonotonicNonNull MoveValidator
+I am in visitMethodInvocation --------- for Method: (this).<init>() in [NullnessStore#61(
+  this > NV{@UnknownInitialization @NonNull, Object, poly nn/n=f/f}
+  initialized fields = []
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in updateStorageLocationFromAtm
+new: @Initialized @NonNull Game
+cur: @Initialized @NonNull GameImpl
+I am in processMethodTree for constructor: 
+public <init>(MoveValidator mValidator) {
+    super();
+    mValidator.setGame(this);
+    moveValidator = mValidator;
+}
+I am in checkFieldsInitialized for tree: 
+public <init>(MoveValidator mValidator) {
+    super();
+    mValidator.setGame(this);
+    moveValidator = mValidator;
+}
+I am in processMethodTree for constructor: 
+public <init>() {
+    super();
+}
+I am in checkFieldsInitialized for tree: 
+public <init>() {
+    super();
+}
+I am in updateStorageLocationFromAtm
+new: @Initialized @MonotonicNonNull NullType
+cur: @Initialized @MonotonicNonNull MoveValidator
+I am in checkFieldsInitialized for tree: 
+class GameImpl implements Game {
+    private MoveValidator moveValidator;
+    
+    public GameImpl(MoveValidator mValidator) {
+        super();
+        mValidator.setGame(this);
+        moveValidator = mValidator;
+    }
+    
+    public GameImpl() {
+        super();
+    }
+    
+    @Override
+    public void newGame() {
+    }
+}
+I am in updateStorageLocationFromAtm
+new: SimpleMoveValidator
+cur: MoveValidator
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+I am in updateStorageLocationFromAtm
+new: MoveValidator
+cur: PlayerDependentMoveValidator
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+I am in updateStorageLocationFromAtm
+new: PlayerDependentMoveValidator
+cur: PlayerDependentMoveValidator
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+I am in updateStorageLocationFromAtm
+new: MoveValidator
+cur: MoveValidator
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+I am in updateStorageLocationFromAtm
+new: @Initialized @NonNull SimpleMoveValidator
+cur: @Initialized @NonNull MoveValidator
+I am in updateStorageLocationFromAtm
+new: @UnknownInitialization @Nullable Game
+cur: @UnknownInitialization(GameImpl.class) @Nullable Game
+I am in updateStorageLocationFromAtm
+new: @Initialized @NonNull MoveValidator
+cur: @Initialized @NonNull PlayerDependentMoveValidator
+I am in updateStorageLocationFromAtm
+new: @UnknownInitialization(GameImpl.class) @Nullable Game
+cur: @UnknownInitialization(GameImpl.class) @Nullable Game
+I am in visitMethodInvocation --------- for Method: (this).<init>() in [NullnessStore#153(
+  this > NV{@UnknownInitialization @NonNull, Object, poly nn/n=f/f}
+  this.blackMoveValidator > NV{@Initialized @NonNull, SimpleMoveValidator, poly nn/n=f/f}
+  initialized fields = [blackMoveValidator]
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in visitMethodInvocation --------- for Method: (this).<init>() in [NullnessStore#163(
+  game > NV{@UnknownInitialization @Nullable, Game, poly nn/n=f/f}
+  this > NV{@UnknownInitialization @NonNull, Object, poly nn/n=f/f}
+  this.blackMoveValidator > NV{@Initialized @NonNull, SimpleMoveValidator, poly nn/n=f/f}
+  initialized fields = [blackMoveValidator]
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in visitMethodInvocation --------- for Method: this.setGame(game) in [NullnessStore#171(
+  game > NV{@UnknownInitialization @Nullable, Game, poly nn/n=f/f}
+  this > NV{@UnknownInitialization @NonNull, PlayerDependentMoveValidator, poly nn/n=f/f}
+  this.blackMoveValidator > NV{@Initialized @NonNull, SimpleMoveValidator, poly nn/n=f/f}
+  this.<init>() > NV{@UnderInitialization @NonNull, Object, poly nn/n=f/f}
+  initialized fields = [blackMoveValidator]
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in updateStorageLocationFromAtm
+new: @UnknownInitialization @Nullable Game
+cur: @UnknownInitialization(GameImpl.class) @Nullable Game
+I am in visitMethodInvocation --------- for Method: (this).blackMoveValidator.setGame(game) in [NullnessStore#184(
+  game > NV{@UnknownInitialization @Nullable, Game, poly nn/n=f/f}
+  this > NV{@UnknownInitialization @NonNull, PlayerDependentMoveValidator, poly nn/n=f/f}
+  this.blackMoveValidator > NV{@Initialized @NonNull, SimpleMoveValidator, poly nn/n=f/f}
+  this.<init>() > NV{@UnderInitialization @NonNull, Object, poly nn/n=f/f}
+  this.setGame(game) > NV{@NonNull, void, poly nn/n=f/f}
+  initialized fields = [blackMoveValidator]
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in updateStorageLocationFromAtm
+new: @UnknownInitialization @Nullable Game
+cur: @UnknownInitialization(GameImpl.class) @Nullable Game
+I am in processMethodTree for constructor: 
+public <init>() {
+    super();
+}
+I am in checkFieldsInitialized for tree: 
+public <init>() {
+    super();
+}
+I am in updateStorageLocationFromAtm
+new: null (NullType)
+cur: @UnknownInitialization(GameImpl.class) @Nullable Game
+I am in processMethodTree for constructor: 
+public <init>(Game game) {
+    super();
+    this.setGame(game);
+    blackMoveValidator.setGame(game);
+}
+I am in checkFieldsInitialized for tree: 
+public <init>(Game game) {
+    super();
+    this.setGame(game);
+    blackMoveValidator.setGame(game);
+}
+I am in updateStorageLocationFromAtm
+new: null (NullType)
+cur: @UnknownInitialization(GameImpl.class) @Nullable Game
+I am in checkFieldsInitialized for tree: 
+class PlayerDependentMoveValidator implements MoveValidator {
+    private Game game;
+    private MoveValidator blackMoveValidator = new SimpleMoveValidator();
+    
+    @Override
+    public void setGame(Game game) {
+        this.game = game;
+    }
+    
+    public PlayerDependentMoveValidator() {
+        super();
+    }
+    
+    public PlayerDependentMoveValidator(Game game) {
+        super();
+        this.setGame(game);
+        blackMoveValidator.setGame(game);
+    }
+}
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+I am in updateStorageLocationFromAtm
+new: MoveValidator
+cur: SimpleMoveValidator
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+vvvvvvvvvvvvvvvv visitObjectCreation [(this).game]
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+I am in updateStorageLocationFromAtm
+new: PlayerDependentMoveValidator
+cur: MoveValidator
+I am in updateStorageLocationFromAtm
+new: @UnknownInitialization @Nullable Game
+cur: @UnknownInitialization(GameImpl.class) @NonNull Game
+I am in updateStorageLocationFromAtm
+new: @Initialized @NonNull MoveValidator
+cur: @Initialized @NonNull SimpleMoveValidator
+I am in updateStorageLocationFromAtm
+new: @UnknownInitialization(GameImpl.class) @NonNull Game
+cur: @UnknownInitialization(GameImpl.class) @MonotonicNonNull Game
+I am in visitMethodInvocation --------- for Method: (this).<init>() in [NullnessStore#225(
+  this > NV{@UnknownInitialization @NonNull, Object, poly n../dataset/SimplifiedTestCode/src/Game.java:39: warning: (method.invocation) $$ 3 $$ setGame(Game) $$ @UnderInitialization(PlayerDependentMoveValidator.class) @NonNull PlayerDependentMoveValidator $$ @Initialized @NonNull PlayerDependentMoveValidator $$ ( 825, 843 ) $$ call to setGame(Game) not allowed on the given receiver.
+        this.setGame(game);
+                    ^
+  found   : @UnderInitialization(PlayerDependentMoveValidator.class) @NonNull PlayerDependentMoveValidator
+  required: @Initialized @NonNull PlayerDependentMoveValidator
+../dataset/SimplifiedTestCode/src/Game.java:39: warning: (argument) $$ 4 $$ game $$ PlayerDependentMoveValidator.setGame $$ @UnknownInitialization @Nullable Game $$ @UnknownInitialization(GameImpl.class) @Nullable Game $$ ( 838, 842 ) $$ incompatible argument for parameter game of PlayerDependentMoveValidator.setGame.
+        this.setGame(game);
+                     ^
+  found   : @UnknownInitialization @Nullable Game
+  required: @UnknownInitialization(GameImpl.class) @Nullable Game
+../dataset/SimplifiedTestCode/src/Game.java:40: warning: (argument) $$ 4 $$ game $$ MoveValidator.setGame $$ @UnknownInitialization @Nullable Game $$ @UnknownInitialization(GameImpl.class) @Nullable Game $$ ( 880, 884 ) $$ incompatible argument for parameter game of MoveValidator.setGame.
+        blackMoveValidator.setGame(game);
+                                   ^
+  found   : @UnknownInitialization @Nullable Game
+  required: @UnknownInitialization(GameImpl.class) @Nullable Game
+../dataset/SimplifiedTestCode/src/Game.java:48: warning: (override.param) $$ 7 $$ game $$ @UnknownInitialization(GameImpl.class) @NonNull Game $$ @UnknownInitialization(GameImpl.class) @Nullable Game $$ @Initialized @NonNull SimpleMoveValidator $$ @NonNull void setGame(@Initialized @NonNull SimpleMoveValidator this, @UnknownInitialization(GameImpl.class) @NonNull Game p0) $$ @Initialized @NonNull MoveValidator $$ @NonNull void setGame(@Initialized @NonNull MoveValidator this, @UnknownInitialization(GameImpl.class) @Nullable Game p0) $$ ( 1031, 1040 ) $$ Incompatible parameter type for game.
+    public void setGame(Game game) {
+                             ^
+  found   : @UnknownInitialization(GameImpl.class) @NonNull Game
+  required: @UnknownInitialization(GameImpl.class) @Nullable Game
+  Consequence: method in @Initialized @NonNull SimpleMoveValidator
+    @NonNull void setGame(@Initialized @NonNull SimpleMoveValidator this, @UnknownInitialization(GameImpl.class) @NonNull Game p0)
+  cannot override method in @Initialized @NonNull MoveValidator
+    @NonNull void setGame(@Initialized @NonNull MoveValidator this, @UnknownInitialization(GameImpl.class) @Nullable Game p0)
+4 warnings
+n/n=f/f}
+  initialized fields = []
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+vvvvvvvvvvvvvvvv visitObjectCreation [(this).game]
+I am in updateStorageLocationFromAtm
+new: @UnknownInitialization @Nullable Game
+cur: @UnknownInitialization @Nullable Game
+I am in updateStorageLocationFromAtm
+new: @UnderInitialization(PlayerDependentMoveValidator.class) @NonNull PlayerDependentMoveValidator
+cur: @UnderInitialization(PlayerDependentMoveValidator.class) @NonNull MoveValidator
+I am in processMethodTree for constructor: 
+public <init>() {
+    super();
+}
+I am in checkFieldsInitialized for tree: 
+public <init>() {
+    super();
+}
+I am in updateStorageLocationFromAtm
+new: @UnknownInitialization(GameImpl.class) @MonotonicNonNull NullType
+cur: @UnknownInitialization(GameImpl.class) @MonotonicNonNull Game
+I am in checkFieldsInitialized for tree: 
+class SimpleMoveValidator implements MoveValidator {
+    private Game game;
+    
+    @Override
+    public void setGame(Game game) {
+        this.game = game;
+    }
+    
+    public SimpleMoveValidator() {
+        super();
+    }
+    
+    public MoveValidator createMoveValidator() {
+        return new PlayerDependentMoveValidator(game);
+    }
+}
+realpath: iteration5.diff: No such file or directory
+putting the diff for iteration 5 into 
+ending iteration 5, time taken: 1 seconds
+
+entering iteration 6
+I am in updateStorageLocationFromAtm
+new: MoveValidator
+cur: MoveValidator
+I am in updateStorageLocationFromAtm
+new: GameImpl
+cur: Game
+I am in updateStorageLocationFromAtm
+new: MoveValidator
+cur: MoveValidator
+I am in updateStorageLocationFromAtm
+new: Game
+cur: GameImpl
+I am in visitMethodInvocation --------- for Method: (this).<init>() in [NullnessStore#38(
+  mValidator > NV{@Initialized @NonNull, MoveValidator, poly nn/n=f/f}
+  this > NV{@UnknownInitialization @NonNull, Object, poly nn/n=f/f}
+  initialized fields = []
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in visitMethodInvocation --------- for Method: mValidator.setGame(this) in [NullnessStore#50(
+  mValidator > NV{@Initialized @NonNull, MoveValidator, poly nn/n=f/f}
+  this > NV{@UnknownInitialization @NonNull, Object, poly nn/n=f/f}
+  this.<init>() > NV{@UnderInitialization @NonNull, Object, poly nn/n=f/f}
+  initialized fields = []
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in updateStorageLocationFromAtm
+new: @UnderInitialization(GameImpl.class) @NonNull GameImpl
+cur: @UnknownInitialization @Nullable Game
+I am in updateStorageLocationFromAtm
+new: @Initialized @NonNull MoveValidator
+cur: @Initialized @MonotonicNonNull MoveValidator
+I am in visitMethodInvocation --------- for Method: (this).<init>() in [NullnessStore#61(
+  this > NV{@UnknownInitialization @NonNull, Object, poly nn/n=f/f}
+  initialized fields = []
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in updateStorageLocationFromAtm
+new: @Initialized @NonNull Game
+cur: @Initialized @NonNull GameImpl
+I am in processMethodTree for constructor: 
+public <init>(MoveValidator mValidator) {
+    super();
+    mValidator.setGame(this);
+    moveValidator = mValidator;
+}
+I am in checkFieldsInitialized for tree: 
+public <init>(MoveValidator mValidator) {
+    super();
+    mValidator.setGame(this);
+    moveValidator = mValidator;
+}
+I am in processMethodTree for constructor: 
+public <init>() {
+    super();
+}
+I am in checkFieldsInitialized for tree: 
+public <init>() {
+    super();
+}
+I am in updateStorageLocationFromAtm
+new: @Initialized @MonotonicNonNull NullType
+cur: @Initialized @MonotonicNonNull MoveValidator
+I am in checkFieldsInitialized for tree: 
+class GameImpl implements Game {
+    private MoveValidator moveValidator;
+    
+    public GameImpl(MoveValidator mValidator) {
+        super();
+        mValidator.setGame(this);
+        moveValidator = mValidator;
+    }
+    
+    public GameImpl() {
+        super();
+    }
+    
+    @Override
+    public void newGame() {
+    }
+}
+I am in updateStorageLocationFromAtm
+new: SimpleMoveValidator
+cur: MoveValidator
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+I am in updateStorageLocationFromAtm
+new: MoveValidator
+cur: PlayerDependentMoveValidator
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+I am in updateStorageLocationFromAtm
+new: PlayerDependentMoveValidator
+cur: PlayerDependentMoveValidator
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+I am in updateStorageLocationFromAtm
+new: MoveValidator
+cur: MoveValidator
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+I am in updateStorageLocationFromAtm
+new: @Initialized @NonNull SimpleMoveValidator
+cur: @Initialized @NonNull MoveValidator
+I am in updateStorageLocationFromAtm
+new: @UnknownInitialization @Nullable Game
+cur: @UnknownInitialization @Nullable Game
+I am in updateStorageLocationFromAtm
+new: @Initialized @NonNull MoveValidator
+cur: @Initialized @NonNull PlayerDependentMoveValidator
+I am in updateStorageLocationFromAtm
+new: @UnknownInitialization @Nullable Game
+cur: @UnknownInitialization(GameImpl.class) @Nullable Game
+I am in visitMethodInvocation --------- for Method: (this).<init>() in [NullnessStore#153(
+  this > NV{@UnknownInitialization @NonNull, Object, poly nn/n=f/f}
+  this.blackMoveValidator > NV{@Initialized @NonNull, SimpleMoveValidator, poly nn/n=f/f}
+  initialized fields = [blackMoveValidator]
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in visitMethodInvocation --------- for Method: (this).<init>() in [NullnessStore#163(
+  game > NV{@UnknownInitialization @Nullable, Game, poly nn/n=f/f}
+  this > NV{@UnknownInitialization @NonNull, Object, poly nn/n=f/f}
+  this.blackMoveValidator > NV{@Initialized @NonNull, SimpleMoveValidator, poly nn/n=f/f}
+  initialized fields = [blackMoveValidator]
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in visitMethodInvocation --------- for Method: this.setGame(game) in [NullnessStore#171(
+  game > NV{@UnknownInitialization @Nullable, Game, poly nn/n=f/f}
+  this > NV{@UnknownInitialization @NonNull, PlayerDependentMoveValidator, poly nn/n=f/f}
+  this.blackMoveValidator > NV{@Initialized @NonNull, SimpleMoveValidator, poly nn/n=f/f}
+  this.<init>() > NV{@UnderInitialization @NonNull, Object, poly nn/n=f/f}
+  initialized fields = [blackMoveValidator]
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in updateStorageLocationFromAtm
+new: @UnknownInitialization @Nullable Game
+cur: @UnknownInitialization @Nullable Game
+I am in visitMethodInvocation --------- for Method: (this).blackMoveValidator.setGame(game) in [NullnessStore#184(
+  game > NV{@UnknownInitialization @Nullable, Game, poly nn/n=f/f}
+  this > NV{@UnknownInitialization @NonNull, PlayerDependentMoveValidator, poly nn/n=f/f}
+  this.blackMoveValidator > NV{@Initialized @NonNull, SimpleMoveValidator, poly nn/n=f/f}
+  this.<init>() > NV{@UnderInitialization @NonNull, Object, poly nn/n=f/f}
+  this.setGame(game) > NV{@NonNull, void, poly nn/n=f/f}
+  initialized fields = [blackMoveValidator]
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in updateStorageLocationFromAtm
+new: @UnknownInitialization @Nullable Game
+cur: @UnknownInitialization @Nullable Game
+I am in processMethodTree for constructor: 
+public <init>() {
+    super();
+}
+I am in checkFieldsInitialized for tree: 
+public <init>() {
+    super();
+}
+I am in updateStorageLocationFromAtm
+new: null (NullType)
+cur: @UnknownInitialization(GameImpl.class) @Nullable Game
+I am in processMethodTree for constructor: 
+public <init>(Game game) {
+    super();
+    this.setGame(game);
+    blackMoveValidator.setGame(game);
+}
+I am in checkFieldsInitialized for tree: 
+public <init>(Game game) {
+    super();
+    this.setGame(game);
+    blackMoveValidator.setGame(game);
+}
+I am in updateStorageLocationFromAtm
+new: null (NullType)
+cur: @UnknownInitialization(GameImpl.class) @Nullable Game
+I am in checkFieldsInitialized for tree: 
+class PlayerDependentMoveValidator implements MoveValidator {
+    private Game game;
+    private MoveValidator blackMoveValidator = new SimpleMoveValidator();
+    
+    @Override
+    public void setGame(Game game) {
+        this.game = game;
+    }
+    
+    public PlayerDependentMoveValidator() {
+        super();
+    }
+    
+    public PlayerDependentMoveValidator(Game game) {
+        super();
+        this.setGame(game);
+        blackMoveValidator.setGame(game);
+    }
+}
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+I am in updateStorageLocationFromAtm
+new: MoveValidator
+cur: SimpleMoveValidator
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+vvvvvvvvvvvvvvvv visitObjectCreation [(this).game]
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+I am in updateStorageLocationFromAtm
+new: PlayerDependentMoveValidator
+cur: MoveValidator
+I am in updateStorageLocationFromAtm
+new: @UnknownInitialization @Nullable Game
+cur: @UnknownInitialization @Nullable Game
+I am in updateStorageLocationFromAtm
+new: @Initialized @NonNull MoveValidator
+cur: @Initialized @NonNull SimpleMoveValidator
+I am in updateStorageLocationFromAtm
+new: @UnknownInitialization @Nullable Game
+cur: @UnknownInitialization(GameImpl.class) @MonotonicNonNull Game
+I am in visitMethodInvocation --------- for Method: (this).<init>() in [NullnessStore#225(
+  this > NV{@UnknownInitialization @NonNull, Object, poly nn/n=f/f}
+  initialized fields = []
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = fals../dataset/SimplifiedTestCode/src/Game.java:32: warning: (assignment) $$ 2 $$ @UnknownInitialization @Nullable Game $$ @UnknownInitialization(GameImpl.class) @Nullable Game $$ ( 700, 704 ) $$ incompatible types in assignment.
+        this.game = game;
+                    ^
+  found   : @UnknownInitialization @Nullable Game
+  required: @UnknownInitialization(GameImpl.class) @Nullable Game
+../dataset/SimplifiedTestCode/src/Game.java:39: warning: (method.invocation) $$ 3 $$ setGame(Game) $$ @UnderInitialization(PlayerDependentMoveValidator.class) @NonNull PlayerDependentMoveValidator $$ @Initialized @NonNull PlayerDependentMoveValidator $$ ( 825, 843 ) $$ call to setGame(Game) not allowed on the given receiver.
+        this.setGame(game);
+                    ^
+  found   : @UnderInitialization(PlayerDependentMoveValidator.class) @NonNull PlayerDependentMoveValidator
+  required: @Initialized @NonNull PlayerDependentMoveValidator
+../dataset/SimplifiedTestCode/src/Game.java:49: warning: (assignment) $$ 2 $$ @UnknownInitialization @Nullable Game $$ @UnknownInitialization(GameImpl.class) @MonotonicNonNull Game $$ ( 1064, 1068 ) $$ incompatible types in assignment.
+        this.game = game;
+                    ^
+  found   : @UnknownInitialization @Nullable Game
+  required: @UnknownInitialization(GameImpl.class) @MonotonicNonNull Game
+3 warnings
+e)]
+vvvvvvvvvvvvvvvv visitObjectCreation [(this).game]
+I am in updateStorageLocationFromAtm
+new: @UnknownInitialization @Nullable Game
+cur: @UnknownInitialization @Nullable Game
+I am in updateStorageLocationFromAtm
+new: @UnderInitialization(PlayerDependentMoveValidator.class) @NonNull PlayerDependentMoveValidator
+cur: @UnderInitialization(PlayerDependentMoveValidator.class) @NonNull MoveValidator
+I am in processMethodTree for constructor: 
+public <init>() {
+    super();
+}
+I am in checkFieldsInitialized for tree: 
+public <init>() {
+    super();
+}
+I am in updateStorageLocationFromAtm
+new: null (NullType)
+cur: @UnknownInitialization(GameImpl.class) @MonotonicNonNull Game
+I am in checkFieldsInitialized for tree: 
+class SimpleMoveValidator implements MoveValidator {
+    private Game game;
+    
+    @Override
+    public void setGame(Game game) {
+        this.game = game;
+    }
+    
+    public SimpleMoveValidator() {
+        super();
+    }
+    
+    public MoveValidator createMoveValidator() {
+        return new PlayerDependentMoveValidator(game);
+    }
+}
+realpath: iteration6.diff: No such file or directory
+putting the diff for iteration 6 into 
+ending iteration 6, time taken: 1 seconds
+
+entering iteration 7
+I am in updateStorageLocationFromAtm
+new: MoveValidator
+cur: MoveValidator
+I am in updateStorageLocationFromAtm
+new: GameImpl
+cur: Game
+I am in updateStorageLocationFromAtm
+new: MoveValidator
+cur: MoveValidator
+I am in updateStorageLocationFromAtm
+new: Game
+cur: GameImpl
+I am in visitMethodInvocation --------- for Method: (this).<init>() in [NullnessStore#38(
+  mValidator > NV{@Initialized @NonNull, MoveValidator, poly nn/n=f/f}
+  this > NV{@UnknownInitialization @NonNull, Object, poly nn/n=f/f}
+  initialized fields = []
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in visitMethodInvocation --------- for Method: mValidator.setGame(this) in [NullnessStore#50(
+  mValidator > NV{@Initialized @NonNull, MoveValidator, poly nn/n=f/f}
+  this > NV{@UnknownInitialization @NonNull, Object, poly nn/n=f/f}
+  this.<init>() > NV{@UnderInitialization @NonNull, Object, poly nn/n=f/f}
+  initialized fields = []
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in updateStorageLocationFromAtm
+new: @UnderInitialization(GameImpl.class) @NonNull GameImpl
+cur: @UnknownInitialization @Nullable Game
+I am in updateStorageLocationFromAtm
+new: @Initialized @NonNull MoveValidator
+cur: @Initialized @MonotonicNonNull MoveValidator
+I am in visitMethodInvocation --------- for Method: (this).<init>() in [NullnessStore#61(
+  this > NV{@UnknownInitialization @NonNull, Object, poly nn/n=f/f}
+  initialized fields = []
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in updateStorageLocationFromAtm
+new: @Initialized @NonNull Game
+cur: @Initialized @NonNull GameImpl
+I am in processMethodTree for constructor: 
+public <init>(MoveValidator mValidator) {
+    super();
+    mValidator.setGame(this);
+    moveValidator = mValidator;
+}
+I am in checkFieldsInitialized for tree: 
+public <init>(MoveValidator mValidator) {
+    super();
+    mValidator.setGame(this);
+    moveValidator = mValidator;
+}
+I am in processMethodTree for constructor: 
+public <init>() {
+    super();
+}
+I am in checkFieldsInitialized for tree: 
+public <init>() {
+    super();
+}
+I am in updateStorageLocationFromAtm
+new: @Initialized @MonotonicNonNull NullType
+cur: @Initialized @MonotonicNonNull MoveValidator
+I am in checkFieldsInitialized for tree: 
+class GameImpl implements Game {
+    private MoveValidator moveValidator;
+    
+    public GameImpl(MoveValidator mValidator) {
+        super();
+        mValidator.setGame(this);
+        moveValidator = mValidator;
+    }
+    
+    public GameImpl() {
+        super();
+    }
+    
+    @Override
+    public void newGame() {
+    }
+}
+I am in updateStorageLocationFromAtm
+new: SimpleMoveValidator
+cur: MoveValidator
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+I am in updateStorageLocationFromAtm
+new: MoveValidator
+cur: PlayerDependentMoveValidator
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+I am in updateStorageLocationFromAtm
+new: PlayerDependentMoveValidator
+cur: PlayerDependentMoveValidator
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+I am in updateStorageLocationFromAtm
+new: MoveValidator
+cur: MoveValidator
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+I am in updateStorageLocationFromAtm
+new: @Initialized @NonNull SimpleMoveValidator
+cur: @Initialized @NonNull MoveValidator
+I am in updateStorageLocationFromAtm
+new: @UnknownInitialization @Nullable Game
+cur: @UnknownInitialization @Nullable Game
+I am in updateStorageLocationFromAtm
+new: @Initialized @NonNull MoveValidator
+cur: @Initialized @NonNull PlayerDependentMoveValidator
+I am in updateStorageLocationFromAtm
+new: @UnknownInitialization @Nullable Game
+cur: @UnknownInitialization @Nullable Game
+I am in visitMethodInvocation --------- for Method: (this).<init>() in [NullnessStore#153(
+  this > NV{@UnknownInitialization @NonNull, Object, poly nn/n=f/f}
+  this.blackMoveValidator > NV{@Initialized @NonNull, SimpleMoveValidator, poly nn/n=f/f}
+  initialized fields = [blackMoveValidator]
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in visitMethodInvocation --------- for Method: (this).<init>() in [NullnessStore#163(
+  game > NV{@UnknownInitialization @Nullable, Game, poly nn/n=f/f}
+  this > NV{@UnknownInitialization @NonNull, Object, poly nn/n=f/f}
+  this.blackMoveValidator > NV{@Initialized @NonNull, SimpleMoveValidator, poly nn/n=f/f}
+  initialized fields = [blackMoveValidator]
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in visitMethodInvocation --------- for Method: this.setGame(game) in [NullnessStore#171(
+  game > NV{@UnknownInitialization @Nullable, Game, poly nn/n=f/f}
+  this > NV{@UnknownInitialization @NonNull, PlayerDependentMoveValidator, poly nn/n=f/f}
+  this.blackMoveValidator > NV{@Initialized @NonNull, SimpleMoveValidator, poly nn/n=f/f}
+  this.<init>() > NV{@UnderInitialization @NonNull, Object, poly nn/n=f/f}
+  initialized fields = [blackMoveValidator]
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in updateStorageLocationFromAtm
+new: @UnknownInitialization @Nullable Game
+cur: @UnknownInitialization @Nullable Game
+I am in visitMethodInvocation --------- for Method: (this).blackMoveValidator.setGame(game) in [NullnessStore#184(
+  game > NV{@UnknownInitialization @Nullable, Game, poly nn/n=f/f}
+  this > NV{@UnknownInitialization @NonNull, PlayerDependentMoveValidator, poly nn/n=f/f}
+  this.blackMoveValidator > NV{@Initialized @NonNull, SimpleMoveValidator, poly nn/n=f/f}
+  this.<init>() > NV{@UnderInitialization @NonNull, Object, poly nn/n=f/f}
+  this.setGame(game) > NV{@NonNull, void, poly nn/n=f/f}
+  initialized fields = [blackMoveValidator]
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+I am in updateStorageLocationFromAtm
+new: @UnknownInitialization @Nullable Game
+cur: @UnknownInitialization @Nullable Game
+I am in processMethodTree for constructor: 
+public <init>() {
+    super();
+}
+I am in checkFieldsInitialized for tree: 
+public <init>() {
+    super();
+}
+I am in updateStorageLocationFromAtm
+new: null (NullType)
+cur: @UnknownInitialization @Nullable Game
+I am in processMethodTree for constructor: 
+public <init>(Game game) {
+    super();
+    this.setGame(game);
+    blackMoveValidator.setGame(game);
+}
+I am in checkFieldsInitialized for tree: 
+public <init>(Game game) {
+    super();
+    this.setGame(game);
+    blackMoveValidator.setGame(game);
+}
+I am in updateStorageLocationFromAtm
+new: null (NullType)
+cur: @UnknownInitialization @Nullable Game
+I am in checkFieldsInitialized for tree: 
+class PlayerDependentMoveValidator implements MoveValidator {
+    private Game game;
+    private MoveValidator blackMoveValidator = new SimpleMoveValidator();
+    
+    @Override
+    public void setGame(Game game) {
+        this.game = game;
+    }
+    
+    public PlayerDependentMoveValidator() {
+        super();
+    }
+    
+    public PlayerDependentMoveValidator(Game game) {
+        super();
+        this.setGame(game);
+        blackMoveValidator.setGame(game);
+    }
+}
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+I am in updateStorageLocationFromAtm
+new: MoveValidator
+cur: SimpleMoveValidator
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+vvvvvvvvvvvvvvvv visitObjectCreation [(this).game]
+I am in updateStorageLocationFromAtm
+new: Game
+cur: Game
+I am in updateStorageLocationFromAtm
+new: PlayerDependentMoveValidator
+cur: MoveValidator
+I am in updateStorageLocationFromAtm
+new: @UnknownInitialization @Nullable Game
+cur: @UnknownInitialization @Nullable Game
+I am in updateStorageLocationFromAtm
+new: @Initialized @NonNull MoveValidator
+cur: @Initialized @NonNull SimpleMoveValidator
+I am in updateStorageLocationFromAtm
+new: @UnknownInitialization @Nullable Game
+cur: @UnknownInitialization @Nullable Game
+I am in visitMethodInvocation --------- for Method: (this).<init>() in [NullnessStore#225(
+  this > NV{@UnknownInitialization @NonNull, Object, poly nn/n=f/f}
+  initialized fields = []
+  invariant fields = []
+  isPolyNullNonNull = false
+  isPolyNullNull = false)]
+vvvvvvvvvvvvvvvv visitObjectCreation [(this).game]
+I am in updateSto../dataset/SimplifiedTestCode/src/Game.java:39: warning: (method.invocation) $$ 3 $$ setGame(Game) $$ @UnderInitialization(PlayerDependentMoveValidator.class) @NonNull PlayerDependentMoveValidator $$ @Initialized @NonNull PlayerDependentMoveValidator $$ ( 825, 843 ) $$ call to setGame(Game) not allowed on the given receiver.
+        this.setGame(game);
+                    ^
+  found   : @UnderInitialization(PlayerDependentMoveValidator.class) @NonNull PlayerDependentMoveValidator
+  required: @Initialized @NonNull PlayerDependentMoveValidator
+1 warning
+rageLocationFromAtm
+new: @UnknownInitialization @Nullable Game
+cur: @UnknownInitialization @Nullable Game
+I am in updateStorageLocationFromAtm
+new: @UnderInitialization(PlayerDependentMoveValidator.class) @NonNull PlayerDependentMoveValidator
+cur: @UnderInitialization(PlayerDependentMoveValidator.class) @NonNull MoveValidator
+I am in processMethodTree for constructor: 
+public <init>() {
+    super();
+}
+I am in checkFieldsInitialized for tree: 
+public <init>() {
+    super();
+}
+I am in updateStorageLocationFromAtm
+new: null (NullType)
+cur: @UnknownInitialization @Nullable Game
+I am in checkFieldsInitialized for tree: 
+class SimpleMoveValidator implements MoveValidator {
+    private Game game;
+    
+    @Override
+    public void setGame(Game game) {
+        this.game = game;
+    }
+    
+    public SimpleMoveValidator() {
+        super();
+    }
+    
+    public MoveValidator createMoveValidator() {
+        return new PlayerDependentMoveValidator(game);
+    }
+}
+realpath: iteration7.diff: No such file or directory
+putting the diff for iteration 7 into 

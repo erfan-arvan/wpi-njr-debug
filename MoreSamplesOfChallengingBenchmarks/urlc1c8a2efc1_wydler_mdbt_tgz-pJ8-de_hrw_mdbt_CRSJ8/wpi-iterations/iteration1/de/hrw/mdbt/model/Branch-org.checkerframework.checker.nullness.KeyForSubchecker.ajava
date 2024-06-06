@@ -1,0 +1,155 @@
+package de.hrw.mdbt.model;
+
+import java.sql.Time;
+import java.util.ArrayList;
+import com.db4o.ObjectContainer;
+import com.db4o.config.CommonConfigurationProvider;
+import com.db4o.constraints.UniqueFieldValueConstraint;
+import de.hrw.mdbt.model.Address;
+import de.hrw.mdbt.model.Vehicle;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class Branch {
+
+    private static final  Time MIN_OPENINGTIME = Time.valueOf("5:0:0");
+
+    private   boolean aboutToDelete = false;
+
+    private  String name;
+
+    private  Address address;
+
+    private  Time openingTime;
+
+    private  Time closingTime;
+
+    private  String phone;
+
+    private  ArrayList<Vehicle> vehicles = new ArrayList<Vehicle>();
+
+    @org.checkerframework.dataflow.qual.Impure
+    public Branch( String name,  Address address,  Time openingTime,  Time closingTime,  String phone) {
+        setName(name);
+        setAddress(address);
+        setOpeningTime(openingTime);
+        setClosingTime(closingTime);
+        setPhone(phone);
+    }
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public Branch() {
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  String getName( Branch this) {
+        return name;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setName( Branch this,  String name) {
+        this.name = name;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  Address getAddress( Branch this) {
+        return address;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setAddress( Branch this,  Address address) {
+        this.address = address;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  Time getOpeningTime( Branch this) {
+        return openingTime;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setOpeningTime( Branch this,  Time opening) {
+        if (opening != null && opening.before(MIN_OPENINGTIME)) {
+            throw new IllegalArgumentException("Opening time invalid!");
+        }
+        this.openingTime = opening;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  Time getClosingTime( Branch this) {
+        return closingTime;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setClosingTime( Branch this,  Time closing) {
+        this.closingTime = closing;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  String getPhone( Branch this) {
+        return phone;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setPhone( Branch this,  String phone) {
+        this.phone = phone;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  ArrayList<Vehicle> getVehicles( Branch this) {
+        return vehicles;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    protected void addVehicle( Branch this,  Vehicle vehicle) {
+        this.vehicles.add(vehicle);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    protected void removeVehicle( Branch this,  Vehicle vehicle) {
+        this.vehicles.remove(vehicle);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static void configure( CommonConfigurationProvider config) {
+        config.common().objectClass(Branch.class).objectField("phone").indexed(true);
+        config.common().add(new UniqueFieldValueConstraint(Branch.class, "phone"));
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    private   boolean checkConstraints( Branch this) {
+        //HACK: prevent inserts/updates during objectOnDelete
+        if (aboutToDelete)
+            return false;
+        if (this.name == null)
+            return false;
+        if (this.phone == null)
+            return false;
+        return true;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public   boolean objectCanNew(ObjectContainer db) {
+        return checkConstraints();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public   boolean objectCanUpdate(ObjectContainer db) {
+        return checkConstraints();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void objectOnDelete(ObjectContainer db) {
+        aboutToDelete = true;
+        ArrayList<Vehicle> vehiclesToDelete = new ArrayList<Vehicle>(vehicles);
+        for (Vehicle v : vehiclesToDelete) {
+            if (v != null) {
+                db.activate(v, 1);
+                db.delete(v);
+            }
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  String toString( Branch this) {
+        return "--------Branch--------\n" + name + "\n" + address + "\nFrom " + openingTime.toString() + " to " + closingTime.toString() + "\nPhone: " + phone + "----------------------\n";
+    }
+}

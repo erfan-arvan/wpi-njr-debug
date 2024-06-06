@@ -1,0 +1,10 @@
+package assignments.frs.chap5;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class InvalidMoveException extends Exception {
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public InvalidMoveException() {
+        super("Invalid Move.");
+    }
+}

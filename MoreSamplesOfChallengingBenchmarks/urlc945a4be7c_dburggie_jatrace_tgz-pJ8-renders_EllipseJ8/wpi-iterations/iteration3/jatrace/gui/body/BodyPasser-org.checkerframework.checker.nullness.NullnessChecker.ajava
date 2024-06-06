@@ -1,0 +1,38 @@
+package jatrace.gui.body;
+
+import jatrace.*;
+import jatrace.gui.*;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public interface BodyPasser {
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setText(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String t);
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable String getText();
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setBody(Body b);
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable Body getBody();
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setPrevBodyPasser(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull BodyPasser p);
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setNextBodyPasser(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull BodyPasser p);
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void insertBefore(@org.checkerframework.checker.initialization.qual.FBCBottom @org.checkerframework.checker.nullness.qual.NonNull BodyPasser p);
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void insertAfter(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable BodyPasser p);
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void remove();
+}

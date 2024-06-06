@@ -1,0 +1,152 @@
+package fr.inria.optimization.cmaes.examples;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import fr.inria.optimization.cmaes.CMAEvolutionStrategy;
+import fr.inria.optimization.cmaes.CMAOptions;
+import fr.inria.optimization.cmaes.CMASolution;
+import fr.inria.optimization.cmaes.fitness.FunctionCollector;
+import fr.inria.optimization.cmaes.fitness.IObjectiveFunction;
+
+/**
+ * Example of how to use the class CMAEvolutionStrategy including restarts with increasing
+ * population size (IPOP). Copy and modify the code to your convenience. Final termination criteria
+ * are stopFitness and stopMaxFunEvals (see class {@link CMAOptions}). The remaining
+ * termination criteria invoke a restart with increased population size (see incPopSizeFactor in file
+ * CMAEvolutionStrategy.properties).
+ *
+ * @see CMAEvolutionStrategy
+ *
+ * @author Nikolaus Hansen, released into public domain.
+ */
+// main
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class CMAExample2 {
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static void main(String[] args) {
+        // restarts, re-read from properties file below
+        int irun, nbRuns = 1;
+        double[] fitness;
+        // initialization to allow compilation
+        CMASolution bestSolution = null;
+        // variables used for restart
+        long counteval = 0;
+        int lambda = 0;
+        for (irun = 0; irun < nbRuns; ++irun) {
+            // might also terminate before
+            CMAEvolutionStrategy cma = new CMAEvolutionStrategy();
+            // read properties file and obtain some values for "private" use
+            // reads from file CMAEvolutionStrategy.properties
+            cma.readProperties();
+            //cma.setInitialX(-20, 80);
+            //cma.setInitialStandardDeviation(0.3 * 100);
+            // set up fitness function
+            double nbFunc = cma.options.getFirstToken(cma.getProperties().getProperty("functionNumber"), 10);
+            int rotate = cma.options.getFirstToken(cma.getProperties().getProperty("functionRotate"), 0);
+            double axisratio = cma.options.getFirstToken(cma.getProperties().getProperty("functionAxisRatio"), 0.);
+            IObjectiveFunction fitfun = new FunctionCollector(nbFunc, rotate, axisratio);
+            // set up restarts
+            nbRuns = 1 + cma.options.getFirstToken(cma.getProperties().getProperty("numberOfRestarts"), 1);
+            double incPopSizeFactor = cma.options.getFirstToken(cma.getProperties().getProperty("incPopSizeFactor"), 1.);
+            // initialize
+            if (irun == 0) {
+                // finalize setting of population size lambda, get fitness array
+                fitness = cma.init();
+                // retain lambda for restart
+                lambda = cma.parameters.getPopulationSize();
+                // overwrite output files
+                cma.writeToDefaultFilesHeaders(0);
+            } else {
+                cma.parameters.setPopulationSize((int) Math.ceil(lambda * Math.pow(incPopSizeFactor, irun)));
+                // somehow a hack
+                cma.setCountEval(counteval);
+                // provides array to assign fitness values
+                fitness = cma.init();
+            }
+            // set additional termination criterion
+            if (nbRuns > 1)
+                cma.options.stopMaxIter = (long) (100 + 200 * Math.pow(cma.getDimension(), 2) * Math.sqrt(cma.parameters.getLambda()));
+            // iteration loop
+            // for smarter console output
+            double lastTime = 0, alastTime = 0;
+            while (cma.stopConditions.isFalse()) {
+                // --- core iteration step ---
+                // get a new population of solutions
+                double[][] pop = cma.samplePopulation();
+                for (int i = 0; i < pop.length; ++i) {
+                    // for each candidate solution i
+                    // a simple way to handle constraints that define a convex feasible domain
+                    // (like box constraints, i.e. variable boundaries) via "blind re-sampling"
+                    // assumes that the feasible domain is convex, the optimum is
+                    while (//   not located on (or very close to) the domain boundary,
+                    !fitfun.isFeasible(pop[i])) //   initialX is feasible and initialStandardDeviations are
+                    pop[i] = cma.resampleSingle(i);
+                    //   sufficiently small to prevent quasi-infinite looping here
+                    // compute fitness/objective value
+                    // fitfun.valueOf() is to be minimized
+                    fitness[i] = fitfun.valueOf(pop[i]);
+                }
+                // pass fitness array to update search distribution
+                cma.updateDistribution(fitness);
+                // --- end core iteration step ---
+                // stopping conditions can be changed in file CMAEvolutionStrategy.properties
+                cma.readProperties();
+                // the remainder is output
+                cma.writeToDefaultFiles();
+                // screen output
+                // for a convenient switch to false
+                boolean printsomething = true;
+                if (printsomething && System.currentTimeMillis() - alastTime > 20e3) {
+                    cma.printlnAnnotation();
+                    alastTime = System.currentTimeMillis();
+                }
+                if (printsomething && (cma.stopConditions.isTrue() || cma.getCountIter() < 4 || (cma.getCountIter() > 0 && (Math.log10(cma.getCountIter()) % 1) < 1e-11) || System.currentTimeMillis() - lastTime > 2.5e3)) {
+                    // wait 2.5 seconds
+                    cma.println();
+                    lastTime = System.currentTimeMillis();
+                }
+            }
+            // iteration loop
+            // evaluate mean value as it is the best estimator for the optimum
+            // updates the best ever solution
+            cma.setFitnessOfMeanX(fitfun.valueOf(cma.getMeanX()));
+            // retain best solution ever found
+            if (irun == 0)
+                bestSolution = cma.getBestSolution();
+            else if (cma.getBestSolution().getFitness() < bestSolution.getFitness())
+                bestSolution = cma.getBestSolution();
+            // final output for the run
+            // 1 == make sure to write final result
+            cma.writeToDefaultFiles(1);
+            cma.println("Terminated (run " + (irun + 1) + ") due to");
+            for (String s : cma.stopConditions.getMessages()) cma.println("      " + s);
+            cma.println("    best function value " + cma.getBestFunctionValue() + " at evaluation " + cma.getBestEvaluationNumber());
+            // quit restart loop if MaxFunEvals or target Fitness are reached
+            boolean quit = false;
+            for (String s : cma.stopConditions.getMessages()) if (s.startsWith("MaxFunEvals") || s.startsWith("Fitness"))
+                quit = true;
+            if (quit)
+                break;
+            counteval = cma.getCountEval();
+            if (// after Manual stop give time out to change stopping condition
+            irun < nbRuns - 1)
+                for (String s : cma.stopConditions.getMessages()) if (s.startsWith("Manual")) {
+                    System.out.println("incomment 'stop now' and press return to start next run");
+                    BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+                    try {
+                        in.readLine();
+                    } catch (IOException e) {
+                        System.out.println("input not readable");
+                    }
+                }
+        }
+        // for irun < nbRuns
+        // screen output
+        if (irun > 1) {
+            System.out.println(" " + (irun) + " runs conducted, best function value " + bestSolution.getFitness() + " at evaluation " + bestSolution.getEvaluationNumber());
+        }
+    }
+}
+// class

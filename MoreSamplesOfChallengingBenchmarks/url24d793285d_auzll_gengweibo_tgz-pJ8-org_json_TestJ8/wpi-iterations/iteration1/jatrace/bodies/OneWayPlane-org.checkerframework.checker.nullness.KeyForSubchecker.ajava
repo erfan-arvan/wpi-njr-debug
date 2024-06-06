@@ -1,0 +1,37 @@
+package jatrace.bodies;
+
+import jatrace.*;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class OneWayPlane extends Plane {
+
+    //Vector n;
+    /**
+     * Instantiates a plane with given positin, normal, and color.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public OneWayPlane( Vector p,  Vector n,  Color c) {
+        super(p, n, c);
+        //n = super.getNormal(new Vector(0.0,0.0,0.0));
+    }
+
+    /**
+     * Instantiates a default plane (gray, at origin, pointing up).
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public OneWayPlane() {
+        super();
+        //n = super.getNormal(new Vector(0.0,0.0,0.0));
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public   double intersection( OneWayPlane this,  Ray ray) {
+        Vector d = ray.d();
+        //if (n.dot(d) > 0.0)
+        if (super.normal.dot(d) > 0.0) {
+            return -1.0;
+        } else {
+            return super.intersection(ray);
+        }
+    }
+}

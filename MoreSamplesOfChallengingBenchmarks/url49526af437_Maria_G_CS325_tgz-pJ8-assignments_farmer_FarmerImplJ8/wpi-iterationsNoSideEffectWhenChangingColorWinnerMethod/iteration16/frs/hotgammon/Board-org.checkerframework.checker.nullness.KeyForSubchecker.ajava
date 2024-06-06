@@ -1,0 +1,23 @@
+package frs.hotgammon;
+
+import frs.hotgammon.framework.Color;
+import frs.hotgammon.framework.Location;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public interface Board {
+
+    @org.checkerframework.dataflow.qual.Impure
+    public abstract   boolean move( Board this,  Location from,  Location to,  Color playerInTurn);
+
+    @org.checkerframework.dataflow.qual.Impure
+    public abstract   int getCountAt( Board this,  Location loc);
+
+    @org.checkerframework.dataflow.qual.Impure
+    public abstract  Color getColorAt( Board this,  Location loc);
+
+    @org.checkerframework.dataflow.qual.Impure
+    public abstract   boolean place( Board this,  Color col,   int index);
+
+    @org.checkerframework.dataflow.qual.Impure
+    public   boolean remove( Board this,  Color col,   int index);
+}

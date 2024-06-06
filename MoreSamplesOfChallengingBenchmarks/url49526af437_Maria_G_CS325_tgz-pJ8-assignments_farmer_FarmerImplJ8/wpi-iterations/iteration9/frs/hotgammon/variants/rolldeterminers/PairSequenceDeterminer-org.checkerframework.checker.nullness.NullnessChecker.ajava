@@ -1,0 +1,26 @@
+package frs.hotgammon.variants.rolldeterminers;
+
+import frs.hotgammon.RollDeterminer;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class PairSequenceDeterminer implements RollDeterminer {
+
+    private final  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] DICE_ROLLS = { { 1, 2 }, { 3, 4 }, { 5, 6 } };
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int diceRollIdx = 2;
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void rollDice(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull PairSequenceDeterminer this) {
+        diceRollIdx = ((diceRollIdx < 2) ? diceRollIdx + 1 : 0);
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] getDiceRoll(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull PairSequenceDeterminer this) {
+        return DICE_ROLLS[diceRollIdx];
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void reset(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull PairSequenceDeterminer this) {
+        diceRollIdx = 2;
+    }
+}

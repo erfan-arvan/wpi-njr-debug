@@ -1,0 +1,14 @@
+package assignments.farmer.actionstrategies;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public interface PlantStrategy {
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void plantInTheSpring( PlantStrategy this);
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void plantInTheSummer( PlantStrategy this);
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void plantInTheFall( PlantStrategy this);
+}

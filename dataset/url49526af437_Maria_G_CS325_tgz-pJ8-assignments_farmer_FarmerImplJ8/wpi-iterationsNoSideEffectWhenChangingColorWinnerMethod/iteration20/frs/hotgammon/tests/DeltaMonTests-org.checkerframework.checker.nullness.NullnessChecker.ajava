@@ -1,0 +1,35 @@
+package frs.hotgammon.tests;
+
+import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
+import frs.hotgammon.framework.Color;
+import frs.hotgammon.common.GameImpl;
+import frs.hotgammon.variants.movevalidators.SimpleMoveValidator;
+import frs.hotgammon.variants.rolldeterminers.PairSequenceDeterminer;
+import frs.hotgammon.variants.turndeterminers.AceyDeuceyTurnDeterminer;
+import frs.hotgammon.variants.winnerdeterminers.SixMoveWinnerDeterminer;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class DeltaMonTests {
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull GameImpl game;
+
+    @org.checkerframework.checker.nullness.qual.EnsuresNonNull({ "this.game" })
+    @org.checkerframework.dataflow.qual.Impure
+    public void setup() {
+        game = new GameImpl(new SimpleMoveValidator(), new SixMoveWinnerDeterminer(), new AceyDeuceyTurnDeterminer(), new PairSequenceDeterminer());
+        game.newGame();
+    }
+
+    @org.checkerframework.checker.nullness.qual.EnsuresNonNull({ "this.game" })
+    @org.checkerframework.dataflow.qual.Impure
+    public void shouldGiveBlackConsectiveTurnsAfter12() {
+        game.nextTurn();
+        assertEquals(Color.BLACK, game.getPlayerInTurn());
+        game.nextTurn();
+        assertEquals(Color.BLACK, game.getPlayerInTurn());
+        game.nextTurn();
+        assertEquals(Color.RED, game.getPlayerInTurn());
+    }
+}

@@ -1,0 +1,53 @@
+package core;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class Jugador {
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull EstadoCasilla color;
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int puntaje;
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull [] estrategia;
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public Jugador(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull EstadoCasilla color) {
+        super();
+        this.color = color;
+        this.puntaje = 0;
+        //cargar estrategia desde un archivo
+        this.estrategia = null;
+    }
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public Jugador(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull EstadoCasilla color,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int puntaje,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] estrategia) {
+        super();
+        this.color = color;
+        this.puntaje = puntaje;
+        this.estrategia = estrategia;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull EstadoCasilla color() {
+        return color;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getPuntaje() {
+        return puntaje;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setPuntaje( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int puntaje) {
+        this.puntaje = puntaje;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable [] getEstrategia() {
+        return estrategia;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setEstrategia( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] estrategia) {
+        this.estrategia = estrategia;
+    }
+}

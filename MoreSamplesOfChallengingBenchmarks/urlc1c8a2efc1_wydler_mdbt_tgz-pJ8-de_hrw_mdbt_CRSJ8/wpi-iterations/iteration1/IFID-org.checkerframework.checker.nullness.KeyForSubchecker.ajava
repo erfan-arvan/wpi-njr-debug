@@ -1,0 +1,53 @@
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class IFID {
+
+    //Pipeline register for stage IF/ID
+    //There should be a read side and a write side
+    private static   int readInstruction;
+
+    private static   int writeInstruction;
+
+    private static   int readPCIncr;
+
+    private static   int writePCIncr;
+
+    @org.checkerframework.dataflow.qual.Pure
+    public static   int getReadInstruction() {
+        return readInstruction;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static void setReadInstruction(  int readInstruction) {
+        IFID.readInstruction = readInstruction;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public static   int getWriteInstruction() {
+        return writeInstruction;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static void setWriteInstruction(  int writeInstruction) {
+        IFID.writeInstruction = writeInstruction;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public static   int getReadPCIncr() {
+        return readPCIncr;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static void setReadPCIncr(int readPCIncr) {
+        IFID.readPCIncr = readPCIncr;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public static   int getWritePCIncr() {
+        return writePCIncr;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static void setWritePCIncr(int writePCIncr) {
+        IFID.writePCIncr = writePCIncr;
+    }
+}

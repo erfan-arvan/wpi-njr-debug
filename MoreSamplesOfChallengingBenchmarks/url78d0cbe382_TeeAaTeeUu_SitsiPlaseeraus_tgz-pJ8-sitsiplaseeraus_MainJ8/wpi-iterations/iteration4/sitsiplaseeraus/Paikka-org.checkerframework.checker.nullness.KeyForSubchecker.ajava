@@ -1,0 +1,143 @@
+package sitsiplaseeraus;
+
+/**
+ * Paikan kaikki tiedot, eli missä pöydässä kyseinen "tuoli" on, millä paikalla ja mitkä tuolit ovat sen vieressä.
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class Paikka {
+
+    private   int paikka;
+
+    private   int poyta;
+
+    private  Sitsaaja sitsaaja;
+
+    private  Paikka naisenAvecinPaikka;
+
+    private  Paikka puolisonPaikka;
+
+    private  Paikka miehenAvecinPaikka;
+
+    private   boolean miehenPaikka;
+
+    /**
+     * Alustaa pöydän paikoilleen
+     * @param poyta missä pöydässä
+     * @param paikka millä paikalla
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public Paikka(  int poyta,   int paikka) {
+        this.setPoyta(poyta);
+        this.setPaikka(paikka);
+    }
+
+    /**
+     * Palauttaa millä paikalla
+     * @return paikan luku
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public   int getPaikka( Paikka this) {
+        return paikka;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void setPaikka( Paikka this,   int paikka) {
+        this.paikka = paikka;
+    }
+
+    /**
+     * Palauttaa monenessako pöydässä
+     * @return pöydän numero
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public   int getPoyta( Paikka this) {
+        return poyta;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void setPoyta( Paikka this,   int poyta) {
+        this.poyta = poyta;
+    }
+
+    /**
+     * Asettaa paikalle sitsaajan
+     * @param sitsaaja
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void setSitsaaja( Paikka this,  Sitsaaja sitsaaja) {
+        this.sitsaaja = sitsaaja;
+    }
+
+    /**
+     * Palauttaa paikan sitsaajan
+     * @return Sitsaaja
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public  Sitsaaja getSitsaaja( Paikka this) {
+        return sitsaaja;
+    }
+
+    /**
+     * Palauttaa naisen avecin paikka-olion
+     * @return
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public  Paikka getNaisenAvecinPaikka( Paikka this) {
+        return naisenAvecinPaikka;
+    }
+
+    /**
+     * Asettaa naisen avecin paikan (tarvitsee tehdä vain kerran, kun tuolit eivät vaihda paikkaa)
+     * @param avecinPaikka
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void setNaisenAvecinPaikka( Paikka this,  Paikka avecinPaikka) {
+        this.naisenAvecinPaikka = avecinPaikka;
+    }
+
+    /**
+     * Palauttaa puolison paikka-olion, eli vastapäätä olevan
+     * @return
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public  Paikka getPuolisonPaikka( Paikka this) {
+        return puolisonPaikka;
+    }
+
+    /**
+     * Asettaa puolison paikan (tarvitsee tehdä vain kerran, kun tuolit eivät vaihda paikkaa)
+     * @param puolisonPaikka
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void setPuolisonPaikka( Paikka this,  Paikka puolisonPaikka) {
+        this.puolisonPaikka = puolisonPaikka;
+    }
+
+    /**
+     * Asettaa miehen avecin paikan (tarvitsee tehdä vain kerran, kun tuolit eivät vaihda paikkaa)
+     * @param avecinPaikka
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void setMiehenAvecinPaikka( Paikka this,  Paikka avecinPaikka) {
+        this.miehenAvecinPaikka = avecinPaikka;
+    }
+
+    /**
+     * Palauttaa miehen avecin paikka-olion
+     * @return
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public  Paikka getMiehenAvecinPaikka( Paikka this) {
+        return miehenAvecinPaikka;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   boolean isMiehenPaikka( Paikka this) {
+        return miehenPaikka;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setMiehenPaikka( Paikka this,   boolean miehenPaikka) {
+        this.miehenPaikka = miehenPaikka;
+    }
+}

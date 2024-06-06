@@ -1,0 +1,91 @@
+package assignments.frs.chap5;
+
+import assignments.frs.chap5.Breakthrough.PieceType;
+
+/**
+ * Implementation stub.
+ *
+ *   This source code is from the book
+ *     "Flexible, Reliable Software:
+ *       Using Patterns and Agile Development"
+ *     published 2010 by CRC Press.
+ *   Author:
+ *     Henrik B Christensen
+ *     Computer Science Department
+ *     Aarhus University
+ *
+ *   This source code is provided WITHOUT ANY WARRANTY either
+ *   expressed or implied. You may study, use, modify, and
+ *   distribute it for non-commercial purposes. For any
+ *   commercial use, see http://www.baerbak.com/
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class BreakthroughImpl implements Breakthrough {
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull PlayerType playerInTurn = PlayerType.WHITE;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Board board = new Board();
+
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull PieceType getPieceAt(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull BreakthroughImpl this,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int row,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int column) {
+        return board.get(row, column);
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull PlayerType getPlayerInTurn(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull BreakthroughImpl this) {
+        return playerInTurn;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable PlayerType getWinner(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull BreakthroughImpl this) {
+        for (int col = 0; col < 8; col++) {
+            if (board.get(0, col) == PieceType.WHITE) {
+                return PlayerType.WHITE;
+            }
+            if (board.get(7, col) == PieceType.BLACK) {
+                return PlayerType.BLACK;
+            }
+        }
+        return null;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean isMoveValid(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull BreakthroughImpl this,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int fromRow,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int fromColumn,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int toRow,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int toColumn) {
+        int rowsDiff = (playerInTurn == PlayerType.BLACK) ? (-1 * (fromRow - toRow)) : (fromRow - toRow);
+        int colsDiff = (fromColumn - toColumn) < 0 ? (-1 * (fromColumn - toColumn)) : (fromColumn - toColumn);
+        PieceType toSquare = board.get(toRow, toColumn);
+        PieceType fromSquare = board.get(fromRow, fromColumn);
+        PieceType currentPlayerPieceType = (playerInTurn == PlayerType.WHITE) ? PieceType.WHITE : PieceType.BLACK;
+        if (currentPlayerPieceType != fromSquare) {
+            return false;
+        }
+        if (rowsDiff > 1 || colsDiff > 1) {
+            //Move more than one square
+            return false;
+        } else if (rowsDiff == 1 && colsDiff == 0) {
+            //Move Forward
+            if (toSquare == PieceType.NONE) {
+                return true;
+            }
+        } else if (rowsDiff == 1 && colsDiff == 1) {
+            //Move Diagonally
+            if (toSquare != currentPlayerPieceType) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void move(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull BreakthroughImpl this,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int fromRow,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int fromColumn,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int toRow,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int toColumn) throws InvalidMoveException {
+        if (isMoveValid(fromRow, fromColumn, toRow, toColumn)) {
+            board.set(toRow, toColumn, board.get(fromRow, fromColumn));
+            board.set(fromRow, fromColumn, PieceType.NONE);
+            //board.print();
+            //Toggle playerInTurn
+            playerInTurn = (playerInTurn == PlayerType.WHITE) ? PlayerType.BLACK : PlayerType.WHITE;
+        } else {
+            throw new InvalidMoveException();
+        }
+    }
+}

@@ -1,0 +1,69 @@
+package jatrace.gui.builders;
+
+import jatrace.gui.*;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class DoubleBuilder extends JPanel implements FocusListener {
+
+     JLabel label;
+
+     JTextField field;
+
+    @org.checkerframework.dataflow.qual.Impure
+    public DoubleBuilder( String name,   double value) {
+        //super(new GridLayout(1,2));
+        super();
+        setPreferredSize(new Dimension(0, 25));
+        label = new JLabel(name, JLabel.CENTER);
+        add(label);
+        field = new JTextField(Double.toString(value), 5);
+        field.addFocusListener(this);
+        add(field);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public   double getValue( DoubleBuilder this) {
+        return getValue(1.0);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public   double getValue( DoubleBuilder this,   double divideByIfInt) throws NumberFormatException {
+        String input = field.getText();
+        double d = 0.0;
+        try {
+            d = Double.parseDouble(input);
+        } catch (NumberFormatException e) {
+            String l;
+            l = "couldn't decode " + input + " as double, attempting as int";
+            System.out.println(l);
+            d = Integer.decode(input) / divideByIfInt;
+        }
+        return d;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setValue(double d) {
+        field.setText(Double.toString(d));
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void requestFocus( DoubleBuilder this) {
+        field.requestFocus();
+    }
+
+    // Focus Listener Interface Below
+    @org.checkerframework.dataflow.qual.Impure
+    public void focusGained( DoubleBuilder this,  FocusEvent e) {
+        Component c = e.getComponent();
+        if (c instanceof JTextField) {
+            ((JTextField) c).selectAll();
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public void focusLost( DoubleBuilder this,  FocusEvent e) {
+    }
+}

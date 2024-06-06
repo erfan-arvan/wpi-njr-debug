@@ -1,0 +1,31 @@
+package frs.hotgammon.variants.rolldeterminers;
+
+import java.util.Random;
+import frs.hotgammon.RollDeterminer;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class RandomRollDeterminer implements RollDeterminer {
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] diceRoll = new int[2];
+
+    private final  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] POSSIBLE_DICE_VALUES = { 1, 2, 3, 4, 5, 6 };
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void rollDice(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull RandomRollDeterminer this) {
+        Random r = new Random();
+        diceRoll = new int[] { POSSIBLE_DICE_VALUES[r.nextInt(POSSIBLE_DICE_VALUES.length - 1)], POSSIBLE_DICE_VALUES[r.nextInt(POSSIBLE_DICE_VALUES.length - 1)] };
+        if (diceRoll[0] == diceRoll[1]) {
+            diceRoll = new int[] { diceRoll[0], diceRoll[1], diceRoll[0], diceRoll[1] };
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] getDiceRoll(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull RandomRollDeterminer this) {
+        return diceRoll;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void reset(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull RandomRollDeterminer this) {
+        diceRoll = new int[2];
+    }
+}

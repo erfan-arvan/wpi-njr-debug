@@ -1,0 +1,41 @@
+package com.ctriposs.bigmap.utils;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class Calculator {
+
+    /**
+     * mod by shift
+     *
+     * @param val
+     * @param bits
+     * @return
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull long mod( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull long val,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int bits) {
+        return val - ((val >> bits) << bits);
+    }
+
+    /**
+     * multiply by shift
+     *
+     * @param val
+     * @param bits
+     * @return
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull long mul( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull long val,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int bits) {
+        return val << bits;
+    }
+
+    /**
+     * divide by shift
+     *
+     * @param val
+     * @param bits
+     * @return
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull long div( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull long val,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int bits) {
+        return val >> bits;
+    }
+}

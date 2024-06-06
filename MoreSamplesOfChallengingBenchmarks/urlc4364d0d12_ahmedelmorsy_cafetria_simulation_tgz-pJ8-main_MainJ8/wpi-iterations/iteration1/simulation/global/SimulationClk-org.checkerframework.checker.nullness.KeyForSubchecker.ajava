@@ -1,0 +1,7 @@
+package simulation.global;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class SimulationClk {
+
+    public static   int clock;
+}

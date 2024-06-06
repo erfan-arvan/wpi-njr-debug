@@ -1,0 +1,124 @@
+package frs.hotgammon.view;
+
+import java.awt.Point;
+import minidraw.framework.DrawingEditor;
+import minidraw.framework.Figure;
+import minidraw.standard.StandardDrawing;
+import frs.hotgammon.framework.Color;
+import frs.hotgammon.framework.Game;
+import frs.hotgammon.framework.GameObserver;
+import frs.hotgammon.framework.Location;
+import frs.hotgammon.view.figures.CheckerFigure;
+import frs.hotgammon.view.figures.DieFigure;
+import frs.hotgammon.view.tools.HotGammonTool;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class HotGammonDrawing extends StandardDrawing implements GameObserver {
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull DieFigure @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] dice = new DieFigure[2];
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int diceIdx = 0;
+
+    @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Point @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] diePoints = { new Point(216, 202), new Point(306, 202) };
+
+    protected @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull Game subject;
+
+    protected @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull DrawingEditor editor;
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public HotGammonDrawing(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull DrawingEditor editor) {
+        this.editor = editor;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public HotGammonDrawing(DrawingEditor editor, Game game) {
+        this(editor);
+        setGame(game);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setGame(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Game subject) {
+        this.subject = subject;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean isGameMotivatedMove(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable Location from, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable Location to) {
+        return (from.equals(Location.R_BEAR_OFF) || from.equals(Location.B_BEAR_OFF) || to.equals(Location.B_BAR) || to.equals(Location.R_BAR)) && (isMove(from, to));
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean isMove(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Location from, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable Location to) {
+        return !(from.equals(to));
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void checkerMove(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull HotGammonDrawing this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable Location from, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable Location to) {
+        if (isGameMotivatedMove(from, to)) {
+            Point pFrom = Convert.locationAndCount2xy(from, subject.getCount(from));
+            Point pTo = Convert.locationAndCount2xy(to, subject.getCount(to) - 1);
+            lock();
+            Figure clickedFig = findFigure(pFrom.x, pFrom.y);
+            unlock();
+            if (!isChecker(clickedFig)) {
+                Color color = subject.getColor(to);
+                clickedFig = new CheckerFigure(color, pFrom);
+                lock();
+                add(clickedFig);
+                unlock();
+            }
+            lock();
+            clickedFig.moveBy(pTo.x - pFrom.x, pTo.y - pFrom.y);
+            unlock();
+        }
+        if (!(from.equals(Location.R_BEAR_OFF) || from.equals(Location.B_BEAR_OFF)) && this.subject.getNumberOfMovesLeft() == 0) {
+            ((HotGammonTool) this.editor.tool()).setState(HotGammonTool.DIE_ROLL_TOOL);
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    protected  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean isChecker(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable Figure fig) {
+        return (fig != null && fig instanceof CheckerFigure);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void diceRolled(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull HotGammonDrawing this,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] values) {
+        for (int i = 0; i < values.length; i++) {
+            addDie(values[i]);
+        }
+        if ((this.subject.getPlayerInTurn() == Color.NONE)) {
+            ((HotGammonTool) this.editor.tool()).setState(HotGammonTool.DIE_ROLL_TOOL);
+        } else {
+            ((HotGammonTool) this.editor.tool()).setState(HotGammonTool.MOVE_TOOL);
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void addDie( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int value) {
+        int diceIdxVal = diceIdx % 2;
+        if (dice[diceIdxVal] == null) {
+            dice[diceIdxVal] = new DieFigure(value, diePoints[diceIdxVal]);
+            add(dice[diceIdxVal]);
+        } else {
+            dice[diceIdxVal].set("die" + value, diePoints[diceIdxVal]);
+            dice[diceIdxVal].changed();
+        }
+        diceIdx++;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void addChecker(Color color, Point pt) {
+        CheckerFigure cF = new CheckerFigure(color, pt);
+        add(cF);
+        cF.changed();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setStatus(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull HotGammonDrawing this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String status) {
+        this.editor.showStatus(status);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void gameOver(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull HotGammonDrawing this) {
+        ((HotGammonTool) this.editor.tool()).setState(HotGammonTool.GAME_OVER_TOOL);
+    }
+}

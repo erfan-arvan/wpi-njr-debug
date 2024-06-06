@@ -1,0 +1,26 @@
+package frs.hotgammon.tests.preGuiTests;
+
+import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
+import frs.hotgammon.common.GameImpl;
+import frs.hotgammon.framework.Color;
+import frs.hotgammon.tests.preGuiTests.stubs.Fixed_BlackStarts_EpsilonMonFactory;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class BlackStartsEpsilonMonTests {
+
+    private  GameImpl game;
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setup() {
+        game = new GameImpl(new Fixed_BlackStarts_EpsilonMonFactory());
+        game.newGame();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void blackShouldBeFirstPlayer() {
+        game.nextTurn();
+        assertEquals(Color.BLACK, game.getPlayerInTurn());
+    }
+}

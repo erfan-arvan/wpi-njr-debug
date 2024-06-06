@@ -1,0 +1,39 @@
+/**
+ * http://auzll.iteye.com/
+ */
+package com.gengweibo.dao;
+
+import java.util.List;
+import com.gengweibo.weibo.IWeibo;
+
+/**
+ * @author auzll@msn.com
+ * @since 2011-3-18
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public interface WeiboDao {
+
+    /**
+     * 保存新连接的微博帐户，如果原本有weiboId相同的，覆盖之(为了保障token的有效性)。
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    void save( WeiboDao this,  IWeibo weibo);
+
+    /**
+     * 更新微博帐户的同步状态，也就是是否同步推送微博
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    void updateSyn( WeiboDao this,  String weiboId,   boolean synUpdate);
+
+    /**
+     * 删除已连接的微博帐户
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    void delete( WeiboDao this,  String weiboId);
+
+    /**
+     * 根据weiboId查询相关的已连接的微博帐户。weiboId找到accountId，再根据accountId加载所有的微博帐户。
+     */
+    @org.checkerframework.dataflow.qual.Impure
+     List<IWeibo> queryRelatedList( WeiboDao this,  String weiboId);
+}

@@ -1,0 +1,42 @@
+package jatrace.gui;
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class ScrollableGridPanel extends JPanel implements Scrollable {
+
+    private static  Dimension preferredSize = new Dimension(200, 0);
+
+    @org.checkerframework.dataflow.qual.Impure
+    public ScrollableGridPanel() {
+        super(new GridLayout(0, 1, 0, 5));
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   boolean getScrollableTracksViewportHeight( ScrollableGridPanel this) {
+        return false;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   boolean getScrollableTracksViewportWidth( ScrollableGridPanel this) {
+        return true;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  Dimension getPreferredScrollableViewportSize( ScrollableGridPanel this) {
+        return preferredSize;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   int getScrollableBlockIncrement( ScrollableGridPanel this,  Rectangle visibleRect,   int orientation,   int direction) {
+        return 30;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   int getScrollableUnitIncrement( ScrollableGridPanel this,  Rectangle visibleRect,   int orientation,   int direction) {
+        return 30;
+    }
+}

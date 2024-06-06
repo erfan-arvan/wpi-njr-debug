@@ -1,0 +1,92 @@
+package de.hrw.mdbt.model;
+
+import java.util.ArrayList;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class PriceClass {
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull String name;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull String description;
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull float freeKm;
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull float priceKm;
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull float priceDay;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull ArrayList<Model> models = new ArrayList<Model>();
+
+    @org.checkerframework.dataflow.qual.Impure
+    public PriceClass(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String name, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String description,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int freeKm,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int priceDay,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int priceKm) {
+        this.setName(name);
+        this.setDescription(description);
+        this.setFreeKm(freeKm);
+        this.setPriceDay(priceDay);
+        this.setPriceKm(priceKm);
+    }
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public PriceClass() {
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void addModel(Model m) {
+        models.add(m);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void removeModel(Model m) {
+        models.remove(m);
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable String getName() {
+        return name;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setName(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String name) {
+        this.name = name;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable String getDescription() {
+        return description;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setDescription(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String description) {
+        this.description = description;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull float getFreeKm() {
+        return freeKm;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setFreeKm( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull float freeKm) {
+        this.freeKm = freeKm;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull float getPriceKm() {
+        return priceKm;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setPriceKm( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull float priceKm) {
+        this.priceKm = priceKm;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull float getPriceDay() {
+        return priceDay;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setPriceDay( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull float priceDay) {
+        this.priceDay = priceDay;
+    }
+}

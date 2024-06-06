@@ -1,0 +1,580 @@
+package frs.hotgammon.common;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import frs.hotgammon.Board;
+import frs.hotgammon.MonFactory;
+import frs.hotgammon.MoveValidator;
+import frs.hotgammon.RollDeterminer;
+import frs.hotgammon.TurnDeterminer;
+import frs.hotgammon.WinnerDeterminer;
+import frs.hotgammon.framework.Color;
+import frs.hotgammon.framework.Game;
+import frs.hotgammon.framework.GameObserver;
+import frs.hotgammon.framework.Location;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class VisualGameImpl implements Game {
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull Board gameBoard;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull Color playerInTurn;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull List<Integer> diceRoll;
+
+    protected  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int movesLeft;
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int turns;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull MoveValidator moveValidator;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull WinnerDeterminer winnerDeterminer;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull TurnDeterminer turnDeterminer;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull RollDeterminer diceRollDeterminer;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull ArrayList<GameObserver> observers = new ArrayList<GameObserver>();
+
+    //Added
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull ArrayList<MoveRecord> turnMoves;
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int turnMovesIdx;
+
+    //
+    @org.checkerframework.dataflow.qual.Impure
+    public VisualGameImpl(MoveValidator mValidator, WinnerDeterminer wDeterminer, TurnDeterminer tDeterminer, RollDeterminer drDeterminer) {
+        mValidator.setGame(this);
+        wDeterminer.setGame(this);
+        tDeterminer.setGame(this);
+        moveValidator = mValidator;
+        winnerDeterminer = wDeterminer;
+        turnDeterminer = tDeterminer;
+        diceRollDeterminer = drDeterminer;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public VisualGameImpl(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull MonFactory factory) {
+        setFactory(factory);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setFactory(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull MonFactory factory) {
+        factory.setGame(this);
+        moveValidator = factory.createMoveValidator();
+        winnerDeterminer = factory.createWinnerDeterminer();
+        turnDeterminer = factory.createTurnDeterminer();
+        diceRollDeterminer = factory.createRollDeterminer();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void newGame(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull VisualGameImpl this) {
+        gameBoard = new BoardImpl();
+        diceRollDeterminer.reset();
+        playerInTurn = Color.NONE;
+        turns = 0;
+        configure(new Placement[] { // B1 = 2 red
+        new Placement(Color.RED, Location.B1), new Placement(Color.RED, Location.B1), // B6 = 5 black
+        new Placement(Color.BLACK, Location.B6), new Placement(Color.BLACK, Location.B6), new Placement(Color.BLACK, Location.B6), new Placement(Color.BLACK, Location.B6), new Placement(Color.BLACK, Location.B6), // B8 = 3 black
+        new Placement(Color.BLACK, Location.B8), new Placement(Color.BLACK, Location.B8), new Placement(Color.BLACK, Location.B8), // B12 = 5 red
+        new Placement(Color.RED, Location.B12), new Placement(Color.RED, Location.B12), new Placement(Color.RED, Location.B12), new Placement(Color.RED, Location.B12), new Placement(Color.RED, Location.B12), // R12 = 5 black
+        new Placement(Color.BLACK, Location.R12), new Placement(Color.BLACK, Location.R12), new Placement(Color.BLACK, Location.R12), new Placement(Color.BLACK, Location.R12), new Placement(Color.BLACK, Location.R12), // R8 = 3 red
+        new Placement(Color.RED, Location.R8), new Placement(Color.RED, Location.R8), new Placement(Color.RED, Location.R8), // R6 = 5 red
+        new Placement(Color.RED, Location.R6), new Placement(Color.RED, Location.R6), new Placement(Color.RED, Location.R6), new Placement(Color.RED, Location.R6), new Placement(Color.RED, Location.R6), // R1 = 2 black
+        new Placement(Color.BLACK, Location.R1), new Placement(Color.BLACK, Location.R1) });
+        //Notify Observers
+        notifyObserversOfNewStatus("New Game: Click the dice to roll. Player with the highest dice value goes first!");
+        notifyObserversOfDiceRolled(new int[] { 1, 1 });
+        //Added
+        this.turnMoves = new ArrayList<MoveRecord>();
+        this.turnMovesIdx = 0;
+        //
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void nextTurn(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull VisualGameImpl this) {
+        //Check For Winner
+        if (isWinner()) {
+            return;
+        }
+        playerInTurn = turnDeterminer.nextTurn();
+        //Roll Dice
+        diceRollDeterminer.rollDice();
+        int[] dRoll = diceRollDeterminer.getDiceRoll();
+        if (turns == 0) {
+            while (dRoll.length > 2) {
+                diceRollDeterminer.rollDice();
+                dRoll = diceRollDeterminer.getDiceRoll();
+            }
+            playerInTurn = determineStartingPlayer(dRoll);
+        }
+        //Create diceRoll
+        if (dRoll.length == 2) {
+            diceRoll = new ArrayList<Integer>(Arrays.asList(dRoll[0], dRoll[1]));
+        } else {
+            diceRoll = new ArrayList<Integer>(Arrays.asList(dRoll[0], dRoll[1], dRoll[2], dRoll[3]));
+        }
+        turns++;
+        movesLeft = diceRoll.size();
+        String statusMessage = "";
+        if (turns == 1) {
+            statusMessage = playerInTurn.toString() + " rolled the highest value! ";
+        }
+        //Notify Observers
+        statusMessage += getPlayerInTurn().toString() + " has " + getNumberOfMovesLeft() + " moves left...";
+        notifyObserversOfNewStatus(statusMessage);
+        notifyObserversOfDiceRolled(diceThrown());
+        //Added
+        this.turnMoves = new ArrayList<MoveRecord>();
+        for (int i = 0; i < movesLeft; i++) {
+            this.turnMoves.add(new MoveRecord());
+        }
+        this.turnMovesIdx = 0;
+        //
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Color determineStartingPlayer( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] dRoll) {
+        return (dRoll[0] > dRoll[1]) ? Color.RED : Color.BLACK;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void moveDuringConfigure(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Location from, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Location to) {
+        Color checkerColor = (from == Location.R_BEAR_OFF) ? Color.RED : Color.BLACK;
+        gameBoard.move(from, to, checkerColor);
+        //Notify Observers
+        notifyObserversOfCheckerMove(from, to);
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean isConfigureMove(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Location from, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Location to) {
+        return (from == Location.R_BEAR_OFF || from == Location.B_BEAR_OFF) && turns == 0;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean move(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull VisualGameImpl this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Location from, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Location to) {
+        ///If from BearOff During Configure call, allow
+        if (isConfigureMove(from, to)) {
+            moveDuringConfigure(from, to);
+            return true;
+        }
+        //ADDED
+        //If move is the reverse of a move previously made during this turn, allow.
+        Move m = new Move(from, to);
+        if (isMoveBack(m)) {
+            executeMoveBack(m);
+            return true;
+        }
+        //ADDED
+        //Check for Valid Moves, if none, set movesLeft to 0.
+        if (!validMovesExist()) {
+            movesLeft = 0;
+            //Notify Observers
+            notifyObserversOfCheckerMove(from, from);
+            notifyObserversOfNewStatus(getPlayerInTurn().toString() + " has no valid moves left...");
+            //
+            return false;
+        }
+        ///
+        if (movesLeft == 0) {
+            //Notify Observers
+            notifyObserversOfCheckerMove(from, from);
+            notifyObserversOfNewStatus("Invalid Move: " + getPlayerInTurn().toString() + " has 0 moves left...");
+            //
+            return false;
+        }
+        if (moveValidator.isValid(from, to)) {
+            if (gameBoard.getCountAt(to) == 1 && gameBoard.getColorAt(to) != playerInTurn) {
+                moveOpponentToBar(to);
+            }
+            boolean moveValue = gameBoard.move(from, to, playerInTurn);
+            if (moveValue == true) {
+                movesLeft--;
+                removeDiceValueUsed(from, to);
+                //Notify Observers
+                notifyObserversOfCheckerMove(from, to);
+                notifyObserversOfNewStatus("Valid Move: " + getPlayerInTurn().toString() + " has " + getNumberOfMovesLeft() + " moves left...");
+                //
+                //ADDED
+                this.turnMoves.get(this.turnMovesIdx).setMove(new Move(from, to));
+                this.turnMovesIdx++;
+                //
+            } else {
+                //Notify Observers
+                notifyObserversOfCheckerMove(from, from);
+                notifyObserversOfNewStatus("Invalid Move on GameBoard: " + from.toString() + " to " + to.toString() + ". " + getPlayerInTurn().toString() + " has " + getNumberOfMovesLeft() + " moves left...");
+            }
+            return moveValue;
+        }
+        //Notify Observers
+        for (GameObserver gO : this.observers) {
+            gO.checkerMove(from, from);
+        }
+        notifyObserversOfCheckerMove(from, from);
+        //
+        return false;
+    }
+
+    //Notify Observers Methods
+    @org.checkerframework.dataflow.qual.Impure
+    private void notifyObserversOfDiceRolled( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] diceRolled) {
+        for (GameObserver gO : this.observers) {
+            gO.diceRolled(diceRolled);
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void notifyObserversOfNewStatus(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String status) {
+        for (GameObserver gO : this.observers) {
+            gO.setStatus(status);
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void notifyObserversOfCheckerMove(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Location from, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Location to) {
+        for (GameObserver gO : this.observers) {
+            gO.checkerMove(from, to);
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void notifyObserversOfGameOver() {
+        for (GameObserver gO : this.observers) {
+            gO.gameOver();
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean validMovesExist() {
+        List<Integer> diceOptions = diceRoll;
+        //Check bar
+        Location barOfPlayerInTurn = getBarOfPlayerInTurn();
+        int barCount = getCount(barOfPlayerInTurn);
+        if (barCount > 0) {
+            for (int j = 0; j < diceOptions.size(); j++) {
+                Location to = getToLocationFromBar(diceOptions.get(j));
+                if (moveValidator.isValid(barOfPlayerInTurn, to)) {
+                    return true;
+                }
+            }
+        } else //Check Rest of Locations if Bar is empty
+        {
+            for (Location frmLoc : Location.values()) {
+                if (getCount(frmLoc) > 0 && getColor(frmLoc) == playerInTurn) {
+                    for (int j = 0; j < diceOptions.size(); j++) {
+                        Location to = Location.findLocation(playerInTurn, frmLoc, diceOptions.get(j));
+                        if (moveValidator.isValid(frmLoc, to)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        //No valid moves:
+        return false;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Location getBarOfPlayerInTurn() {
+        return (playerInTurn == Color.BLACK) ? Location.B_BAR : Location.R_BAR;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Location getToLocationFromBar( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int dValue) {
+        List<Location> redInnerTable = Arrays.asList(Location.R1, Location.R2, Location.R3, Location.R4, Location.R5, Location.R6);
+        List<Location> blackInnerTable = Arrays.asList(Location.B1, Location.B2, Location.B3, Location.B4, Location.B5, Location.B6);
+        List<Location> destinationInnerTable = (playerInTurn == Color.BLACK) ? redInnerTable : blackInnerTable;
+        return destinationInnerTable.get(dValue - 1);
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable Color getPlayerInTurn(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull VisualGameImpl this) {
+        return playerInTurn;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getNumberOfMovesLeft(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull VisualGameImpl this) {
+        return movesLeft;
+    }
+
+    //DICE_ROLLS[diceRollIdx]; }
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] diceThrown(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull VisualGameImpl this) {
+        return diceRollDeterminer.getDiceRoll();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] diceValuesLeft(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull VisualGameImpl this) {
+        int[] diceRollArr = new int[diceRoll.size()];
+        for (int i = 0; i < diceRollArr.length; i++) {
+            diceRollArr[i] = diceRoll.get(i);
+        }
+        return diceRollArr;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Color winner(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull VisualGameImpl this) {
+        return winnerDeterminer.winner(turns);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Color getColor(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull VisualGameImpl this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Location location) {
+        return gameBoard.getColorAt(location);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getCount(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull VisualGameImpl this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Location location) {
+        return gameBoard.getCountAt(location);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void removeDiceValueUsed(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Location from, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Location to) {
+        //(playerInTurn == Color.BLACK) ? rawDistanceTravelled : -1 * (rawDistanceTravelled);
+        int diceValueUsed = (playerInTurn == Color.BLACK) ? Location.distance(from, to) : (-1 * Location.distance(from, to));
+        int remIdx = diceRoll.indexOf(diceValueUsed);
+        if (remIdx < 0) {
+            remIdx = 0;
+        }
+        diceRoll.remove(remIdx);
+        //Added
+        this.turnMoves.get(this.turnMovesIdx).setDieValueUsed(diceValueUsed);
+        //
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void moveOpponentToBar(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Location opponentLoc) {
+        Color colorOfOpponent = opponentColor();
+        Location otherPlayerBar = otherPlayerBar();
+        gameBoard.place(colorOfOpponent, otherPlayerBar.ordinal());
+        gameBoard.remove(colorOfOpponent, opponentLoc.ordinal());
+        //Notify Observers
+        notifyObserversOfCheckerMove(opponentLoc, otherPlayerBar);
+        //
+        //Added
+        Move aMove = new Move(opponentLoc, otherPlayerBar);
+        this.turnMoves.get(this.turnMovesIdx).setAssociatedMoveToBar(aMove);
+        //
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    protected @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Location otherPlayerBar() {
+        Color colorOfOpponent = opponentColor();
+        return (colorOfOpponent == Color.BLACK) ? Location.B_BAR : Location.R_BAR;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Color opponentColor() {
+        if (playerInTurn == Color.NONE) {
+            return Color.NONE;
+        }
+        return (playerInTurn == Color.RED) ? Color.BLACK : Color.RED;
+    }
+
+    static public class Placement {
+
+        public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Location location;
+
+        public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Color player;
+
+        @org.checkerframework.dataflow.qual.SideEffectFree
+        public Placement(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Color player, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Location location) {
+            this.player = player;
+            this.location = location;
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void configure(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Placement @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] placements) {
+        gameBoard = new BoardImpl();
+        for (int i = 0; i < placements.length; i++) {
+            //gameBoard.place(placements[i].player, placements[i].location.ordinal());
+            Location from = getPlayerBearOff(placements[i].player);
+            gameBoard.place(placements[i].player, from.ordinal());
+            move(from, placements[i].location);
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Location getPlayerBearOff(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Color player) {
+        return (player == Color.BLACK) ? Location.B_BEAR_OFF : Location.R_BEAR_OFF;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void addObserver(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull VisualGameImpl this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull GameObserver observer) {
+        this.observers.add(observer);
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull ArrayList<GameObserver> getObservers(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull VisualGameImpl this) {
+        return this.observers;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean isWinner() {
+        Color winner = winner();
+        if (!winner.equals(Color.NONE)) {
+            //Notify Observers
+            notifyObserversOfNewStatus(winner + " is the WINNER!");
+            notifyObserversOfGameOver();
+            //
+            return true;
+        }
+        return false;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean isMoveBack(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Move m) {
+        if (getIdxOfInTurnMoves(m) == -1) {
+            return false;
+        }
+        return true;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getIdxOfInTurnMoves(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Move m) {
+        for (int i = 0; i < this.turnMoves.size(); i++) {
+            MoveRecord mR = this.turnMoves.get(i);
+            Move mRMove = mR.getMove();
+            if (mRMove != null) {
+                if (mRMove.isReverse(m)) {
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void executeMoveBack(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Move m) {
+        int idx = getIdxOfInTurnMoves(m);
+        MoveRecord mRec = this.turnMoves.get(idx);
+        gameBoard.move(m.getFrom(), m.getTo(), getColor(m.getFrom()));
+        //Add back used diceValue
+        diceRoll.add(mRec.getDieValueUsed());
+        //Add +1 to movesLeft
+        movesLeft++;
+        //Notify Observers
+        //Move Back
+        notifyObserversOfCheckerMove(m.to, m.from);
+        //Move Back from Bar if needed
+        Move associatedMove = mRec.getAssociatedMoveToBar();
+        if (associatedMove != null) {
+            notifyObserversOfCheckerMove(associatedMove.to, associatedMove.from);
+        }
+        notifyObserversOfNewStatus("Checker returned to previous position, " + getPlayerInTurn() + " has " + getNumberOfMovesLeft() + " moves left...");
+        //
+        //Remove mRec
+        removeMoverRecordAt(idx);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void removeMoverRecordAt( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int idx) {
+        this.turnMoves.remove(idx);
+        this.turnMoves.add(new MoveRecord());
+        this.turnMovesIdx--;
+    }
+
+    public static class Move {
+
+        private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Location from;
+
+        private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Location to;
+
+        @org.checkerframework.dataflow.qual.SideEffectFree
+        public Move(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Location from, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Location to) {
+            this.from = from;
+            this.to = to;
+        }
+
+        @org.checkerframework.dataflow.qual.Pure
+        public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Location getTo() {
+            return to;
+        }
+
+        @org.checkerframework.dataflow.qual.Pure
+        public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Location getFrom() {
+            return from;
+        }
+
+        @org.checkerframework.dataflow.qual.Pure
+        public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean isEqual(Move reverse) {
+            return (reverse.from == from) && (reverse.to == to);
+        }
+
+        @org.checkerframework.dataflow.qual.Pure
+        public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean isReverse(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Move reverse) {
+            return (reverse.from == to) && (reverse.to == from);
+        }
+
+        @org.checkerframework.dataflow.qual.Pure
+        public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean isEqual(Location otherFrom, Location otherTo) {
+            return (otherFrom == from) && (otherTo == to);
+        }
+
+        @org.checkerframework.dataflow.qual.Pure
+        public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean isReverse(Location otherFrom, Location otherTo) {
+            return (otherFrom == to) && (otherTo == from);
+        }
+
+        @org.checkerframework.dataflow.qual.Pure
+        public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Move reverse() {
+            return new Move(to, from);
+        }
+
+        @org.checkerframework.dataflow.qual.Pure
+        public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String toString(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Move this) {
+            return "(" + from.toString() + "," + to.toString() + ")";
+        }
+    }
+
+    public static class MoveRecord {
+
+        private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull Move move;
+
+        private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull Move associatedMoveToBar;
+
+        private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int dieValueUsed;
+
+        @org.checkerframework.dataflow.qual.SideEffectFree
+        public MoveRecord() {
+        }
+
+        @org.checkerframework.dataflow.qual.SideEffectFree
+        public MoveRecord(Move move, Move associatedMove, int dieValue) {
+            this.move = move;
+            this.associatedMoveToBar = associatedMove;
+            this.dieValueUsed = dieValue;
+        }
+
+        @org.checkerframework.dataflow.qual.Impure
+        public void setMove(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Move m) {
+            this.move = m;
+        }
+
+        @org.checkerframework.dataflow.qual.Impure
+        public void setAssociatedMoveToBar(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Move m) {
+            this.associatedMoveToBar = m;
+        }
+
+        @org.checkerframework.dataflow.qual.Impure
+        public void setDieValueUsed( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int dV) {
+            this.dieValueUsed = dV;
+        }
+
+        @org.checkerframework.dataflow.qual.Pure
+        public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable Move getMove() {
+            return this.move;
+        }
+
+        @org.checkerframework.dataflow.qual.Pure
+        public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable Move getAssociatedMoveToBar() {
+            return this.associatedMoveToBar;
+        }
+
+        @org.checkerframework.dataflow.qual.Pure
+        public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getDieValueUsed() {
+            return this.dieValueUsed;
+        }
+    }
+}

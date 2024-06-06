@@ -1,0 +1,22 @@
+package assignments.farmer.actionstrategies.plowstrategies;
+
+import assignments.farmer.actionstrategies.PlowStrategy;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class OrganicPlowStrategy implements PlowStrategy {
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void plowInTheSpring( OrganicPlowStrategy this) {
+        System.out.println("Plow under green manure.");
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void plowInTheSummer( OrganicPlowStrategy this) {
+        System.out.println("Plow fallow fields to prepare for fall cover crop.");
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void plowInTheFall( OrganicPlowStrategy this) {
+        System.out.println("No action.");
+    }
+}

@@ -1,0 +1,43 @@
+package frs.hotgammon.tests.preGuiTests.stubs;
+
+import frs.hotgammon.MonFactory;
+import frs.hotgammon.MoveValidator;
+import frs.hotgammon.RollDeterminer;
+import frs.hotgammon.TurnDeterminer;
+import frs.hotgammon.WinnerDeterminer;
+import frs.hotgammon.framework.Game;
+import frs.hotgammon.variants.movevalidators.SimpleMoveValidator;
+import frs.hotgammon.variants.rolldeterminers.RandomRollDeterminer;
+import frs.hotgammon.variants.turndeterminers.AlternatingTurnDeterminer;
+import frs.hotgammon.variants.winnerdeterminers.SixMoveWinnerDeterminer;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class Fixed_BlackStarts_EpsilonMonFactory implements MonFactory {
+
+    private  Game game;
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  MoveValidator createMoveValidator( Fixed_BlackStarts_EpsilonMonFactory this) {
+        return new SimpleMoveValidator(game);
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  TurnDeterminer createTurnDeterminer( Fixed_BlackStarts_EpsilonMonFactory this) {
+        return new AlternatingTurnDeterminer(game);
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  WinnerDeterminer createWinnerDeterminer( Fixed_BlackStarts_EpsilonMonFactory this) {
+        return new SixMoveWinnerDeterminer();
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  RollDeterminer createRollDeterminer( Fixed_BlackStarts_EpsilonMonFactory this) {
+        return new FixedBlackStartsRandomRollDeterminer();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setGame( Fixed_BlackStarts_EpsilonMonFactory this,  Game game) {
+        this.game = game;
+    }
+}

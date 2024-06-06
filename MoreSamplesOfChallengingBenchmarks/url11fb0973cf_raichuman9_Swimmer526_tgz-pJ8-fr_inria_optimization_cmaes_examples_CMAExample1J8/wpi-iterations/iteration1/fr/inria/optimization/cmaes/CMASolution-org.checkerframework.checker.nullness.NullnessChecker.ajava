@@ -1,0 +1,90 @@
+package fr.inria.optimization.cmaes;
+
+import fr.inria.optimization.cmaes.ISolutionPoint;
+
+/**
+ * solution point in search space. Rather plain implementation of the interface ISolutionPoint.
+ *
+ * @see ISolutionPoint
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class CMASolution implements ISolutionPoint, java.io.Serializable {
+
+    /**
+     */
+    private static final  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull long serialVersionUID = 6257830429350615236L;
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public CMASolution() {
+    }
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public CMASolution( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull double @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] x,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull double fitnessValue,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull long evaluation) {
+        // super(); // cave: default values for fields overwrite super()
+        this.functionValue = fitnessValue;
+        // deep copy, see http://java.sun.com/docs/books/jls/third_edition/html/arrays.html 10.7
+        this.x = x.clone();
+        this.evaluation = evaluation;
+    }
+
+    /* * as I do not know how to inherit clone in a decent way
+	 * and clone even might produce shallow copies
+	 */
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull CMASolution deepCopy() {
+        return new CMASolution(x, functionValue, evaluation);
+    }
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public CMASolution(double[] x) {
+        this.x = x;
+    }
+
+    // getter functions
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull double getFitness(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull CMASolution this) {
+        return functionValue;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull long getEvaluationNumber(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull CMASolution this) {
+        return evaluation;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull double @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] getX(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull CMASolution this) {
+        return x.clone();
+    }
+
+    // setter functions
+    @org.checkerframework.dataflow.qual.Impure
+    public void setFitness(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull CMASolution this,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull double f) {
+        functionValue = f;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setEvaluationNumber(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull CMASolution this,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull long e) {
+        evaluation = e;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setX(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull CMASolution this,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull double @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] x_in) {
+        x = new double[x_in.length];
+        for (int i = 0; i < x.length; ++i) x[i] = x_in[i];
+    }
+
+    /**
+     * objective function value of x
+     */
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull double functionValue = Double.NaN;
+
+    /**
+     * argument to objective function to be optimized
+     */
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull double @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull [] x;
+
+    /**
+     * count when the solution was evaluated
+     */
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull long evaluation = 0;
+}

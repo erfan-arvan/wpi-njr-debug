@@ -1,0 +1,22 @@
+package assignments.farmer.actionstrategies.harveststrategies;
+
+import assignments.farmer.actionstrategies.HarvestStrategy;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class OrganicHarvestStrategy implements HarvestStrategy {
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void harvestInTheSpring( OrganicHarvestStrategy this) {
+        System.out.println("Employ lots of interns and volunteers.");
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void harvestInTheSummer( OrganicHarvestStrategy this) {
+        System.out.println("Employ lots of interns and volunteers.");
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void harvestInTheFall( OrganicHarvestStrategy this) {
+        System.out.println("Employ lots of interns and volunteers; u-pick for squash.");
+    }
+}

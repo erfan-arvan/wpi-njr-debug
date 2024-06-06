@@ -1,0 +1,33 @@
+package assignments.farmer.seasonstates;
+
+import assignments.farmer.SeasonState;
+import assignments.farmer.actionstrategies.*;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class FallState implements SeasonState {
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void plow( FallState this,  PlowStrategy plowStrategy) {
+        plowStrategy.plowInTheFall();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void plant( FallState this,  PlantStrategy plantStrategy) {
+        plantStrategy.plantInTheFall();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void weedControl( FallState this,  WeedControlStrategy weedControlStrategy) {
+        weedControlStrategy.weedControlInTheFall();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void harvest( FallState this,  HarvestStrategy harvestStrategy) {
+        harvestStrategy.harvestInTheFall();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void market( FallState this,  MarketStrategy marketStrategy) {
+        marketStrategy.marketInTheFall();
+    }
+}

@@ -1,0 +1,35 @@
+package omatTietorakenteet;
+
+/**
+ * Hakemiston foreach läpikäymiseen luotu, sisältää vain avain ja arvo parin.
+ * @param <K>
+ * @param <V>
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class Vektori<K, V> {
+
+    private K key;
+
+    private V value;
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public Vektori(K key, V value) {
+        this.key = key;
+        this.value = value;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public K getKey() {
+        return key;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public V getValue() {
+        return value;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setValue(V value) {
+        this.value = value;
+    }
+}

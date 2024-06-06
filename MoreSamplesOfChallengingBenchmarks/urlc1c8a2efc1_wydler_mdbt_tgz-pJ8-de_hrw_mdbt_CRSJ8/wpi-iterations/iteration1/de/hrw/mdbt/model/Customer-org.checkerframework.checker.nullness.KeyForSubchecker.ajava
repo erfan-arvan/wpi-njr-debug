@@ -1,0 +1,76 @@
+package de.hrw.mdbt.model;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class Customer {
+
+    private   int id;
+
+    private  Date registerDate = GregorianCalendar.getInstance().getTime();
+
+    private   float discount = 0.0f;
+
+    private  ArrayList<LicenseClass> licenses = new ArrayList<LicenseClass>();
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public Customer() {
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public Customer(  int id) {
+        setId(id);
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   int getId() {
+        return id;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setId( Customer this,   int id) {
+        this.id = id;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  Date getRegisterDate() {
+        return registerDate;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setRegisterDate( Customer this, Date registerDate) {
+        this.registerDate = registerDate;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   float getDiscount() {
+        return discount;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setDiscount(float discount) {
+        this.discount = discount;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  ArrayList<LicenseClass> getLicenses( Customer this) {
+        return licenses;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void addLicense( Customer this,  LicenseClass lc) {
+        licenses.add(lc);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void removeLicense(LicenseClass lc) {
+        licenses.remove(lc);
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  String toString( Customer this) {
+        return "--------Customer--------\nID: " + id + "\nDiscount: " + discount + "\n-----------------------\n";
+    }
+}

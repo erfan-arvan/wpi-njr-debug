@@ -1,0 +1,107 @@
+package logica.ia.algoritmosGeneticos;
+
+import logica.Torneo;
+import org.jgap.FitnessFunction;
+import org.jgap.IChromosome;
+import core.Tablero.TipoTablero;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class EstrategiaFuncionAptitud extends FitnessFunction {
+
+    private static final  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull long serialVersionUID = 1L;
+
+    private static @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull IChromosome @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull [] estrategiasCompetidoras;
+
+    @org.checkerframework.dataflow.qual.Impure
+    public EstrategiaFuncionAptitud(IChromosome[] poblacion) {
+        estrategiasCompetidoras = poblacion;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public EstrategiaFuncionAptitud() {
+        estrategiasCompetidoras = null;
+    }
+
+    /**
+     * El método evaluate es el metodo que se debe sobrecargar para que
+     * devuelva el valor de aptitud asociado al cromosoma que se recibe por
+     * parámetro.
+     *
+     * @param cromosoma
+     * El cromosoma a evaluar
+     *
+     * @return El valor de aptitud de ese cromosoma
+     * @author Alejandro
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    protected  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull double evaluate(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull EstrategiaFuncionAptitud this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull IChromosome cromosoma) {
+        double fitness = 0;
+        int[] estrategia1 = obtenerValoresCromosoma(cromosoma);
+        if (estrategiasCompetidoras == null) {
+            System.out.println("No hay competidores!");
+        } else {
+            //4 es la id
+            int[][] competidores = new int[estrategiasCompetidoras.length][5];
+            for (int i = 0; i < estrategiasCompetidoras.length; i++) {
+                competidores[i][4] = i;
+                for (int j = 0; j < 4; j++) {
+                    competidores[i][j] = getPesoDeGen(estrategiasCompetidoras[i], j);
+                }
+            }
+            Torneo torneo = new Torneo(estrategia1, competidores, 10);
+            fitness = (torneo.getCantidadVictorias());
+            if (torneo.getCantidadVictorias() == competidores.length) {
+                fitness += 10;
+            }
+            if (fitness == 0) {
+                fitness = 1;
+            }
+        }
+        return fitness;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] obtenerValoresCromosoma(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull IChromosome cromosoma) {
+        int[] valores = new int[4];
+        for (int i = 0; i < 4; i++) {
+            valores[i] = getPesoDeGen(cromosoma, i);
+        }
+        return valores;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getPesoPuntosGen(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull IChromosome cromosoma) {
+        return getPesoDeGen(cromosoma, 0);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getPesoEsquinasGen(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull IChromosome cromosoma) {
+        return getPesoDeGen(cromosoma, 1);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getPesoLibertadesRivalGen(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull IChromosome cromosoma) {
+        return getPesoDeGen(cromosoma, 2);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getPesoCasillasCentralesGen(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull IChromosome cromosoma) {
+        return getPesoDeGen(cromosoma, 3);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getPesoDeGen(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull IChromosome cromosoma,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int i) {
+        Integer peso = (Integer) cromosoma.getGene(i).getAllele();
+        return peso;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public static @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull IChromosome @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] getEstrategiasCompetidoras() {
+        return estrategiasCompetidoras;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static void setEstrategiasCompetidoras(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull IChromosome @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] estrategiasCompetidoras) {
+        EstrategiaFuncionAptitud.estrategiasCompetidoras = estrategiasCompetidoras;
+    }
+}

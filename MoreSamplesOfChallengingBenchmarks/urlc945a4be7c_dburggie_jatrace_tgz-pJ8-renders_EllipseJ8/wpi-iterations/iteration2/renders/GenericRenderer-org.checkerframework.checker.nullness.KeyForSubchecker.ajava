@@ -1,0 +1,122 @@
+package renders;
+
+import jatrace.*;
+import jatrace.skies.*;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class GenericRenderer extends World {
+
+    private int ppu, passes;
+
+    @org.checkerframework.dataflow.qual.Impure
+    public final void setPPU(int ppu) {
+        this.ppu = ppu;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public final void setPasses(int passes) {
+        this.passes = passes;
+    }
+
+    private   double delta;
+
+    @org.checkerframework.dataflow.qual.Impure
+    public final void setDelta(double d) {
+        if (d < 0.000001) {
+            delta = 0.0;
+        } else {
+            delta = d;
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void parseArgs( GenericRenderer this,  String  [] args) {
+        try {
+            //get delta
+            if (args.length > 0) {
+                delta = Double.parseDouble(args[0]);
+            }
+            //get pixels per unit
+            if (args.length > 1) {
+                ppu = Integer.decode(args[1]);
+            }
+            //get number of passes per pixel
+            if (args.length > 2) {
+                passes = Integer.decode(args[2]);
+            }
+        } catch (Exception e) {
+            System.out.println("Error parsing arguments; using defaults.");
+            delta = 0.0;
+            ppu = 100;
+            passes = 8;
+        }
+    }
+
+    Vector camP, camF, camUp;
+
+    double winW, winH;
+
+    int pixW, pixH;
+
+     String filename;
+
+    @org.checkerframework.dataflow.qual.Impure
+    public final void setFilenamePrefix( GenericRenderer this,  String prefix) {
+        filename = prefix;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public final void setCamPosition( GenericRenderer this,  Vector position) {
+        camP = position.dup();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public final void setCamFocus( GenericRenderer this,  Vector focalPoint) {
+        camF = focalPoint.dup();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public final void setCamUp( GenericRenderer this,  Vector up) {
+        camUp = up.dup();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public final void setWindow( GenericRenderer this,   double width,   double height) {
+        winW = width;
+        winH = height;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void updatePixelCount( GenericRenderer this) {
+        pixW = (int) (winW * ppu);
+        pixH = (int) (winH * ppu);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void render( GenericRenderer this) {
+        updatePixelCount();
+        Camera camera = new Camera(camP, camF, camUp, winW, winH, ppu);
+        camera.setDelta(delta);
+        Tracer tracer = new Tracer(this, camera);
+        tracer.draw(passes).write(filename + "-" + pixW + "x" + pixH + ".png");
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public final void setDefaults( GenericRenderer this) {
+        setSky(new Bluesky(new Vector(1.0, 1.0, 1.0)));
+        setCamUp(new Vector(0.0, 1.0, 0.0));
+        //zero vector
+        setCamFocus(new Vector());
+        setCamPosition(new Vector(10.0, 1.0, 0.0));
+        setWindow(4.0, 4.0);
+        setFilenamePrefix("generic");
+        ppu = 100;
+        delta = 0.0;
+        passes = 8;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public GenericRenderer() {
+        setDefaults();
+    }
+}

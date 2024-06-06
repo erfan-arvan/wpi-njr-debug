@@ -1,0 +1,182 @@
+package com.ctriposs.bigmap.page;
+
+import java.io.Closeable;
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.nio.ByteBuffer;
+import java.nio.MappedByteBuffer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class MappedPageImpl implements IMappedPage, Closeable {
+
+    private final static @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Logger logger = LoggerFactory.getLogger(MappedPageImpl.class);
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable ThreadLocalByteBuffer threadLocalBuffer;
+
+    private volatile  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean dirty = false;
+
+    private volatile  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean closed = false;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String pageFile;
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull long index;
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public MappedPageImpl(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull MappedByteBuffer mbb, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String pageFile,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull long index) {
+        this.threadLocalBuffer = new ThreadLocalByteBuffer(mbb);
+        this.pageFile = pageFile;
+        this.index = index;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void close(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull MappedPageImpl this) throws IOException {
+        synchronized (this) {
+            if (closed)
+                return;
+            flush();
+            MappedByteBuffer srcBuf = (MappedByteBuffer) threadLocalBuffer.getSourceBuffer();
+            unmap(srcBuf);
+            // hint GC
+            this.threadLocalBuffer = null;
+            closed = true;
+            if (logger.isDebugEnabled()) {
+                logger.debug("Mapped page for " + this.pageFile + " was just unmapped and closed.");
+            }
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setDirty(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull MappedPageImpl this,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean dirty) {
+        this.dirty = dirty;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void flush(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull MappedPageImpl this) {
+        synchronized (this) {
+            if (closed)
+                return;
+            if (dirty) {
+                MappedByteBuffer srcBuf = (MappedByteBuffer) threadLocalBuffer.getSourceBuffer();
+                // flush the changes
+                srcBuf.force();
+                dirty = false;
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Mapped page for " + this.pageFile + " was just flushed.");
+                }
+            }
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull byte @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] getLocal(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull MappedPageImpl this,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int position,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int length) {
+        ByteBuffer buf = this.getLocal(position);
+        byte[] data = new byte[length];
+        buf.get(data);
+        return data;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull ByteBuffer getLocal(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull MappedPageImpl this,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int position) {
+        ByteBuffer buf = this.threadLocalBuffer.get();
+        buf.position(position);
+        return buf;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull ByteBuffer getLocal(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull MappedPageImpl this) {
+        ByteBuffer buf = this.threadLocalBuffer.get();
+        return buf;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private static void unmap(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull MappedByteBuffer buffer) {
+        Cleaner.clean(buffer);
+    }
+
+    /**
+     * Helper class allowing to clean direct buffers.
+     */
+    private static class Cleaner {
+
+        public static final  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean CLEAN_SUPPORTED;
+
+        private static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull Method directBufferCleaner;
+
+        private static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull Method directBufferCleanerClean;
+
+        static {
+            Method directBufferCleanerX = null;
+            Method directBufferCleanerCleanX = null;
+            boolean v;
+            try {
+                directBufferCleanerX = Class.forName("java.nio.DirectByteBuffer").getMethod("cleaner");
+                directBufferCleanerX.setAccessible(true);
+                directBufferCleanerCleanX = Class.forName("sun.misc.Cleaner").getMethod("clean");
+                directBufferCleanerCleanX.setAccessible(true);
+                v = true;
+            } catch (Exception e) {
+                v = false;
+            }
+            CLEAN_SUPPORTED = v;
+            directBufferCleaner = directBufferCleanerX;
+            directBufferCleanerClean = directBufferCleanerCleanX;
+        }
+
+        @org.checkerframework.dataflow.qual.Impure
+        public static void clean(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull ByteBuffer buffer) {
+            if (buffer == null)
+                return;
+            if (CLEAN_SUPPORTED && buffer.isDirect()) {
+                try {
+                    Object cleaner = directBufferCleaner.invoke(buffer);
+                    directBufferCleanerClean.invoke(cleaner);
+                } catch (Exception e) {
+                    // silently ignore exception
+                }
+            }
+        }
+    }
+
+    private static class ThreadLocalByteBuffer extends ThreadLocal<ByteBuffer> {
+
+        private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull ByteBuffer _src;
+
+        @org.checkerframework.dataflow.qual.Impure
+        public ThreadLocalByteBuffer(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull ByteBuffer src) {
+            _src = src;
+        }
+
+        @org.checkerframework.dataflow.qual.Pure
+        public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull ByteBuffer getSourceBuffer() {
+            return _src;
+        }
+
+        @org.checkerframework.dataflow.qual.Impure
+        protected synchronized @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull ByteBuffer initialValue(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull ThreadLocalByteBuffer this) {
+            ByteBuffer dup = _src.duplicate();
+            return dup;
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean isClosed(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull MappedPageImpl this) {
+        return closed;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String toString(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull MappedPageImpl this) {
+        return "Mapped page for " + this.pageFile + ", index = " + this.index + ".";
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String getPageFile(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull MappedPageImpl this) {
+        return this.pageFile;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull long getPageIndex(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull MappedPageImpl this) {
+        return this.index;
+    }
+}

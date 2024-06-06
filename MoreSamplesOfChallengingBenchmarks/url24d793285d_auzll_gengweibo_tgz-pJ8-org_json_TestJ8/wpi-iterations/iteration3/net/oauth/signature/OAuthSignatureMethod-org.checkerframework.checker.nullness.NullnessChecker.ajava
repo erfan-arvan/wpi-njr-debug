@@ -1,0 +1,391 @@
+/*
+ * Copyright 2007 Netflix, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package net.oauth.signature;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import net.oauth.OAuth;
+import net.oauth.OAuthAccessor;
+import net.oauth.OAuthConsumer;
+import net.oauth.OAuthException;
+import net.oauth.OAuthMessage;
+import net.oauth.OAuthProblemException;
+
+/**
+ * A pair of algorithms for computing and verifying an OAuth digital signature.
+ * <p>
+ * Static methods of this class implement a registry of signature methods. It's
+ * pre-populated with the standard OAuth algorithms. Appliations can replace
+ * them or add new ones.
+ *
+ * @author John Kristian
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public abstract class OAuthSignatureMethod {
+
+    /**
+     * Add a signature to the message.
+     * @throws URISyntaxException
+     * @throws IOException
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void sign(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull OAuthMessage message) throws OAuthException, IOException, URISyntaxException {
+        message.addParameter(new OAuth.Parameter("oauth_signature", getSignature(message)));
+    }
+
+    /**
+     * Check whether the message has a valid signature.
+     * @throws URISyntaxException
+     *
+     * @throws OAuthProblemException
+     *             the signature is invalid
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void validate(OAuthMessage message) throws IOException, OAuthException, URISyntaxException {
+        message.requireParameters("oauth_signature");
+        String signature = message.getSignature();
+        String baseString = getBaseString(message);
+        if (!isValid(signature, baseString)) {
+            OAuthProblemException problem = new OAuthProblemException("signature_invalid");
+            problem.setParameter("oauth_signature", signature);
+            problem.setParameter("oauth_signature_base_string", baseString);
+            problem.setParameter("oauth_signature_method", message.getSignatureMethod());
+            throw problem;
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    protected @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String getSignature(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull OAuthMessage message) throws OAuthException, IOException, URISyntaxException {
+        String baseString = getBaseString(message);
+        String signature = getSignature(baseString);
+        // Logger log = Logger.getLogger(getClass().getName());
+        // if (log.isLoggable(Level.FINE)) {
+        // log.fine(signature + "=getSignature(" + baseString + ")");
+        // }
+        return signature;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    protected void initialize(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String name, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull OAuthAccessor accessor) throws OAuthException {
+        String secret = accessor.consumer.consumerSecret;
+        if (name.endsWith(_ACCESSOR)) {
+            // This code supports the 'Accessor Secret' extensions
+            // described in http://oauth.pbwiki.com/AccessorSecret
+            final String key = OAuthConsumer.ACCESSOR_SECRET;
+            Object accessorSecret = accessor.getProperty(key);
+            if (accessorSecret == null) {
+                accessorSecret = accessor.consumer.getProperty(key);
+            }
+            if (accessorSecret != null) {
+                secret = accessorSecret.toString();
+            }
+        }
+        if (secret == null) {
+            secret = "";
+        }
+        setConsumerSecret(secret);
+    }
+
+    public static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String _ACCESSOR = "-Accessor";
+
+    /**
+     * Compute the signature for the given base string.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    protected abstract @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String getSignature(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String baseString) throws OAuthException;
+
+    /**
+     * Decide whether the signature is valid.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    protected abstract  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean isValid(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable String signature, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String baseString) throws OAuthException;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull String consumerSecret;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable String tokenSecret;
+
+    @org.checkerframework.dataflow.qual.Pure
+    protected @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable String getConsumerSecret() {
+        return consumerSecret;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    protected void setConsumerSecret(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String consumerSecret) {
+        this.consumerSecret = consumerSecret;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable String getTokenSecret() {
+        return tokenSecret;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setTokenSecret(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable String tokenSecret) {
+        this.tokenSecret = tokenSecret;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String getBaseString(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull OAuthMessage message) throws IOException, URISyntaxException {
+        List<Map.Entry<String, String>> parameters;
+        String url = message.URL;
+        int q = url.indexOf('?');
+        if (q < 0) {
+            parameters = message.getParameters();
+        } else {
+            // Combine the URL query string with the other parameters:
+            parameters = new ArrayList<Map.Entry<String, String>>();
+            parameters.addAll(OAuth.decodeForm(message.URL.substring(q + 1)));
+            parameters.addAll(message.getParameters());
+            url = url.substring(0, q);
+        }
+        return OAuth.percentEncode(message.method.toUpperCase()) + '&' + OAuth.percentEncode(normalizeUrl(url)) + '&' + OAuth.percentEncode(normalizeParameters(parameters));
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    protected static @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String normalizeUrl(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String url) throws URISyntaxException {
+        URI uri = new URI(url);
+        String scheme = uri.getScheme().toLowerCase();
+        String authority = uri.getAuthority().toLowerCase();
+        boolean dropPort = (scheme.equals("http") && uri.getPort() == 80) || (scheme.equals("https") && uri.getPort() == 443);
+        if (dropPort) {
+            // find the last : in the authority
+            int index = authority.lastIndexOf(":");
+            if (index >= 0) {
+                authority = authority.substring(0, index);
+            }
+        }
+        String path = uri.getRawPath();
+        if (path == null || path.length() <= 0) {
+            // conforms to RFC 2616 section 3.2.2
+            path = "/";
+        }
+        // we know that there is no query and no fragment here.
+        return scheme + "://" + authority + path;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    protected static @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String normalizeParameters(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Collection<? extends Map.Entry> parameters) throws IOException {
+        if (parameters == null) {
+            return "";
+        }
+        List<ComparableParameter> p = new ArrayList<ComparableParameter>(parameters.size());
+        for (Map.Entry parameter : parameters) {
+            if (!"oauth_signature".equals(parameter.getKey())) {
+                p.add(new ComparableParameter(parameter));
+            }
+        }
+        Collections.sort(p);
+        return OAuth.formEncode(getParameters(p));
+    }
+
+    /**
+     * Determine whether the given strings contain the same sequence of
+     * characters. The implementation discourages a <a
+     * href="http://codahale.com/a-lesson-in-timing-attacks/">timing attack</a>.
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean equals(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String x, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String y) {
+        if (x == null)
+            return y == null;
+        else if (y == null)
+            return false;
+        else if (y.length() <= 0)
+            return x.length() <= 0;
+        char[] a = x.toCharArray();
+        char[] b = y.toCharArray();
+        char diff = (char) ((a.length == b.length) ? 0 : 1);
+        int j = 0;
+        for (int i = 0; i < a.length; ++i) {
+            diff |= a[i] ^ b[j];
+            j = (j + 1) % b.length;
+        }
+        return diff == 0;
+    }
+
+    /**
+     * Determine whether the given arrays contain the same sequence of bytes.
+     * The implementation discourages a <a
+     * href="http://codahale.com/a-lesson-in-timing-attacks/">timing attack</a>.
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean equals( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull byte @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] a,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull byte @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] b) {
+        if (a == null)
+            return b == null;
+        else if (b == null)
+            return false;
+        else if (b.length <= 0)
+            return a.length <= 0;
+        byte diff = (byte) ((a.length == b.length) ? 0 : 1);
+        int j = 0;
+        for (int i = 0; i < a.length; ++i) {
+            diff |= a[i] ^ b[j];
+            j = (j + 1) % b.length;
+        }
+        return diff == 0;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull byte @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] decodeBase64(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String s) {
+        byte[] b;
+        try {
+            b = s.getBytes(BASE64_ENCODING);
+        } catch (UnsupportedEncodingException e) {
+            System.err.println(e + "");
+            b = s.getBytes();
+        }
+        return BASE64.decode(b);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String base64Encode( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull byte @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] b) {
+        byte[] b2 = BASE64.encode(b);
+        try {
+            return new String(b2, BASE64_ENCODING);
+        } catch (UnsupportedEncodingException e) {
+            System.err.println(e + "");
+        }
+        return new String(b2);
+    }
+
+    /**
+     * The character encoding used for base64. Arguably US-ASCII is more
+     * accurate, but this one decodes all byte values unambiguously.
+     */
+    private static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String BASE64_ENCODING = "ISO-8859-1";
+
+    private static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Base64 BASE64 = new Base64();
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull OAuthSignatureMethod newSigner(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull OAuthMessage message, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull OAuthAccessor accessor) throws IOException, OAuthException {
+        message.requireParameters(OAuth.OAUTH_SIGNATURE_METHOD);
+        OAuthSignatureMethod signer = newMethod(message.getSignatureMethod(), accessor);
+        signer.setTokenSecret(accessor.tokenSecret);
+        return signer;
+    }
+
+    /**
+     * The factory for signature methods.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public static @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull OAuthSignatureMethod newMethod(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable String name, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull OAuthAccessor accessor) throws OAuthException {
+        try {
+            Class methodClass = NAME_TO_CLASS.get(name);
+            if (methodClass != null) {
+                OAuthSignatureMethod method = (OAuthSignatureMethod) methodClass.newInstance();
+                method.initialize(name, accessor);
+                return method;
+            }
+            OAuthProblemException problem = new OAuthProblemException(OAuth.Problems.SIGNATURE_METHOD_REJECTED);
+            String acceptable = OAuth.percentEncode(NAME_TO_CLASS.keySet());
+            if (acceptable.length() > 0) {
+                problem.setParameter("oauth_acceptable_signature_methods", acceptable.toString());
+            }
+            throw problem;
+        } catch (InstantiationException e) {
+            throw new OAuthException(e);
+        } catch (IllegalAccessException e) {
+            throw new OAuthException(e);
+        }
+    }
+
+    /**
+     * Subsequently, newMethod(name) will attempt to instantiate the given
+     * class, with no constructor parameters.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public static void registerMethodClass(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String name, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Class clazz) {
+        if (clazz == null)
+            unregisterMethod(name);
+        else
+            NAME_TO_CLASS.put(name, clazz);
+    }
+
+    /**
+     * Subsequently, newMethod(name) will fail.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public static void unregisterMethod(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String name) {
+        NAME_TO_CLASS.remove(name);
+    }
+
+    private static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Map<String, Class> NAME_TO_CLASS = new ConcurrentHashMap<String, Class>();
+
+    static {
+        registerMethodClass("HMAC-SHA1", HMAC_SHA1.class);
+        registerMethodClass("PLAINTEXT", PLAINTEXT.class);
+        registerMethodClass("RSA-SHA1", RSA_SHA1.class);
+        registerMethodClass("HMAC-SHA1" + _ACCESSOR, HMAC_SHA1.class);
+        registerMethodClass("PLAINTEXT" + _ACCESSOR, PLAINTEXT.class);
+    }
+
+    /**
+     * An efficiently sortable wrapper around a parameter.
+     */
+    private static class ComparableParameter implements Comparable<ComparableParameter> {
+
+        @org.checkerframework.dataflow.qual.Impure
+        ComparableParameter(Map.@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Entry value) {
+            this.value = value;
+            String n = toString(value.getKey());
+            String v = toString(value.getValue());
+            this.key = OAuth.percentEncode(n) + ' ' + OAuth.percentEncode(v);
+            // ' ' is used because it comes before any character
+            // that can appear in a percentEncoded string.
+        }
+
+        final Map.@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Entry value;
+
+        private final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String key;
+
+        @org.checkerframework.dataflow.qual.Pure
+        private static @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable String toString(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable Object from) {
+            return (from == null) ? null : from.toString();
+        }
+
+        @org.checkerframework.dataflow.qual.Pure
+        public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int compareTo(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull ComparableParameter this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull ComparableParameter that) {
+            return this.key.compareTo(that.key);
+        }
+
+        @org.checkerframework.dataflow.qual.Pure
+        public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String toString(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull ComparableParameter this) {
+            return key;
+        }
+    }
+
+    /**
+     * Retrieve the original parameters from a sorted collection.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    private static @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable List<Map.Entry> getParameters(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Collection<ComparableParameter> parameters) {
+        if (parameters == null) {
+            return null;
+        }
+        List<Map.Entry> list = new ArrayList<Map.Entry>(parameters.size());
+        for (ComparableParameter parameter : parameters) {
+            list.add(parameter.value);
+        }
+        return list;
+    }
+}

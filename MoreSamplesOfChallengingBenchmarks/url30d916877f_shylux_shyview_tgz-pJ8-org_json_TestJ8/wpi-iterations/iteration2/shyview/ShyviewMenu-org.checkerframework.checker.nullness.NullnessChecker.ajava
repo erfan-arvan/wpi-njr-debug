@@ -1,0 +1,22 @@
+package shyview;
+
+import javax.swing.JMenuItem;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class ShyviewMenu extends JMenuItem {
+
+    private static final  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull long serialVersionUID = 1L;
+
+    @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull IPicList reference;
+
+    @org.checkerframework.dataflow.qual.Impure
+    public ShyviewMenu(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull IPicList ref) {
+        setText(ref.getName());
+        reference = ref;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull IPicList getList() {
+        return reference;
+    }
+}

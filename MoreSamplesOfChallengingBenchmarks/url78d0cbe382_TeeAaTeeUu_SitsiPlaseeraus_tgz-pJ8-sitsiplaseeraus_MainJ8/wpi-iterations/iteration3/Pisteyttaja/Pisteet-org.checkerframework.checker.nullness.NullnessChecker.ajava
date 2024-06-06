@@ -1,0 +1,183 @@
+package Pisteyttaja;
+
+import omatTietorakenteet.ArrayList;
+import sitsiplaseeraus.Paikka;
+import sitsiplaseeraus.Sitsit;
+
+/**
+ * Laskee ja palauttaa koko sitsit pistemäärän, jota sitten verrataan muihin
+ * järjestyksiin.
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class Pisteet {
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Sitsit sitsit;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull ArrayList<PaikanPisteet> paikat;
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull double pisteet;
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean onYhteyksia;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull ArrayList<Paikka> paikkaLista;
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int avec;
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int puoliso;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Laskin laskin;
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull double pariPisteet;
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull double sukupuoliPisteet;
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull double yhteysPisteet;
+
+    /**
+     * Luo ja alustaa olion.
+     *
+     * @param sitsit
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public Pisteet(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Sitsit sitsit) {
+        this.sitsit = sitsit;
+        this.paikat = new ArrayList<PaikanPisteet>();
+        this.laskin = new Laskin();
+        this.alustaPaikat();
+        this.onYhteyksia = false;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull double palautaPisteet() {
+        nollaaPisteet();
+        this.alustaSitsaajat();
+        kayLapiKaikkiPaikat(false);
+        return pisteet;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull double palautaSukupuoliJaPariPisteet() {
+        nollaaPisteet();
+        this.alustaSitsaajat();
+        kayLapiKaikkiPaikat(true);
+        return pisteet;
+    }
+
+    /**
+     * Palauttaa mahdolliset avec ja puolisopisteet.
+     *
+     * @return avec-pisteet
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull double getPariPisteet() {
+        return pariPisteet;
+    }
+
+    /**
+     * Palauttaa "tyttöpoika-järjestyksen" pisteet.
+     *
+     * @return
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull double getSukupuoliPisteet() {
+        return sukupuoliPisteet;
+    }
+
+    /**
+     * Palauttaa yhteyksien pisteet, eli kuinka hyvin järjestetty tykkäysten ja
+     * pienien riitojen maksimoimiseksi.
+     *
+     * @return yhteyspisteet.
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull double getYhteysPisteet() {
+        return yhteysPisteet;
+    }
+
+    /**
+     * Onko paikan sitsaajalla yhteyksiä muihin sitsaajiin.
+     *
+     * @return
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    protected  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean onkoYhteyksia() {
+        return this.onYhteyksia;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void alustaPaikat() {
+        this.paikkaLista = this.sitsit.getPaikat();
+        for (Paikka paikka : this.paikkaLista) {
+            PaikanPisteet paikanPisteet = new PaikanPisteet(paikka, this.laskin);
+            this.paikat.add(paikanPisteet);
+        }
+    }
+
+    /**
+     * Asettaa sitsaajan tietämään, millä paikalla hän istuu.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void alustaSitsaajat() {
+        for (Paikka paikka : this.paikkaLista) {
+            paikka.getSitsaaja().setPaikka(paikka);
+        }
+    }
+
+    /**
+     * Palauttaa vierekkäin olevien avecien määrän.
+     *
+     * @return vierekkäin olevien avecien määrä.
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getAvecienMaara() {
+        return avec;
+    }
+
+    /**
+     * Palauttaa vierekkäin olevien puolisojen määrän.
+     *
+     * @return vierekkäin olevien puolisojen määrä.
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getPuolisojenMaara() {
+        return puoliso;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void kayLapiKaikkiPaikat( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean vainSukupuoliJaPariPisteet) {
+        for (PaikanPisteet sitsaajanPisteet : paikat) {
+            if (vainSukupuoliJaPariPisteet == false) {
+                this.pisteet += sitsaajanPisteet.palautaPisteet();
+            } else {
+                sitsaajanPisteet.nollaaPisteet();
+                this.pisteet += sitsaajanPisteet.tarkistaAvecJaPuoliso();
+                this.pisteet += sitsaajanPisteet.tarkistaYmparillaOlevienSukupuolet();
+            }
+            if (sitsaajanPisteet.isAvec()) {
+                this.avec++;
+            }
+            if (sitsaajanPisteet.isPuoliso()) {
+                this.puoliso++;
+            }
+            this.onYhteyksia = true;
+            asetaOsaPisteetOikein(sitsaajanPisteet);
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void asetaOsaPisteetOikein(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull PaikanPisteet sitsaajanPisteet) {
+        pariPisteet += sitsaajanPisteet.getPariPisteet();
+        sukupuoliPisteet += sitsaajanPisteet.getSukupuoliPisteet();
+        yhteysPisteet += sitsaajanPisteet.getYhteysPisteet();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void nollaaPisteet() {
+        this.pisteet = 0.0;
+        this.avec = 0;
+        this.puoliso = 0;
+        pariPisteet = 0.0;
+        sukupuoliPisteet = 0.0;
+        yhteysPisteet = 0.0;
+    }
+}

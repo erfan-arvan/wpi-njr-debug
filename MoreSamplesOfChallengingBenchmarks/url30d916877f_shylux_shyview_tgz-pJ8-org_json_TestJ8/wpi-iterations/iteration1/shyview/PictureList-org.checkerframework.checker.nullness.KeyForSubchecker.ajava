@@ -1,0 +1,136 @@
+package shyview;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.NoSuchElementException;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class PictureList extends LinkedList<IPicture> implements IPicList, ActionListener {
+
+    private static final   long serialVersionUID = 1L;
+
+    public static final   int PRELOAD_IMAGES = 5;
+
+     String name = "Default";
+
+     PositionIterator<IPicture> it;
+
+     ShyviewMenu menuItem = null;
+
+    @org.checkerframework.dataflow.qual.Impure
+    public PictureList( String parname) {
+        name = parname;
+        it = new PositionIterator<IPicture>(this);
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  String getName( PictureList this) {
+        return name;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  IPicture next( PictureList this) throws NoSuchElementException {
+        it.current().interrupt();
+        it.next();
+        try {
+            it.preview(1).preload();
+        } catch (NoSuchElementException e) {
+        }
+        return it.current();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  IPicture current( PictureList this) throws NoSuchElementException {
+        return it.current();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  IPicture previous( PictureList this) throws NoSuchElementException {
+        it.current().interrupt();
+        it.previous();
+        try {
+            it.preview(-1).preload();
+        } catch (NoSuchElementException e) {
+        }
+        return it.current();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public   int getIndex( PictureList this) {
+        return it.getIndex();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setIndex( PictureList this,   int i) {
+        try {
+            it.setIndex(i);
+        } catch (ArrayIndexOutOfBoundsException e) {
+        }
+    }
+
+    /**
+     * Removes double entrys.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void cleanup( PictureList this) {
+        ArrayList<IPicture> newlist = new ArrayList<IPicture>();
+        for (IPicture p1 : this) {
+            boolean test = true;
+            for (IPicture p2 : newlist) {
+                if (p1.equals(p2))
+                    test = false;
+            }
+            if (test)
+                newlist.add(p1);
+        }
+        this.clear();
+        this.addAll(newlist);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void sort( PictureList this) {
+        ShyviewComparator.PictureComparator comp = (new ShyviewComparator()).new PictureComparator();
+        Collections.sort(this, comp);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  ShyviewMenu getMenuItem( PictureList this) {
+        if (menuItem == null)
+            menuItem = new ShyviewMenu(this);
+        return menuItem;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void free() {
+        for (PositionIterator<IPicture> i = new PositionIterator<IPicture>(this); i.hasNext(); ) {
+            i.next().flush();
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public   boolean add( PictureList this,  IPicture p) {
+        p.setActionListener(this);
+        return super.add(p);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public   boolean addAll( PictureList this,  Collection<? extends IPicture> c) {
+        for (Iterator<? extends IPicture> i = c.iterator(); i.hasNext(); ) i.next().setActionListener(this);
+        return super.addAll(c);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void actionPerformed( PictureList this,  ActionEvent e) {
+        int i = it.getOffset((IPicture) e.getSource());
+        try {
+            if (i >= 0 && i < PRELOAD_IMAGES)
+                it.preview(i + 1).preload();
+        } catch (NoSuchElementException ex) {
+        }
+    }
+}

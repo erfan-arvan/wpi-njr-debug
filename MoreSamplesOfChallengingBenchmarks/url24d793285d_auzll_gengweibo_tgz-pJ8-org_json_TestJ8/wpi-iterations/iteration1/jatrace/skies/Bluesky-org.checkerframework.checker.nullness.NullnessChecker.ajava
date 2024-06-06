@@ -1,0 +1,51 @@
+package jatrace.skies;
+
+import jatrace.*;
+
+/**
+ * A basic implementation of the Sky interface with a blue sky and a single
+ *  bright sun.
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class Bluesky implements Sky {
+
+    protected @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Vector sun;
+
+    protected final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Color color = new Color(0.3, 0.3, 0.9999);
+
+    //constructors
+    /**
+     * Default constructor has its sun in the positive y direction.
+     */
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public Bluesky() {
+        sun = new Vector(0.0, 1.0, 0.0);
+    }
+
+    /**
+     * This constructor builds a sky with the sun in the given direction.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public Bluesky(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Vector direction) {
+        sun = direction.dup().norm();
+    }
+
+    /**
+     * Gets the color of the sky in the given direction.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Color getColor(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Bluesky this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Vector direction) {
+        double exp = Math.pow(Math.max(0.0, direction.dot(sun)), 20.0);
+        return color.dup().gamma(1 - exp);
+    }
+
+    /**
+     * Returns references to the light sources within the sky.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Vector @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] getLight(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Bluesky this) {
+        Vector[] L = new Vector[1];
+        L[0] = sun.dup().delta(0.05).norm();
+        return L;
+    }
+}

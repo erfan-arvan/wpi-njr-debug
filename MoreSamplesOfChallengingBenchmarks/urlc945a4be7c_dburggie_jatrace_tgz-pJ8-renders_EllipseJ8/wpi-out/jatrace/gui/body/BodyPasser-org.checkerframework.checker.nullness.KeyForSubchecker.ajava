@@ -1,0 +1,38 @@
+package jatrace.gui.body;
+
+import jatrace.*;
+import jatrace.gui.*;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public interface BodyPasser {
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setText( BodyPasser this,  String t);
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  String getText( BodyPasser this);
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setBody(Body b);
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  Body getBody();
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setPrevBodyPasser( BodyPasser this,  BodyPasser p);
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setNextBodyPasser( BodyPasser this,  BodyPasser p);
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void insertBefore( BodyPasser this,  BodyPasser p);
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void insertAfter( BodyPasser this,  BodyPasser p);
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void remove();
+}

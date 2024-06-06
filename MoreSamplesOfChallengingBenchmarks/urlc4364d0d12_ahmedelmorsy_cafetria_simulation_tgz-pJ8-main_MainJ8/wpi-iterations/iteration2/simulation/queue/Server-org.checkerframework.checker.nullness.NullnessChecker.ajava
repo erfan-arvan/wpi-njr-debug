@@ -1,0 +1,53 @@
+package simulation.queue;
+
+import simulation.global.Event;
+
+/**
+ * Queue System Server
+ * @author Ahmed Elmorsy Khalifa
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public abstract class Server {
+
+    private @org.checkerframework.checker.initialization.qual.UnderInitialization(simulation.queue.QueueSystem.class) @org.checkerframework.checker.nullness.qual.MonotonicNonNull QueueSystem qs;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String name;
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public Server(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String name) {
+        this.name = name;
+    }
+
+    /**
+     * check if server busy serving a customer
+     * @return true if server is busy serving a customer and false otherwise.
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public abstract  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean isBusy();
+
+    /**
+     * serve a customer;
+     * @param customer
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    protected abstract void serve(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Customer customer, final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Event e);
+
+    /**
+     * set Queue system to be able to pull customers from queue when idle
+     * @param queueSystem the queue system in which server is working
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    protected void setQueueSystem(@org.checkerframework.checker.initialization.qual.UnderInitialization(simulation.queue.QueueSystem.class) @org.checkerframework.checker.nullness.qual.NonNull QueueSystem qs) {
+        this.qs = qs;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    protected @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable QueueSystem getQueueSystem() {
+        return this.qs;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    protected @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String getName() {
+        return this.name;
+    }
+}

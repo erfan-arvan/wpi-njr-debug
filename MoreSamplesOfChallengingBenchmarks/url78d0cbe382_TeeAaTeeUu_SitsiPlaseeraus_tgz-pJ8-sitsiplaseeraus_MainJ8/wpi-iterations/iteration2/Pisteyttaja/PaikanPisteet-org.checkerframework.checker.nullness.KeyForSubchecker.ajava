@@ -1,0 +1,421 @@
+package Pisteyttaja;
+
+import omatTietorakenteet.Hakemisto;
+import omatTietorakenteet.Vektori;
+import sitsiplaseeraus.Paikka;
+import sitsiplaseeraus.Sitsaaja;
+
+/**
+ * Laskee ja palauttaa paikan pisteet, jossa sitsaajat istuvat.
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class PaikanPisteet {
+
+    private  Paikka paikka;
+
+    private  Hakemisto<Sitsaaja, Integer> yhteydet;
+
+    private  Paikka kohdePaikka;
+
+    private   int kohteidenErotus;
+
+    private   boolean onYhteyksia;
+
+    private   int arvo;
+
+    private  Sitsaaja kohdeSitsaaja;
+
+    private final  Laskin laskin;
+
+    private   boolean avec;
+
+    private   boolean puoliso;
+
+    private   double pariPisteet;
+
+    private   double sukupuoliPisteet;
+
+    private   double yhteysPisteet;
+
+    /**
+     * Alustaa pisteiden laskurin käyttöön.
+     *
+     * @param paikka
+     * @param laskin
+     */
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    protected PaikanPisteet( Paikka paikka,  Laskin laskin) {
+        this.paikka = paikka;
+        this.onYhteyksia = false;
+        this.laskin = laskin;
+    }
+
+    /**
+     * Palauttaa kaikki pisteet.
+     *
+     * @return Paikan pisteet.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    protected   double palautaPisteet( PaikanPisteet this) {
+        this.yhteydet = this.paikka.getSitsaaja().palautaYhteydet();
+        alustaLuvut();
+        pariPisteet = this.tarkistaAvecJaPuoliso();
+        sukupuoliPisteet = this.tarkistaYmparillaOlevienSukupuolet();
+        yhteysPisteet = kayKaikkiYhteydetLapi();
+        return pariPisteet + sukupuoliPisteet + yhteysPisteet;
+    }
+
+    /**
+     * Palauttaa mahdolliset avec ja puolisopisteet.
+     *
+     * @return avec-pisteet
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public   double getPariPisteet( PaikanPisteet this) {
+        return pariPisteet;
+    }
+
+    /**
+     * Palauttaa "tyttöpoika-järjestyksen" pisteet.
+     *
+     * @return
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public   double getSukupuoliPisteet( PaikanPisteet this) {
+        return sukupuoliPisteet;
+    }
+
+    /**
+     * Palauttaa yhteyksien pisteet, eli kuinka hyvin järjestetty tykkäysten ja
+     * pienien riitojen maksimoimiseksi.
+     *
+     * @return yhteyspisteet.
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public   double getYhteysPisteet( PaikanPisteet this) {
+        return yhteysPisteet;
+    }
+
+    /**
+     * Onko paikan sitsaajalla yhteyksiä muihin sitsaajiin.
+     *
+     * @return
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    protected   boolean onkoYhteyksia( PaikanPisteet this) {
+        return this.onYhteyksia;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private   double palautaPisteet( PaikanPisteet this,   int arvo,   int kohteidenErotus,   int paikka) {
+        if (paikkaOnVasemmalla(paikka) == true) {
+            return pisteetKunPaikkaOnVasemmalla(kohteidenErotus, arvo);
+        } else {
+            return pisteetKunPaikkaOnOikealla(kohteidenErotus, arvo);
+        }
+    }
+
+    /**
+     * Palauttaa true, jos annettu paikka on vasemmalla puolella pöytää.
+     *
+     * @param paikka
+     * @return true, jos vasemmalla puolella.
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public static   boolean paikkaOnVasemmalla(  int paikka) {
+        return paikka % 2 == 0;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    private static   boolean kohdeOnSamallaPuolella(  int kohteidenErotus) {
+        return Math.abs(kohteidenErotus) % 2 == 0;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private   double pisteetKunPaikkaOnVasemmalla( PaikanPisteet this,   int kohteidenErotus,   int arvo) {
+        if (kohdeOnSamallaPuolella(kohteidenErotus) == true) {
+            return 1.0 * arvo / Math.abs(kohteidenErotus / 2);
+        } else {
+            if (kohteidenErotus > 0) {
+                return 1.0 * arvo / this.laskin.hypot(1, 1.0 * (kohteidenErotus + 1) / 2);
+            } else {
+                return 1.0 * arvo / this.laskin.hypot(1, 1.0 * (Math.abs(kohteidenErotus) - 1) / 2);
+            }
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private   double pisteetKunPaikkaOnOikealla( PaikanPisteet this,   int kohteidenErotus,   int arvo) {
+        if (kohdeOnSamallaPuolella(kohteidenErotus) == true) {
+            return 1.0 * arvo / Math.abs(kohteidenErotus / 2);
+        } else {
+            if (kohteidenErotus > 0) {
+                return 1.0 * arvo / this.laskin.hypot(1, 1.0 * (kohteidenErotus - 1) / 2);
+            } else {
+                return 1.0 * arvo / this.laskin.hypot(1, 1.0 * Math.abs((kohteidenErotus) / 2 - 1));
+            }
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public   double tarkistaAvecJaPuoliso( PaikanPisteet this) {
+        pariPisteet = this.tarkistaAvec(this.paikka);
+        if (pariPisteet == 0.0) {
+            pariPisteet = this.tarkistaPuoliso(this.paikka);
+            if (pariPisteet > 0.0) {
+                setPuoliso();
+            }
+            return pariPisteet;
+        } else {
+            if (pariPisteet > 0.0) {
+                setAvec();
+            }
+            return pariPisteet;
+        }
+    }
+
+    /**
+     * Tarkistaa onko paikan sitsaajalla avec tai puoliso.
+     *
+     * @param paikka
+     * @return true, jos avec tai puoliso.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public static   double tarkistaAvecJaPuoliso(Paikka paikka) {
+        double pisteet = tarkistaAvec(paikka);
+        if (pisteet == 0.0) {
+            pisteet = tarkistaPuoliso(paikka);
+            return pisteet;
+        } else {
+            return pisteet;
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private static   double tarkistaAvec( Paikka paikka) {
+        if (paikka != null) {
+            if (paikka.getSitsaaja().avecIsSet() == false) {
+                return 0.0;
+            } else {
+                int mikaPari = onkoMillainenPari(paikka.getSitsaaja());
+                if (mikaPari == 1) {
+                    if (josSitsaajaOnMiesJaAvecNainen(paikka)) {
+                        return 10000.1;
+                    }
+                } else if (mikaPari == -1) {
+                    if (josSitsaajaOnNainenJaAvecMies(paikka)) {
+                        return 10000.2;
+                    }
+                } else if (mikaPari == 0) {
+                    if (josSitsaajaOnNainenJaAvecMies(paikka)) {
+                        return 10000.3;
+                    } else if (josSitsaajaOnMiesJaAvecNainen(paikka)) {
+                        return 10000.3;
+                    }
+                }
+            }
+        }
+        return 0.0;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    private static   double tarkistaPuoliso( Paikka paikka) {
+        if (paikka != null) {
+            if (paikka.getSitsaaja().puolisoIsSet() == false) {
+                return 0.0;
+            } else {
+                if (paikka.getPuolisonPaikka() != null) {
+                    if (paikka.getSitsaaja().getPuoliso().equals(paikka.getPuolisonPaikka().getSitsaaja())) {
+                        return 10000.0;
+                    }
+                }
+            }
+        }
+        return 0.0;
+    }
+
+    /**
+     * Onko paikan sitsaajalla avec.
+     *
+     * @return true, jos avec
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public   boolean isAvec( PaikanPisteet this) {
+        return avec;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void setAvec( PaikanPisteet this) {
+        this.avec = true;
+    }
+
+    /**
+     * Palauttaa tiedon siitä, onko paikan sitsaajalla puolisoa.
+     *
+     * @return true, jos puoliso.
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public   boolean isPuoliso( PaikanPisteet this) {
+        return puoliso;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void setPuoliso( PaikanPisteet this) {
+        this.puoliso = true;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    private static   int onkoMillainenPari( Sitsaaja sitsaaja) {
+        if (sitsaaja.avecIsSet()) {
+            if (sitsaaja.isMies() && sitsaaja.getAvec().isMies() == false) {
+                return 1;
+            } else if (sitsaaja.isMies() == false && sitsaaja.getAvec().isMies()) {
+                return -1;
+            } else {
+                return 0;
+            }
+        }
+        return -2;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public   double tarkistaYmparillaOlevienSukupuolet( PaikanPisteet this) {
+        int pisteita = 0;
+        boolean mies;
+        mies = onkoMiesVaiNainen();
+        pisteita += miehenAvecinPaikallaToistaSukupuolta(mies);
+        pisteita += naisenAvecinPaikallaToistaSukupuolta(mies);
+        pisteita += puolisonPaikallaToistaSukupuolta(mies);
+        this.sukupuoliPisteet = pisteita;
+        return pisteita;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private   double kayKaikkiYhteydetLapi( PaikanPisteet this) {
+        for (Vektori<Sitsaaja, Integer> yhteys : yhteydet) {
+            this.onYhteyksia = true;
+            this.kohdeSitsaaja = (Sitsaaja) yhteys.getKey();
+            this.kohdePaikka = this.kohdeSitsaaja.getPaikka();
+            yhteysPisteet += josPoytaOnSama(yhteys);
+        }
+        return yhteysPisteet;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void alustaLuvut( PaikanPisteet this) {
+        this.avec = false;
+        this.puoliso = false;
+        pariPisteet = 0.0;
+        sukupuoliPisteet = 0.0;
+        yhteysPisteet = 0.0;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    private static   boolean josSitsaajaOnMiesJaAvecNainen( Paikka paikka) {
+        if (paikka.getMiehenAvecinPaikka() != null) {
+            if (paikka.getSitsaaja().getAvec().equals(paikka.getMiehenAvecinPaikka().getSitsaaja())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    private static   boolean josSitsaajaOnNainenJaAvecMies( Paikka paikka) {
+        if (paikka.getNaisenAvecinPaikka() != null) {
+            if (paikka.getSitsaaja().getAvec().equals(paikka.getNaisenAvecinPaikka().getSitsaaja())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    private   boolean onkoMiesVaiNainen( PaikanPisteet this) {
+        boolean mies = false;
+        try {
+            if (paikka.getSitsaaja().isMies()) {
+                mies = true;
+            } else {
+                mies = false;
+            }
+        } catch (UnsupportedOperationException e) {
+        }
+        return mies;
+    }
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    private   int miehenAvecinPaikallaToistaSukupuolta( PaikanPisteet this,   boolean mies) {
+        int pisteita = 0;
+        try {
+            if (paikka.getMiehenAvecinPaikka() != null) {
+                if (paikka.getMiehenAvecinPaikka().getSitsaaja().isMies()) {
+                    if (mies == false) {
+                        pisteita += 500;
+                    }
+                } else {
+                    if (mies == true) {
+                        pisteita += 500;
+                    }
+                }
+            }
+        } catch (UnsupportedOperationException e) {
+        }
+        return pisteita;
+    }
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    private   int naisenAvecinPaikallaToistaSukupuolta( PaikanPisteet this,   boolean mies) {
+        int pisteita = 0;
+        try {
+            if (paikka.getNaisenAvecinPaikka() != null) {
+                if (paikka.getNaisenAvecinPaikka().getSitsaaja().isMies()) {
+                    if (mies == false) {
+                        pisteita += 500;
+                    }
+                } else {
+                    if (mies == true) {
+                        pisteita += 500;
+                    }
+                }
+            }
+        } catch (UnsupportedOperationException e) {
+        }
+        return pisteita;
+    }
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    private   int puolisonPaikallaToistaSukupuolta( PaikanPisteet this,   boolean mies) {
+        int pisteita = 0;
+        try {
+            if (paikka.getPuolisonPaikka() != null) {
+                if (paikka.getPuolisonPaikka().getSitsaaja().isMies()) {
+                    if (mies == false) {
+                        pisteita += 500;
+                    }
+                } else {
+                    if (mies == true) {
+                        pisteita += 500;
+                    }
+                }
+            }
+        } catch (UnsupportedOperationException e) {
+        }
+        return pisteita;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private   double josPoytaOnSama( PaikanPisteet this,  Vektori<Sitsaaja, Integer> yhteys) {
+        if (this.paikka.getPoyta() == this.kohdePaikka.getPoyta()) {
+            this.arvo = (Integer) yhteys.getValue();
+            this.kohteidenErotus = this.paikka.getPaikka() - this.kohdePaikka.getPaikka();
+            return this.palautaPisteet(arvo, kohteidenErotus, this.paikka.getPaikka());
+        }
+        return 0.0;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    void nollaaPisteet( PaikanPisteet this) {
+        alustaLuvut();
+    }
+}

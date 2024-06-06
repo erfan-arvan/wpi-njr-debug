@@ -1,0 +1,88 @@
+/**
+ */
+package ubc.swim.dynamics.controllers;
+
+import java.util.ArrayList;
+import java.util.List;
+import org.jbox2d.callbacks.DebugDraw;
+import org.jbox2d.dynamics.Body;
+import org.jbox2d.dynamics.World;
+import ubc.swim.gui.SwimSettings;
+
+/**
+ * Base class for controllers. Controllers are a convenience for encapsulating
+ * common per-step functionality.
+ *
+ * Adapted from http://personal.boristhebrave.com/project/b2buoyancycontroller
+ *
+ * @author Ben Humberston
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class DynamicsController {
+
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull World world;
+
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull ArrayList<Body> bodies;
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    protected DynamicsController(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull DynamicsControllerDef def) {
+        world = null;
+        bodies = new ArrayList<Body>();
+    }
+
+    /**
+     * Controllers override this to implement per-step functionality.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void step(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull SwimSettings settings) {
+        ;
+    }
+
+    /**
+     * Controllers override this to provide debug drawing.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void draw(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull DebugDraw debugDraw, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull SwimSettings settings) {
+        ;
+    }
+
+    /**
+     * Adds a body to the controller list.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void addBody(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Body body) {
+        bodies.add(body);
+    }
+
+    /**
+     * Removes a body from the controller list.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void removeBody(Body body) {
+        bodies.remove(body);
+    }
+
+    /**
+     * Removes all bodies from the controller list.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void clear() {
+        bodies.clear();
+    }
+
+    /**
+     * Get the parent world of this body.
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull World getWorld() {
+        return world;
+    }
+
+    /**
+     * Get the attached body list
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull List<Body> getBodyList() {
+        return bodies;
+    }
+}

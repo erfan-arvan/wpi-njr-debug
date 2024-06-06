@@ -1,0 +1,187 @@
+package jatrace.gui.body;
+
+import jatrace.*;
+import jatrace.gui.*;
+import jatrace.gui.builders.*;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class BodyButton extends JButton implements ActionListener, BodyPasser, WindowListener {
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull Body body;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull String text;
+
+    @org.checkerframework.checker.initialization.qual.UnderInitialization(jatrace.gui.body.BodyBuilder.class) @org.checkerframework.checker.nullness.qual.NonNull BodyBuilder bb;
+
+     @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean builderLocked = false;
+
+    @org.checkerframework.dataflow.qual.Impure
+    public BodyButton() {
+        super();
+        setPreferredSize(new Dimension(0, 25));
+        body = null;
+        setText("Empty Body");
+        addActionListener(this);
+        bb = new BodyBuilder(this);
+        bb.addWindowListener(this);
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Body getBody(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull BodyButton this) {
+        return body;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setBody(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull BodyButton this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Body b) {
+        body = b;
+        builderLocked = false;
+        update();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void actionPerformed(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull BodyButton this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull ActionEvent e) {
+        if (e.getSource() == this) {
+            if (!builderLocked) {
+                bb.setVisible(true);
+                setEnabled(false);
+                builderLocked = true;
+                update();
+            }
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void update() {
+        //change button highlight based on build lock
+        if (builderLocked) {
+            bb.setVisible(true);
+            setEnabled(false);
+        } else {
+            bb.setVisible(false);
+            setEnabled(true);
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setText(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull BodyButton this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String name) {
+        super.setText(name);
+        text = name;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String getText(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull BodyButton this) {
+        return text;
+    }
+
+    private BodyPasser nextBodyPasser = null, prevBodyPasser = null;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull BodyButton nextBodyButton = null;
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull BodyButton getNext() {
+        return nextBodyButton;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setNextBodyPasser(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull BodyButton this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull BodyPasser p) {
+        nextBodyPasser = p;
+        if (p instanceof BodyButton) {
+            nextBodyButton = (BodyButton) p;
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setPrevBodyPasser(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull BodyButton this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull BodyPasser p) {
+        prevBodyPasser = p;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void insertBefore(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull BodyButton this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull BodyPasser p) {
+        if (p != null) {
+            //forwards
+            p.setNextBodyPasser(this);
+            if (prevBodyPasser != null) {
+                prevBodyPasser.setNextBodyPasser(p);
+            }
+            //backwards
+            p.setPrevBodyPasser(prevBodyPasser);
+            this.prevBodyPasser = p;
+        } else {
+            prevBodyPasser = null;
+            prevBodyPasser.insertAfter(null);
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void insertAfter(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull BodyButton this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull BodyPasser p) {
+        if (p != null) {
+            //backwards
+            if (nextBodyPasser != null) {
+                nextBodyPasser.setPrevBodyPasser(p);
+            }
+            p.setPrevBodyPasser(this);
+            //forwards
+            p.setNextBodyPasser(nextBodyPasser);
+            nextBodyPasser = p;
+        } else {
+            nextBodyPasser = null;
+            nextBodyPasser.insertAfter(null);
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void remove(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull BodyButton this) {
+        if (prevBodyPasser != null) {
+            prevBodyPasser.insertAfter(nextBodyPasser);
+            prevBodyPasser = null;
+            nextBodyPasser = null;
+        } else if (nextBodyPasser != null) {
+            nextBodyPasser.insertBefore(prevBodyPasser);
+            prevBodyPasser = null;
+            nextBodyPasser = null;
+        }
+    }
+
+    //Window listener interface
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public void windowActivated(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull BodyButton this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull WindowEvent e) {
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void windowClosed(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull BodyButton this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull WindowEvent e) {
+        //when window has been closed by calling dispose
+        if (e.getSource() == bb) {
+            //remove this button
+            remove();
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void windowClosing(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull BodyButton this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull WindowEvent e) {
+        //hide the window instead
+        if (e.getSource() == bb) {
+            builderLocked = false;
+            update();
+        }
+    }
+
+    //satisfy WindowListener interface with the below.
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public void windowDeactivated(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull BodyButton this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull WindowEvent e) {
+    }
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public void windowDeiconified(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull BodyButton this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull WindowEvent e) {
+    }
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public void windowIconified(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull BodyButton this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull WindowEvent e) {
+    }
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public void windowOpened(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull BodyButton this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull WindowEvent e) {
+    }
+}

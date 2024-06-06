@@ -1,0 +1,36 @@
+package ubc.swim.optimization;
+
+import ubc.swim.world.characters.SwimCharacter;
+import fr.inria.optimization.cmaes.fitness.IObjectiveFunction;
+
+/**
+ * Abstract swimmer fitness function; provides interface common to all
+ * swimmer fitness functions.
+ * @author Ben Humberston
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public abstract class SwimFitnessFunction implements IObjectiveFunction {
+
+    protected @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull SwimCharacter character;
+
+    @org.checkerframework.dataflow.qual.Impure
+    public abstract  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull double valueOf( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull double @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] x);
+
+    @org.checkerframework.dataflow.qual.Pure
+    public abstract  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean isFeasible( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull double @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] x);
+
+    /**
+     * Returns swimmer character used on last valueOf simulation
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public ubc.swim.world.characters.@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull SwimCharacter getCharacter() {
+        return character;
+    }
+
+    /**
+     * Returns dimensionality of control used by character in this fitness function
+     * @return
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public abstract  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getNumControlDimensions();
+}

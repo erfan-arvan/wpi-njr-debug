@@ -1,0 +1,182 @@
+package com.ctriposs.bigmap.page;
+
+import java.io.Closeable;
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.nio.ByteBuffer;
+import java.nio.MappedByteBuffer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class MappedPageImpl implements IMappedPage, Closeable {
+
+    private final static  Logger logger = LoggerFactory.getLogger(MappedPageImpl.class);
+
+    private  ThreadLocalByteBuffer threadLocalBuffer;
+
+    private volatile   boolean dirty = false;
+
+    private volatile   boolean closed = false;
+
+    private  String pageFile;
+
+    private   long index;
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public MappedPageImpl( MappedByteBuffer mbb,  String pageFile,   long index) {
+        this.threadLocalBuffer = new ThreadLocalByteBuffer(mbb);
+        this.pageFile = pageFile;
+        this.index = index;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void close( MappedPageImpl this) throws IOException {
+        synchronized (this) {
+            if (closed)
+                return;
+            flush();
+            MappedByteBuffer srcBuf = (MappedByteBuffer) threadLocalBuffer.getSourceBuffer();
+            unmap(srcBuf);
+            // hint GC
+            this.threadLocalBuffer = null;
+            closed = true;
+            if (logger.isDebugEnabled()) {
+                logger.debug("Mapped page for " + this.pageFile + " was just unmapped and closed.");
+            }
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setDirty( MappedPageImpl this,   boolean dirty) {
+        this.dirty = dirty;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void flush( MappedPageImpl this) {
+        synchronized (this) {
+            if (closed)
+                return;
+            if (dirty) {
+                MappedByteBuffer srcBuf = (MappedByteBuffer) threadLocalBuffer.getSourceBuffer();
+                // flush the changes
+                srcBuf.force();
+                dirty = false;
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Mapped page for " + this.pageFile + " was just flushed.");
+                }
+            }
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public   byte  [] getLocal( MappedPageImpl this,   int position,   int length) {
+        ByteBuffer buf = this.getLocal(position);
+        byte[] data = new byte[length];
+        buf.get(data);
+        return data;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  ByteBuffer getLocal( MappedPageImpl this,   int position) {
+        ByteBuffer buf = this.threadLocalBuffer.get();
+        buf.position(position);
+        return buf;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  ByteBuffer getLocal( MappedPageImpl this) {
+        ByteBuffer buf = this.threadLocalBuffer.get();
+        return buf;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private static void unmap( MappedByteBuffer buffer) {
+        Cleaner.clean(buffer);
+    }
+
+    /**
+     * Helper class allowing to clean direct buffers.
+     */
+    private static class Cleaner {
+
+        public static final   boolean CLEAN_SUPPORTED;
+
+        private static final  Method directBufferCleaner;
+
+        private static final  Method directBufferCleanerClean;
+
+        static {
+            Method directBufferCleanerX = null;
+            Method directBufferCleanerCleanX = null;
+            boolean v;
+            try {
+                directBufferCleanerX = Class.forName("java.nio.DirectByteBuffer").getMethod("cleaner");
+                directBufferCleanerX.setAccessible(true);
+                directBufferCleanerCleanX = Class.forName("sun.misc.Cleaner").getMethod("clean");
+                directBufferCleanerCleanX.setAccessible(true);
+                v = true;
+            } catch (Exception e) {
+                v = false;
+            }
+            CLEAN_SUPPORTED = v;
+            directBufferCleaner = directBufferCleanerX;
+            directBufferCleanerClean = directBufferCleanerCleanX;
+        }
+
+        @org.checkerframework.dataflow.qual.Impure
+        public static void clean( ByteBuffer buffer) {
+            if (buffer == null)
+                return;
+            if (CLEAN_SUPPORTED && buffer.isDirect()) {
+                try {
+                    Object cleaner = directBufferCleaner.invoke(buffer);
+                    directBufferCleanerClean.invoke(cleaner);
+                } catch (Exception e) {
+                    // silently ignore exception
+                }
+            }
+        }
+    }
+
+    private static class ThreadLocalByteBuffer extends ThreadLocal<ByteBuffer> {
+
+        private  ByteBuffer _src;
+
+        @org.checkerframework.dataflow.qual.Impure
+        public ThreadLocalByteBuffer( ByteBuffer src) {
+            _src = src;
+        }
+
+        @org.checkerframework.dataflow.qual.Pure
+        public  ByteBuffer getSourceBuffer( ThreadLocalByteBuffer this) {
+            return _src;
+        }
+
+        @org.checkerframework.dataflow.qual.Impure
+        protected synchronized  ByteBuffer initialValue( ThreadLocalByteBuffer this) {
+            ByteBuffer dup = _src.duplicate();
+            return dup;
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   boolean isClosed( MappedPageImpl this) {
+        return closed;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  String toString( MappedPageImpl this) {
+        return "Mapped page for " + this.pageFile + ", index = " + this.index + ".";
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  String getPageFile( MappedPageImpl this) {
+        return this.pageFile;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   long getPageIndex( MappedPageImpl this) {
+        return this.index;
+    }
+}

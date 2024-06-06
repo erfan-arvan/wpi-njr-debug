@@ -1,0 +1,182 @@
+package de.hrw.mdbt.model;
+
+import java.util.ArrayList;
+import java.util.Date;
+import com.db4o.ObjectContainer;
+import com.db4o.config.CommonConfigurationProvider;
+import com.db4o.constraints.UniqueFieldValueConstraint;
+import com.db4o.ext.Db4oException;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class Person extends Customer {
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull String firstname;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull String secondname;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull String lastname;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull String salutation;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull String title;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull Date dateOfBirth;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull String email;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull String sex;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull ArrayList<Phone> numbers = new ArrayList<Phone>();
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull ArrayList<Address> addresses = new ArrayList<Address>();
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public Person() {
+        super();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public Person( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int id, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String lastname) {
+        super(id);
+        this.lastname = lastname;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public Person( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int id, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String first, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String second, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String last, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String sal, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String title, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Date dob, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String sex) {
+        super(id);
+        this.firstname = first;
+        this.secondname = second;
+        this.lastname = last;
+        this.salutation = sal;
+        this.title = title;
+        this.dateOfBirth = dob;
+        this.sex = sex;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void addAddress(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Address adr) {
+        addresses.add(adr);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void removeAddress(Address adr) {
+        addresses.remove(adr);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void addPhone(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Phone ph) {
+        numbers.add(ph);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void removePhone(Phone ph) {
+        numbers.remove(ph);
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable String getFirstname() {
+        return firstname;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setFirstname(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String name) {
+        this.firstname = name;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable String getSecondname() {
+        return secondname;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setSecondname(String secondname) {
+        this.secondname = secondname;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable String getLastname() {
+        return lastname;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable String getSalutation() {
+        return salutation;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setSalutation(String salutation) {
+        this.salutation = salutation;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable String getTitle() {
+        return title;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable Date getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setDateOfBirth(Date dob) {
+        this.dateOfBirth = dob;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable String getEmail() {
+        return email;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setEmail(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String email) {
+        this.email = email;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable String getSex() {
+        return sex;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setSex(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String sex) {
+        this.sex = sex;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static void configure(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull CommonConfigurationProvider config) {
+        config.common().objectClass(Customer.class).objectField("id").indexed(true);
+        config.common().add(new UniqueFieldValueConstraint(Person.class, "id"));
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean checkConstraints() {
+        if (this.lastname == null)
+            throw new Db4oException("A person must have a last name!");
+        Date today = new Date();
+        if (this.dateOfBirth != null)
+            if (this.dateOfBirth.after(today))
+                throw new Db4oException("<dob> must not be in the future!");
+        return true;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean objectCanNew(ObjectContainer container) throws Db4oException {
+        return checkConstraints();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean objectCanUpdate(ObjectContainer container) throws Db4oException {
+        return checkConstraints();
+    }
+}

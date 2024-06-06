@@ -1,0 +1,22 @@
+package assignments.farmer.actionstrategies.marketstrategies;
+
+import assignments.farmer.actionstrategies.MarketStrategy;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class OrganicMarketStrategy implements MarketStrategy {
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void marketInTheSpring( OrganicMarketStrategy this) {
+        System.out.println("Fall garlic, peas & lettuce to farmer's market.");
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void marketInTheSummer( OrganicMarketStrategy this) {
+        System.out.println("Peas, carrots, early beans, roma tomatoes to farmer's market.");
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void marketInTheFall( OrganicMarketStrategy this) {
+        System.out.println("Beans, squash, tomatoes to farmer's market; big harvest party on farm.");
+    }
+}

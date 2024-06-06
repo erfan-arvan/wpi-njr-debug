@@ -1,0 +1,23 @@
+/**
+ * http://auzll.iteye.com/
+ */
+package com.gengweibo.web;
+
+import z.action.ActionSupport;
+import z.action.Result;
+import z.action.api.Api;
+
+/**
+ * @author auzll@msn.com
+ * @since 2011-3-10
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class FlushAction extends ActionSupport {
+
+    private static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Result RESULT = new Result("/WEB-INF/jsp/result.jsp").addValue("result", "{\"status\":\"ok\"}");
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Result flush() {
+        return RESULT;
+    }
+}

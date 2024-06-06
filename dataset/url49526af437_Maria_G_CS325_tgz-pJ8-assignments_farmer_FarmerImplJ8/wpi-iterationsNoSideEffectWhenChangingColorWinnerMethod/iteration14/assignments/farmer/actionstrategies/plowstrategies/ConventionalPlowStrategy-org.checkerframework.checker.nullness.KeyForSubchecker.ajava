@@ -1,0 +1,22 @@
+package assignments.farmer.actionstrategies.plowstrategies;
+
+import assignments.farmer.actionstrategies.PlowStrategy;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class ConventionalPlowStrategy implements PlowStrategy {
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void plowInTheSpring( ConventionalPlowStrategy this) {
+        System.out.println("Using no-till; no plowing.");
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void plowInTheSummer( ConventionalPlowStrategy this) {
+        System.out.println("No action.");
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void plowInTheFall( ConventionalPlowStrategy this) {
+        System.out.println("No action.");
+    }
+}

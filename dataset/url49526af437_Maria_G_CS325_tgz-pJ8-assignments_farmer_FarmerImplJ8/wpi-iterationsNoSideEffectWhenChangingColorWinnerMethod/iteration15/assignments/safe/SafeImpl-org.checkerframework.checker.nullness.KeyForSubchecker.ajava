@@ -1,0 +1,37 @@
+package assignments.safe;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class SafeImpl implements Safe {
+
+    private   char  [] display;
+
+    private   int index = 0;
+
+    private   boolean locked = true;
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public SafeImpl() {
+        display = Safe.BLANK_DISPLAY.toCharArray();
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   boolean isLocked( SafeImpl this) {
+        return locked;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  String readDisplay( SafeImpl this) {
+        return String.valueOf(display);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void enter( SafeImpl this,   char c) {
+        if (Character.isDigit(c)) {
+            display[index++] = c;
+        }
+        if (String.valueOf(display).equals("123456")) {
+            locked = false;
+            display = Safe.OPEN_DISPLAY.toCharArray();
+        }
+    }
+}

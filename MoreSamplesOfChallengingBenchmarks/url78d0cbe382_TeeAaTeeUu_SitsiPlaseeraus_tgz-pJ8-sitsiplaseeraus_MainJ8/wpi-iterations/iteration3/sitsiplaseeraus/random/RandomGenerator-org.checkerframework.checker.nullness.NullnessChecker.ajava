@@ -1,0 +1,198 @@
+package sitsiplaseeraus.random;
+
+import omatTietorakenteet.ArrayList;
+import omatTietorakenteet.Hakemisto;
+import omatTietorakenteet.Vektori;
+import sitsiplaseeraus.Sitsaaja;
+import sitsiplaseeraus.Sitsit;
+
+/**
+ * Hoitaa kolmea asiaa: satunnaisten nimien luomista, niiden käyttämistä
+ * satunnaisen sitsin luomiseen sekä sitsaajien ja yhteyksien tulostamiseen.
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class RandomGenerator {
+
+    /**
+     * Tulostaa sitsaajien väliset yhteydet, eli kuka pitää kenestäkin ja miten
+     * paljon.
+     *
+     * @param sitsit Josta tiedot tutkitaan
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public static void tulostaYhteydet(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable Sitsit sitsit) {
+        System.out.println("\nYhteydet\n");
+        Hakemisto<Sitsaaja, Hakemisto> kaikkiYhteydet = sitsit.palautaYhteydet();
+        int moneskoYhteys = 0;
+        int moneskoSitsaaja = 0;
+        int moneskoyhteydellinen = 0;
+        for (Vektori<Sitsaaja, Hakemisto> sitsaajanYhteydet : kaikkiYhteydet) {
+            Sitsaaja sitsaaja = (Sitsaaja) sitsaajanYhteydet.getKey();
+            if (sitsaaja.avecIsSet()) {
+                System.out.println(sitsaaja.getNimi() + " haluaa olla sitsaajan " + sitsaaja.getAvec().getNimi() + " avec");
+            }
+            if (sitsaaja.puolisoIsSet()) {
+                System.out.println(sitsaaja.getNimi() + " haluaa olla sitsaajan " + sitsaaja.getPuoliso().getNimi() + " puoliso");
+            }
+            Hakemisto<Sitsaaja, Integer> yhteydet = (Hakemisto<Sitsaaja, Integer>) sitsaajanYhteydet.getValue();
+            moneskoSitsaaja++;
+            boolean eka = true;
+            for (Vektori<Sitsaaja, Integer> yhteys : yhteydet) {
+                Sitsaaja kohdeSitsaaja = (Sitsaaja) yhteys.getKey();
+                int arvo = (Integer) yhteys.getValue();
+                System.out.println(sitsaaja.getNimi() + " pit\u00e4\u00e4 sitsaajasta " + kohdeSitsaaja.getNimi() + " arvolla " + arvo);
+                moneskoYhteys++;
+                if (eka) {
+                    moneskoyhteydellinen++;
+                    eka = false;
+                }
+            }
+        }
+        System.out.println("\n----" + moneskoYhteys + "-" + moneskoSitsaaja + "-" + moneskoyhteydellinen + "--\n");
+    }
+
+    /**
+     * Tulostaa sitsaajat heidän oikeassa järjestyksessään pöydittäin
+     *
+     * @param sitsit Josta tiedot tutkitaan
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public static void tulostaSitsaajat(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable Sitsit sitsit) {
+        System.out.println("\nSitsaajat\n");
+        for (int i = 0; i < sitsit.poytienMaara(); i++) {
+            boolean even = true;
+            for (Sitsaaja sitsaaja : sitsit.palautaPoydanSitsaajat(i)) {
+                if (even == true) {
+                    System.out.print(sitsaaja.getNimi() + sukupuoli(sitsaaja) + "\t:\t");
+                    even = false;
+                } else {
+                    System.out.println(sitsaaja.getNimi() + sukupuoli(sitsaaja));
+                    even = true;
+                }
+            }
+            if (even = true) {
+                System.out.println("\n");
+            } else {
+                System.out.println();
+            }
+        }
+        System.out.println("\n--------\n");
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    private static @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String sukupuoli(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Sitsaaja sitsaaja) {
+        if (sitsaaja.isMies()) {
+            return " (mies) ";
+        } else {
+            return " (nainen) ";
+        }
+    }
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull RandomNimi nimet;
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public RandomGenerator() {
+        this.nimet = new RandomNimi();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String randomNimi() {
+        int random = Random.luo(1);
+        if (random == 1) {
+            return this.palautaNimi(true);
+        } else {
+            return this.palautaNimi(false);
+        }
+    }
+
+    /**
+     * Luo koko nimen, joko miehen tai naisen
+     *
+     * @param mies Onko mies vai ei
+     * @return Naisen tai miehen koko nimen
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String palautaNimi(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Boolean mies) {
+        if (mies) {
+            return this.nimet.palautaEtunimiMiehen() + " " + this.nimet.palautaSukunimi();
+        } else {
+            return this.nimet.palautaEtunimiNaisen() + " " + this.nimet.palautaSukunimi();
+        }
+    }
+
+    /**
+     * Täyttää sitsit satunnaisilla tiedoilla, eli lisää halutun määrän
+     * sitsaajia ja heidän välisiä yhteyksiä sekä avecit ja puolisot
+     *
+     * @param montakoSitsaajaa
+     * @param montakoYhteytta
+     * @param sitsit
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void taytaRandomDatalla( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int montakoSitsaajaa,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int montakoYhteytta, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable Sitsit sitsit) {
+        this.lisaaNimia(montakoSitsaajaa, sitsit);
+        lisaaPuolisojaJaAveceja(montakoSitsaajaa / 5 / 2, sitsit);
+        while (sitsit.yhteyksienMaara() < montakoYhteytta) {
+            Yhteydet.lisaaYhteyksia(montakoYhteytta, sitsit);
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void lisaaNimia( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int montakoSitsaajaa, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable Sitsit sitsit) {
+        for (int i = 0; i < montakoSitsaajaa; i++) {
+            int kumpi = Random.luo(1);
+            Sitsaaja sitsaaja;
+            if (kumpi == 1) {
+                sitsaaja = new Sitsaaja(this.palautaNimi(true), true);
+            } else {
+                sitsaaja = new Sitsaaja(this.palautaNimi(false), false);
+            }
+            sitsit.addPaikka().setSitsaaja(sitsaaja);
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private static void lisaaPuolisojaJaAveceja( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int kuinkaPaljonLuodaan, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Sitsit sitsit) {
+        ArrayList<Sitsaaja> sitsaajat = sitsit.getSitsaajat();
+        int puolisoja = kuinkaPaljonLuodaan / 3;
+        lisaaPuolisoja(puolisoja, sitsaajat);
+        lisaaAveceja(kuinkaPaljonLuodaan - puolisoja, sitsaajat);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private static void lisaaPuolisoja( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int puolisoja, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull ArrayList<Sitsaaja> sitsaajat) {
+        int i = 0;
+        do {
+            Sitsaaja sitsaaja = Yhteydet.annaRandomSitsaaja(sitsaajat);
+            do {
+                sitsaaja = Yhteydet.annaRandomSitsaaja(sitsaajat);
+            } while (sitsaaja.puolisoIsSet() == true || sitsaaja.avecIsSet() == true);
+            Sitsaaja kohdeSitsaaja = Yhteydet.annaToinenRandomSitsaaja(sitsaaja, sitsaajat);
+            do {
+                kohdeSitsaaja = Yhteydet.annaToinenRandomSitsaaja(sitsaaja, sitsaajat);
+            } while (kohdeSitsaaja.puolisoIsSet() == true || kohdeSitsaaja.avecIsSet() == true);
+            sitsaaja.setPuoliso(kohdeSitsaaja);
+            kohdeSitsaaja.setPuoliso(sitsaaja);
+            i++;
+        } while (i < puolisoja);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private static void lisaaAveceja( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int aveceja, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull ArrayList<Sitsaaja> sitsaajat) {
+        int i = 0;
+        do {
+            Sitsaaja sitsaaja = Yhteydet.annaRandomSitsaaja(sitsaajat);
+            ;
+            do {
+                sitsaaja = Yhteydet.annaRandomSitsaaja(sitsaajat);
+            } while (sitsaaja.puolisoIsSet() == true || sitsaaja.avecIsSet() == true);
+            Sitsaaja kohdeSitsaaja = Yhteydet.annaRandomSitsaaja(sitsaajat);
+            do {
+                kohdeSitsaaja = Yhteydet.annaRandomSitsaaja(sitsaajat);
+            } while (kohdeSitsaaja.puolisoIsSet() == true || kohdeSitsaaja.avecIsSet() == true);
+            sitsaaja.setAvec(kohdeSitsaaja);
+            kohdeSitsaaja.setAvec(sitsaaja);
+            i++;
+        } while (i < aveceja);
+    }
+}

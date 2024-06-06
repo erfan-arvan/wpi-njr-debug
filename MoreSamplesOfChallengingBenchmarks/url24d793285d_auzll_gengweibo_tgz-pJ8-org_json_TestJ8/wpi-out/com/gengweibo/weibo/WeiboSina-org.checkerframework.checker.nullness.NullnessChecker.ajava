@@ -1,0 +1,63 @@
+/**
+ * http://auzll.iteye.com/
+ */
+package com.gengweibo.weibo;
+
+import static com.gengweibo.weibo.Weibo.Method.GET;
+import static com.gengweibo.weibo.Weibo.Method.POST;
+
+/**
+ * @author auzll@msn.com
+ * @since 2011-3-16
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class WeiboSina extends Weibo implements IWeibo {
+
+    /**
+     */
+    private static final  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull long serialVersionUID = -1882537453955736664L;
+
+    @org.checkerframework.dataflow.qual.Impure
+    public WeiboSina() {
+        super("http://api.t.sina.com.cn/oauth/request_token", "http://api.t.sina.com.cn/oauth/authorize", "http://api.t.sina.com.cn/oauth/access_token", "http://api.t.sina.com.cn", OAuthProperty.getCallbackUrl(), OAuthProperty.CONSUMER_KEY_SINA, OAuthProperty.CONSUMER_SECRET_SINA, WeiboType.T_SINA);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.UnderInitialization(com.gengweibo.weibo.Response.class) @org.checkerframework.checker.nullness.qual.NonNull Response statusesComments(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull WeiboSina this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull IParam param) {
+        RequestParam reqParam = toRequestParam("count", PAGE_MAX).add("id", param.getParamValue("statusId"));
+        String page = "1";
+        if (null != param.getParamValue("page")) {
+            page = param.getParamValue("page");
+        }
+        reqParam.add("page", page);
+        return sendRequest(reqParam, urlResource + "statuses/comments.json", GET);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.UnderInitialization(com.gengweibo.weibo.Response.class) @org.checkerframework.checker.nullness.qual.NonNull Response statusesRetweet(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull WeiboSina this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull IParam param) {
+        RequestParam reqParam = toRequestParam("id", param.getParamValue("statusId"));
+        if (null != param.getParamValue("status")) {
+            reqParam.add("status", param.getParamValue("status"));
+        }
+        return sendRequest(reqParam, urlResource + "statuses/repost.json", POST);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.UnderInitialization(com.gengweibo.weibo.Response.class) @org.checkerframework.checker.nullness.qual.NonNull Response statusesReply(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull WeiboSina this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull IParam param) {
+        return sendRequest(toRequestParam("comment", param.getParamValue("status")).add("id", param.getParamValue("statusId")), urlResource + "statuses/comment.json", POST);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.UnderInitialization(com.gengweibo.weibo.Response.class) @org.checkerframework.checker.nullness.qual.NonNull Response statusesCounts(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull IParam param) {
+        return sendRequest(toRequestParam("ids", param.getParamValue("statusIds")), urlResource + "statuses/counts.json", GET);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.UnderInitialization(com.gengweibo.weibo.Response.class) @org.checkerframework.checker.nullness.qual.NonNull Response statusesCommentsToMe(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull WeiboSina this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull IParam param) {
+        RequestParam reqParam = toRequestParam("count", parseLegalPageCount(param.getParamValue("count")));
+        if (null != param.getParamValue("max_id")) {
+            reqParam.add("max_id", param.getParamValue("max_id"));
+        }
+        return sendRequest(reqParam, urlResource + "statuses/comments_to_me.json", GET);
+    }
+}

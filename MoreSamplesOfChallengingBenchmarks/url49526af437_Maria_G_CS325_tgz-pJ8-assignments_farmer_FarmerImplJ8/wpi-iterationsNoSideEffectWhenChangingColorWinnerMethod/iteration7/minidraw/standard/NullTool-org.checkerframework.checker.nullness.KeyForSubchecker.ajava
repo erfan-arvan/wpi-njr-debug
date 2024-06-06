@@ -1,0 +1,54 @@
+package minidraw.standard;
+
+import minidraw.framework.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.KeyEvent;
+
+/**
+ * Null tool. Null object for tools.
+ *
+ *   This source code is from the book
+ *     "Flexible, Reliable Software:
+ *       Using Patterns and Agile Development"
+ *     published 2010 by CRC Press.
+ *   Author:
+ *     Henrik B Christensen
+ *     Computer Science Department
+ *     Aarhus University
+ *
+ *   This source code is provided WITHOUT ANY WARRANTY either
+ *   expressed or implied. You may study, use, modify, and
+ *   distribute it for non-commercial purposes. For any
+ *   commercial use, see http://www.baerbak.com/
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class NullTool implements Tool {
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public void mouseDown( NullTool this,  MouseEvent e,   int x,   int y) {
+    }
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public void mouseDrag( NullTool this,  MouseEvent e,   int x,   int y) {
+    }
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public void mouseMove( NullTool this,  MouseEvent e,   int x,   int y) {
+    }
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public void mouseUp( NullTool this,  MouseEvent e,   int x,   int y) {
+    }
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public void activate() {
+    }
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public void deactivate() {
+    }
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public void keyDown( NullTool this,  KeyEvent evt,   int key) {
+    }
+}

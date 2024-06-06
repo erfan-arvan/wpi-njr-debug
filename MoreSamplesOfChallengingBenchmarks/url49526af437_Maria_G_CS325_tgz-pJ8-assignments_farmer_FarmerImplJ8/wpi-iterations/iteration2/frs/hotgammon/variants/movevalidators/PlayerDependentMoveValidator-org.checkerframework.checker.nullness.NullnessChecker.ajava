@@ -1,0 +1,44 @@
+package frs.hotgammon.variants.movevalidators;
+
+import frs.hotgammon.MoveValidator;
+import frs.hotgammon.framework.Color;
+import frs.hotgammon.framework.Game;
+import frs.hotgammon.framework.Location;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class PlayerDependentMoveValidator implements MoveValidator {
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull MoveValidator blackMoveValidator = new SimpleMoveValidator();
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull MoveValidator redMoveValidator = new CompleteMoveValidator();
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull Game game;
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public PlayerDependentMoveValidator() {
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public PlayerDependentMoveValidator(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable Game game) {
+        this.setGame(game);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean isValid(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull PlayerDependentMoveValidator this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Location from, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Location to) {
+        Color player = this.game.getPlayerInTurn();
+        if (player == Color.BLACK) {
+            return blackMoveValidator.isValid(from, to);
+        }
+        if (player == Color.RED) {
+            return redMoveValidator.isValid(from, to);
+        }
+        return false;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setGame(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull PlayerDependentMoveValidator this, @org.checkerframework.checker.initialization.qual.UnknownInitialization(java.lang.Object.class) @org.checkerframework.checker.nullness.qual.NonNull Game game) {
+        this.game = game;
+        blackMoveValidator.setGame(game);
+        redMoveValidator.setGame(game);
+    }
+}

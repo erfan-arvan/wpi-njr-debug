@@ -1,0 +1,23 @@
+package othello;
+
+import org.jgap.InvalidConfigurationException;
+import logica.ia.algoritmosGeneticos.Estrategia;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class Entrenamiento extends Thread {
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void run(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Entrenamiento this) {
+        entrenar();
+        System.out.println("Terminó de entrenar:" + this.getName());
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void entrenar() {
+        try {
+            Estrategia.calcularMejorEstrategia();
+        } catch (InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+    }
+}

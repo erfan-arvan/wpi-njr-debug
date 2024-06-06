@@ -1,0 +1,24 @@
+package jatrace;
+
+/**
+ * This interface describes the sky of the simulated world. This sky is
+ *  idealized in that it is "infinitely far away".
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public interface Sky {
+
+    /**
+     * Gets the color of the sky in the given direction.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Color getColor(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Vector direction);
+
+    /**
+     * Gets an array of Vectors that describe the positions of the light
+     *  sources in the sky. For the purposes of soft shadows, light-vector
+     *  deltas should be precomputed when returned here. As of now, all light
+     *  sources returned are considered equally bright.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Vector @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] getLight();
+}

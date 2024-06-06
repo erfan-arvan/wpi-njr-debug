@@ -1,0 +1,17 @@
+package othello;
+
+import java.awt.EventQueue;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class Juego extends Thread {
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void run(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Juego this) {
+        jugar();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void jugar() {
+        EventQueue.invokeLater(new UIJuego());
+    }
+}

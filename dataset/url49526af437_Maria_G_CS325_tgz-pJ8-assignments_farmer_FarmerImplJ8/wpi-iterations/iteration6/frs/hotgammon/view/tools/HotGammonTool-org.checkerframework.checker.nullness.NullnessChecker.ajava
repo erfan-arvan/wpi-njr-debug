@@ -1,0 +1,49 @@
+package frs.hotgammon.view.tools;
+
+import java.awt.event.MouseEvent;
+import java.util.HashMap;
+import frs.hotgammon.framework.Game;
+import minidraw.framework.DrawingEditor;
+import minidraw.framework.Tool;
+import minidraw.standard.AbstractTool;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class HotGammonTool extends AbstractTool {
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable Tool currentTool;
+
+    final public static @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String DIE_ROLL_TOOL = "DIE_ROLL_TOOL";
+
+    final public static @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String MOVE_TOOL = "MOVE_TOOL";
+
+    final public static @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String GAME_OVER_TOOL = "GAME_OVER_TOOL";
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull HashMap<String, Tool> states;
+
+    @org.checkerframework.dataflow.qual.Impure
+    public HotGammonTool(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull DrawingEditor editor, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Game game, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String initialState, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull HashMap<String, Tool> states) {
+        super(editor);
+        this.states = states;
+        setState(initialState);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void mouseUp(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull HotGammonTool this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull MouseEvent e,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int x,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int y) {
+        this.currentTool.mouseUp(e, x, y);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void mouseDrag(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull HotGammonTool this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull MouseEvent e,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int x,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int y) {
+        this.currentTool.mouseDrag(e, x, y);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void mouseDown(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull HotGammonTool this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull MouseEvent e,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int x,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int y) {
+        this.currentTool.mouseDown(e, x, y);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setState(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String toolKey) {
+        this.currentTool = states.get(toolKey);
+    }
+}

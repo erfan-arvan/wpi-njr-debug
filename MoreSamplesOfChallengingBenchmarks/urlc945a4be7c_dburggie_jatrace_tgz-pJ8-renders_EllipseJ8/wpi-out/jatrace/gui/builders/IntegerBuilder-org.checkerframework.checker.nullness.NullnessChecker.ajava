@@ -1,0 +1,64 @@
+package jatrace.gui.builders;
+
+import jatrace.gui.*;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class IntegerBuilder extends JPanel implements FocusListener {
+
+    @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull JLabel label;
+
+    @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull JTextField field;
+
+    @org.checkerframework.dataflow.qual.Impure
+    public IntegerBuilder(String name, int value) {
+        //super(new GridLayout(1,2));
+        super();
+        setPreferredSize(new Dimension(0, 25));
+        label = new JLabel(name, JLabel.CENTER);
+        add(label);
+        field = new JTextField(Integer.toString(value), 5);
+        field.addFocusListener(this);
+        add(field);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getValue() throws NumberFormatException {
+        String input = field.getText();
+        int i = 0;
+        try {
+            i = Integer.decode(input);
+        } catch (NumberFormatException e) {
+            String l;
+            l = "couldn't decode " + input + " as double, attempting as int";
+            System.out.println(l);
+            i = (int) Double.parseDouble(input);
+        }
+        return i;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setValue(int value) {
+        field.setText(Integer.toString(value));
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void requestFocus(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull IntegerBuilder this) {
+        field.requestFocus();
+    }
+
+    // Focus Listener Interface Below
+    @org.checkerframework.dataflow.qual.Impure
+    public void focusGained(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull IntegerBuilder this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull FocusEvent e) {
+        Component c = e.getComponent();
+        if (c instanceof JTextField) {
+            ((JTextField) c).selectAll();
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public void focusLost(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull IntegerBuilder this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull FocusEvent e) {
+    }
+}

@@ -1,0 +1,276 @@
+package sitsiplaseeraus;
+
+import omatTietorakenteet.Hakemisto;
+import omatTietorakenteet.Vektori;
+
+/**
+ * Sisältää kaiken mitä sitsaajan tarvitsee tietää itsestään ja
+ * mieltymyksistään. Myös paikan johon hänet on laitettu, jos tämä on hänelle
+ * kerrottu :)
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class Sitsaaja {
+
+    private  String nimi;
+
+    private   int mies;
+
+    private  Hakemisto<Sitsaaja, Integer> yhteydet;
+
+    private  Sitsaaja avec;
+
+    private   boolean avecIsSet;
+
+    private   boolean puolisoIsSet;
+
+    private  Sitsaaja puoliso;
+
+    private  Paikka paikka;
+
+    /**
+     * Luo sitsaajan annetulla nimellä
+     *
+     * @param nimi
+     */
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public Sitsaaja( String nimi) {
+        this.nimi = nimi;
+        this.yhteydet = new Hakemisto<Sitsaaja, Integer>();
+        this.avecIsSet = false;
+        this.puolisoIsSet = false;
+        this.mies = -1;
+    }
+
+    /**
+     * Luo sitsaajan annetulla nimellä ja sukupuolella
+     *
+     * @param nimi nimi
+     * @param mies Jos true, niin mies, jos false niin nainen
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public Sitsaaja( String nimi,   boolean mies) {
+        this(nimi);
+        this.setMies(mies);
+    }
+
+    /**
+     * Palauttaa nimen
+     *
+     * @return nimi
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public  String getNimi( Sitsaaja this) {
+        return nimi;
+    }
+
+    /**
+     * Onko mies vai nainen
+     *
+     * @return true jos mies, false jos nainen
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public   boolean isMies( Sitsaaja this) {
+        if (this.mies == 1) {
+            return true;
+        } else if (this.mies == 0) {
+            return false;
+        } else {
+            //To change body of generated methods, choose Tools | Templates. 
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void setMies( Sitsaaja this,   boolean mies) {
+        if (mies == true) {
+            this.mies = 1;
+        } else {
+            this.mies = 0;
+        }
+    }
+
+    /**
+     * Asettaa sitsaajalle avecin, voi olla hetero tai homopari
+     *
+     * @param avec Sitsaaja
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void setAvec( Sitsaaja this,  Sitsaaja avec) {
+        this.avec = avec;
+        this.setAvecIsSet();
+    }
+
+    /**
+     * Palauttaa avecin
+     *
+     * @return Sitsaaja
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public  Sitsaaja getAvec( Sitsaaja this) {
+        return avec;
+    }
+
+    /**
+     * Palauttaa puolison
+     *
+     * @return Sitsaaja
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public  Sitsaaja getPuoliso( Sitsaaja this) {
+        return puoliso;
+    }
+
+    /**
+     * Asettaa sitsaajalle puolison, voi olla hetero- tai homopari
+     *
+     * @param puoliso
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void setPuoliso( Sitsaaja this,  Sitsaaja puoliso) {
+        this.puoliso = puoliso;
+        this.setPuolisoIsSet();
+    }
+
+    /**
+     * palauttaa paikan jossa istuu, jos kerrottu
+     *
+     * @return Paikka luokka
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public  Paikka getPaikka( Sitsaaja this) {
+        return paikka;
+    }
+
+    /**
+     * Palauttaa paikan, jossa luulee istuvansa
+     *
+     * @param paikka Paikka luokka
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void setPaikka( Sitsaaja this,  Paikka paikka) {
+        this.paikka = paikka;
+    }
+
+    /**
+     * onko sitsaajalla avecia
+     *
+     * @return true tai false
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public   boolean avecIsSet( Sitsaaja this) {
+        return avecIsSet;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void setAvecIsSet( Sitsaaja this) {
+        this.avecIsSet = true;
+    }
+
+    /**
+     * onko sitsaajalla puolisoa
+     *
+     * @return true tai false
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public   boolean puolisoIsSet( Sitsaaja this) {
+        return puolisoIsSet;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void setPuolisoIsSet( Sitsaaja this) {
+        this.puolisoIsSet = true;
+    }
+
+    /**
+     * Asettaa yhteyden sitsaajalle, eli kenestä toisesta sitsaajasta pitää tai
+     * vihaa
+     *
+     * @param sitsaaja
+     * @param arvo kuinka paljon vihaa tai rakastaa, väliltä -5 ja 5
+     * @return jos arvo oli huono niin false, muuten true
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public   boolean setYhteys( Sitsaaja this,  Sitsaaja sitsaaja,   int arvo) {
+        if (this.equals(sitsaaja) || arvo > 5 || arvo < -5 || this.yhteydet.containsKey(sitsaaja)) {
+            return false;
+        }
+        this.yhteydet.put(sitsaaja, arvo);
+        return true;
+    }
+
+    /**
+     * Poistaa yhteyden sitsaajalta, jos sellainen on olemassa
+     *
+     * @param sitsaaja
+     * @return onnistuiko vai ei
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public   boolean deleteYhteys( Sitsaaja this,  Sitsaaja sitsaaja) {
+        if (this.yhteydet.containsKey(sitsaaja)) {
+            this.yhteydet.remove(sitsaaja);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Palauttaa sitsaajan kaikki yhteydet
+     *
+     * @return yhteydet
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public  Hakemisto<Sitsaaja, Integer> palautaYhteydet( Sitsaaja this) {
+        return this.yhteydet;
+    }
+
+    /**
+     * Kuinka paljon sitsaajalla on yhteyksiä muihin sitsaajiin
+     *
+     * @return määrä
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public   int yhteyksienMaara( Sitsaaja this) {
+        int yhteyksienMaara = 0;
+        for (Vektori<Sitsaaja, Integer> yhteys : this.yhteydet) {
+            yhteyksienMaara++;
+        }
+        return yhteyksienMaara;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   boolean heteroPari() {
+        if (avecIsSet == false && puolisoIsSet == false) {
+            return false;
+        }
+        if (avecIsSet) {
+            if (isMies()) {
+                if (getAvec().isMies()) {
+                    return false;
+                } else {
+                    return true;
+                }
+            } else {
+                if (getAvec().isMies()) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        } else {
+            if (isMies()) {
+                if (getAvec().isMies()) {
+                    return false;
+                } else {
+                    return true;
+                }
+            } else {
+                if (getAvec().isMies()) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+    }
+}

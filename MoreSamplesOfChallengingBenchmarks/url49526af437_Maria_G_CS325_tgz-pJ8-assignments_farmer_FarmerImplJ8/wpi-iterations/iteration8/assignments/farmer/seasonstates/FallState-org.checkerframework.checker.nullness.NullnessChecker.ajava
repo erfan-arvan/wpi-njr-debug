@@ -1,0 +1,33 @@
+package assignments.farmer.seasonstates;
+
+import assignments.farmer.SeasonState;
+import assignments.farmer.actionstrategies.*;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class FallState implements SeasonState {
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void plow(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull FallState this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable PlowStrategy plowStrategy) {
+        plowStrategy.plowInTheFall();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void plant(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull FallState this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable PlantStrategy plantStrategy) {
+        plantStrategy.plantInTheFall();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void weedControl(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull FallState this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable WeedControlStrategy weedControlStrategy) {
+        weedControlStrategy.weedControlInTheFall();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void harvest(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull FallState this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable HarvestStrategy harvestStrategy) {
+        harvestStrategy.harvestInTheFall();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void market(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull FallState this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable MarketStrategy marketStrategy) {
+        marketStrategy.marketInTheFall();
+    }
+}

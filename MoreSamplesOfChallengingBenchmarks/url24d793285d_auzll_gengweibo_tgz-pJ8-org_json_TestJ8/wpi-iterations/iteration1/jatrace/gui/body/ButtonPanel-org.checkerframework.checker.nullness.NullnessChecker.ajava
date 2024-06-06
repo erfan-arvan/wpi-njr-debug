@@ -1,0 +1,30 @@
+package jatrace.gui.body;
+
+import jatrace.gui.*;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class ButtonPanel extends ScrollableGridPanel {
+
+    private static @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Dimension preferredSize = new Dimension(200, 0);
+
+    @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull BodyButton head = null;
+
+    @org.checkerframework.dataflow.qual.Impure
+    public ButtonPanel(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable BodyButton b) {
+        super();
+        head = b;
+        while (b != null) {
+            add(b);
+            b = b.getNext();
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void add(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull BodyButton b) {
+        //super.add(Box.createRigidArea( new Dimension(0,25) ) );
+        super.add(b);
+    }
+}

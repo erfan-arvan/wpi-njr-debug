@@ -1,0 +1,160 @@
+/**
+ * *************************************************************************
+ *  Copyright (c) 1998-2009 AOL LLC.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ * **************************************************************************
+ */
+package net.oauth.signature.pem;
+
+import java.io.IOException;
+import java.math.BigInteger;
+
+/**
+ * An ASN.1 TLV. The object is not parsed. It can
+ * only handle integers and strings.
+ *
+ * @author zhang
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+class Asn1Object {
+
+    protected final  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int type;
+
+    protected final  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int length;
+
+    protected final  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull byte @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] value;
+
+    protected final  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int tag;
+
+    /**
+     *  Construct a ASN.1 TLV. The TLV could be either a
+     *  constructed or primitive entity.
+     *
+     *  <p/>The first byte in DER encoding is made of following fields,
+     *  <pre>
+     * -------------------------------------------------
+     * |Bit 8|Bit 7|Bit 6|Bit 5|Bit 4|Bit 3|Bit 2|Bit 1|
+     * -------------------------------------------------
+     * |  Class    | CF  |     +      Type             |
+     * -------------------------------------------------
+     *  </pre>
+     *  <ul>
+     *  <li>Class: Universal, Application, Context or Private
+     *  <li>CF: Constructed flag. If 1, the field is constructed.
+     *  <li>Type: This is actually called tag in ASN.1. It
+     *  indicates data type (Integer, String) or a construct
+     *  (sequence, choice, set).
+     *  </ul>
+     *
+     *  @param tag Tag or Identifier
+     *  @param length Length of the field
+     *  @param value Encoded octet string for the field.
+     */
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public Asn1Object( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int tag,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int length,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull byte @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] value) {
+        this.tag = tag;
+        this.type = tag & 0x1F;
+        this.length = length;
+        this.value = value;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getType() {
+        return type;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getLength() {
+        return length;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull byte @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] getValue() {
+        return value;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean isConstructed() {
+        return (tag & DerParser.CONSTRUCTED) == DerParser.CONSTRUCTED;
+    }
+
+    /**
+     * For constructed field, return a parser for its content.
+     *
+     * @return A parser for the construct.
+     * @throws IOException
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull DerParser getParser() throws IOException {
+        if (!isConstructed())
+            //$NON-NLS-1$
+            throw new IOException("Invalid DER: can't parse primitive entity");
+        return new DerParser(value);
+    }
+
+    /**
+     * Get the value as integer
+     *
+     * @return BigInteger
+     * @throws IOException
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull BigInteger getInteger() throws IOException {
+        if (type != DerParser.INTEGER)
+            //$NON-NLS-1$
+            throw new IOException("Invalid DER: object is not integer");
+        return new BigInteger(value);
+    }
+
+    /**
+     * Get value as string. Most strings are treated
+     * as Latin-1.
+     *
+     * @return Java string
+     * @throws IOException
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String getString() throws IOException {
+        String encoding;
+        switch(type) {
+            // Not all are Latin-1 but it's the closest thing
+            case DerParser.NUMERIC_STRING:
+            case DerParser.PRINTABLE_STRING:
+            case DerParser.VIDEOTEX_STRING:
+            case DerParser.IA5_STRING:
+            case DerParser.GRAPHIC_STRING:
+            case DerParser.ISO646_STRING:
+            case DerParser.GENERAL_STRING:
+                //$NON-NLS-1$
+                encoding = "ISO-8859-1";
+                break;
+            case DerParser.BMP_STRING:
+                //$NON-NLS-1$
+                encoding = "UTF-16BE";
+                break;
+            case DerParser.UTF8_STRING:
+                //$NON-NLS-1$
+                encoding = "UTF-8";
+                break;
+            case DerParser.UNIVERSAL_STRING:
+                //$NON-NLS-1$
+                throw new IOException("Invalid DER: can't handle UCS-4 string");
+            default:
+                //$NON-NLS-1$
+                throw new IOException("Invalid DER: object is not a string");
+        }
+        return new String(value, encoding);
+    }
+}

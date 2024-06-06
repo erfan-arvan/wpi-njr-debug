@@ -1,0 +1,11 @@
+package simulation.global;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public interface Event {
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void execute( Event this);
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  String getDescription( Event this);
+}

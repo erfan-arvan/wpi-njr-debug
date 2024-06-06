@@ -1,0 +1,75 @@
+package com.ctriposs.bigmap;
+
+/**
+ * Configuration for BigConcurrentHashMap
+ *
+ * @author bulldog
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class BigConfig {
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int initialCapacity = BigConcurrentHashMapImpl.DEFAULT_INITIAL_CAPACITY;
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int concurrencyLevel = BigConcurrentHashMapImpl.DEFAULT_CONCURRENCY_LEVEL;
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull float loadFactor = BigConcurrentHashMapImpl.DEFAULT_LOAD_FACTOR;
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull long purgeIntervalInMs = BigConcurrentHashMapImpl.DEFAULT_PURGE_INTERVAL;
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean reloadOnStartup = BigConcurrentHashMapImpl.DEFAULT_RELOAD_ON_STARTUP;
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean isReloadOnStartup() {
+        return reloadOnStartup;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull BigConfig setReloadOnStartup( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean reloadOnStartup) {
+        this.reloadOnStartup = reloadOnStartup;
+        return this;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getInitialCapacity() {
+        return initialCapacity;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull BigConfig setInitialCapacity( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int initialCapacity) {
+        this.initialCapacity = initialCapacity > BigConcurrentHashMapImpl.MAXIMUM_CAPACITY ? BigConcurrentHashMapImpl.MAXIMUM_CAPACITY : initialCapacity;
+        return this;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getConcurrencyLevel() {
+        return concurrencyLevel;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull BigConfig setConcurrencyLevel( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int concurrencyLevel) {
+        this.concurrencyLevel = concurrencyLevel > BigConcurrentHashMapImpl.MAX_SEGMENTS ? BigConcurrentHashMapImpl.MAX_SEGMENTS : concurrencyLevel;
+        return this;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull float getLoadFactor() {
+        return loadFactor;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull BigConfig setLoadFactor( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull float loadFactor) {
+        this.loadFactor = loadFactor;
+        return this;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull long getPurgeIntervalInMs() {
+        return purgeIntervalInMs;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull BigConfig setPurgeIntervalInMs( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull long purgeIntervalInMs) {
+        this.purgeIntervalInMs = purgeIntervalInMs;
+        return this;
+    }
+}

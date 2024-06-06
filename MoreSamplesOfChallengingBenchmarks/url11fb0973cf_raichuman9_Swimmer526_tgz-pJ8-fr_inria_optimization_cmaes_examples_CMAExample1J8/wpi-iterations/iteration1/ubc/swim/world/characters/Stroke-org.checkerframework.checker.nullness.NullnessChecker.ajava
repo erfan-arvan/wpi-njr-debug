@@ -1,0 +1,11 @@
+package ubc.swim.world.characters;
+
+/**
+ * Human stroke types supported by this system (kinda...)
+ * @author Ben Humberston
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public enum Stroke {
+
+    CRAWL, FLY
+}

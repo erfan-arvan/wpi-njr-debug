@@ -1,0 +1,76 @@
+/**
+ * http://auzll.iteye.com/
+ */
+package com.gengweibo.dao.mem;
+
+import java.util.List;
+import java.util.Map;
+import com.gengweibo.dao.WeiboDao;
+import com.gengweibo.weibo.IWeibo;
+import com.google.inject.internal.Lists;
+import com.google.inject.internal.Maps;
+
+/**
+ * @author auzll@msn.com
+ * @since 2011-3-18
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class WeiboDaoMemoryImpl implements WeiboDao {
+
+    private static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Map<String, List<IWeibo>> accountMap = Maps.newHashMap();
+
+    private static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Map<String, IWeibo> weiboMap = Maps.newHashMap();
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void save(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull WeiboDaoMemoryImpl this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull IWeibo weibo) {
+        String accountId = weibo.getAccountId();
+        String weiboId = weibo.getWeiboId();
+        // 先尝试删除
+        delete(weiboId);
+        weiboMap.put(weiboId, weibo);
+        List<IWeibo> weiboList = accountMap.get(accountId);
+        if (null == weiboList) {
+            weiboList = Lists.newArrayList();
+            accountMap.put(accountId, weiboList);
+        }
+        weiboList.add(weibo);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void delete(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull WeiboDaoMemoryImpl this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable String weiboId) {
+        IWeibo weibo = weiboMap.get(weiboId);
+        if (null != weibo) {
+            weiboMap.remove(weiboId);
+            String accountId = weibo.getAccountId();
+            List<IWeibo> weiboList = accountMap.get(accountId);
+            if (null != weiboList && weiboList.size() > 0) {
+                int find = -1;
+                for (int i = 0; i < weiboList.size(); i++) {
+                    IWeibo w = weiboList.get(i);
+                    if (w.getWeiboId().equals(weiboId)) {
+                        find = i;
+                        break;
+                    }
+                }
+                weiboList.remove(find);
+            }
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable List<IWeibo> queryRelatedList(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull WeiboDaoMemoryImpl this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String weiboId) {
+        IWeibo weibo = weiboMap.get(weiboId);
+        if (null != weibo) {
+            return accountMap.get(weibo.getAccountId());
+        }
+        return null;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void updateSyn(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull WeiboDaoMemoryImpl this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String weiboId,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean synUpdate) {
+        IWeibo weibo = weiboMap.get(weiboId);
+        if (null != weibo) {
+            weibo.setSynUpdate(synUpdate);
+        }
+    }
+}

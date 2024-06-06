@@ -1,0 +1,49 @@
+package shyview;
+
+import java.io.File;
+import java.util.ArrayList;
+import javax.swing.filechooser.FileFilter;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class ShyluxFileFilter extends FileFilter {
+
+    private  ArrayList<String> extensions = new ArrayList<String>();
+
+    @org.checkerframework.dataflow.qual.Impure
+    public ShyluxFileFilter(ArrayList<String> extensions) {
+        this.extensions.addAll(extensions);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public ShyluxFileFilter() {
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void addExtension( ShyluxFileFilter this,  String ext) {
+        this.extensions.add(ext);
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  ArrayList<String> getExtensions( ShyluxFileFilter this) {
+        return this.extensions;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   boolean accept( ShyluxFileFilter this,  File f) {
+        String filename = f.getName().toLowerCase();
+        for (String ext : this.extensions) {
+            if (filename.endsWith(ext))
+                return true;
+        }
+        if (f.isDirectory()) {
+            return true;
+        }
+        return false;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public String getDescription( ShyluxFileFilter this) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+}

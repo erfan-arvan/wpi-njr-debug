@@ -1,0 +1,201 @@
+package core;
+
+import java.awt.Point;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import logica.ExploradorMovimientos;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class Tablero {
+
+    public static   int TABLERO_LARGO = 10;
+
+    public static   int TABLERO_ANCHO = 10;
+
+    private  Map<Point, EstadoCasilla> tablero;
+
+    private static   int casillasjugablesIniciales;
+
+    public enum TipoTablero {
+
+        CLASICO, OCTOGONAL, PERSONALIZADO
+    }
+
+    private  TipoTablero tipoTablero;
+
+    @org.checkerframework.dataflow.qual.Impure
+    public Tablero() {
+        tablero = new HashMap<Point, EstadoCasilla>(TABLERO_LARGO * TABLERO_ANCHO);
+        this.tipoTablero = TipoTablero.CLASICO;
+        setCasillasjugablesIniciales(0);
+        inicializar();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public Tablero(  int largo,   int ancho,  TipoTablero tipoTablero) {
+        TABLERO_LARGO = largo;
+        TABLERO_ANCHO = ancho;
+        this.tipoTablero = tipoTablero;
+        setCasillasjugablesIniciales(0);
+        tablero = new HashMap<Point, EstadoCasilla>(TABLERO_LARGO * TABLERO_ANCHO);
+        inicializar();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public Tablero( Map<Point, EstadoCasilla> tablero,  TipoTablero tipoTablero) {
+        super();
+        this.tipoTablero = tipoTablero;
+        setCasillasjugablesIniciales(0);
+        if (tipoTablero == null) {
+            this.tipoTablero = TipoTablero.PERSONALIZADO;
+        }
+        this.tablero = new HashMap<Point, EstadoCasilla>(tablero.size());
+        for (Point point : tablero.keySet()) {
+            this.tablero.put(new Point(point), tablero.get(point));
+            if (tablero.get(point) == EstadoCasilla.EMPTY) {
+                setCasillasjugablesIniciales(getCasillasjugablesIniciales() + 1);
+            }
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void inicializar( Tablero this) {
+        setCasillasjugablesIniciales(0);
+        Point point = new Point();
+        for (point.x = 0; point.x < TABLERO_LARGO; point.x++) {
+            for (point.y = 0; point.y < TABLERO_ANCHO; point.y++) {
+                if (point.x == 0 || point.x == TABLERO_LARGO - 1 || point.y == 0 || point.y == TABLERO_ANCHO - 1) {
+                    tablero.put(new Point(point), EstadoCasilla.WALL);
+                } else {
+                    tablero.put(new Point(point), EstadoCasilla.EMPTY);
+                    setCasillasjugablesIniciales(getCasillasjugablesIniciales() + 1);
+                }
+            }
+        }
+        tablero.put(new Point((int) (Tablero.TABLERO_LARGO / 2) - 1, (int) (Tablero.TABLERO_LARGO / 2) - 1), EstadoCasilla.WHITE);
+        tablero.put(new Point((int) (Tablero.TABLERO_LARGO / 2) - 1, (int) (Tablero.TABLERO_LARGO / 2)), EstadoCasilla.BLACK);
+        tablero.put(new Point((int) (Tablero.TABLERO_LARGO / 2), (int) (Tablero.TABLERO_LARGO / 2) - 1), EstadoCasilla.BLACK);
+        tablero.put(new Point((int) (Tablero.TABLERO_LARGO / 2), (int) (Tablero.TABLERO_LARGO / 2)), EstadoCasilla.WHITE);
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  Map<Point, EstadoCasilla> obtenerTablero( Tablero this) {
+        return tablero;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  EstadoCasilla obtenerEstadoCasilla( Tablero this,  Point point) {
+        return tablero.get(point);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  Set<Point> obtenerCasillas( Tablero this,  EstadoCasilla estado) {
+        Set<Point> points = new HashSet<Point>();
+        for (Point point : tablero.keySet()) {
+            if (tablero.get(point) == estado) {
+                points.add(point);
+            }
+        }
+        return points;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   boolean estaLleno( Tablero this) {
+        for (Point point : tablero.keySet()) {
+            if (tablero.get(point) == EstadoCasilla.EMPTY) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   int contar( Tablero this,  EstadoCasilla estado) {
+        int contar = 0;
+        for (Point point : tablero.keySet()) {
+            if (tablero.get(point) == estado) {
+                contar++;
+            }
+        }
+        return contar;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  Set<Point> obtenerMovidasPosibles( Tablero this,  Jugador jugador) {
+        return ExploradorMovimientos.explorar(this, jugador.color());
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void marcarMovidasPosibles( Tablero this,  Set<Point> movidasPosibles) {
+        for (Point point : movidasPosibles) {
+            tablero.put(point, EstadoCasilla.PSSBL);
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void actualizarEstadoCasilla( Tablero this,  Point punto,  EstadoCasilla estadoCasilla) {
+        tablero.put(punto, estadoCasilla);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void desmarcarMovidasPosibles( Tablero this) {
+        for (Point point : tablero.keySet()) {
+            if (tablero.get(point) == EstadoCasilla.PSSBL) {
+                tablero.put(point, EstadoCasilla.EMPTY);
+            }
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void marcarEstado( Tablero this,  Set<Point> points,  EstadoCasilla estado) {
+        for (Point point : points) {
+            tablero.put(point, estado);
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  Set<Point> hacerMovimiento( Tablero this,  Point movida,  EstadoCasilla estado) {
+        tablero.put(movida, estado);
+        Set<Point> casillasCambiadas = ExploradorMovimientos.casillasParaLlenar(this, movida);
+        marcarEstado(casillasCambiadas, estado);
+        casillasCambiadas.add(movida);
+        return casillasCambiadas;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  TipoTablero obtenerTipoTablero( Tablero this) {
+        return tipoTablero;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  Tablero clone( Tablero this) {
+        return new Tablero(this.tablero, null);
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public static final  TipoTablero stringToTipoTablero( String stringtipoTablero) {
+        TipoTablero temp = TipoTablero.PERSONALIZADO;
+        if (stringtipoTablero.equals("CLASICO")) {
+            temp = TipoTablero.CLASICO;
+        }
+        if (stringtipoTablero.equals("OCTOGONAL")) {
+            temp = TipoTablero.OCTOGONAL;
+        }
+        if (stringtipoTablero.equals("PERSONALIZADO")) {
+            temp = TipoTablero.PERSONALIZADO;
+        }
+        return temp;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public static   int getCasillasjugablesIniciales() {
+        return casillasjugablesIniciales;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static void setCasillasjugablesIniciales(  int casillasjugablesIniciales) {
+        Tablero.casillasjugablesIniciales = casillasjugablesIniciales;
+    }
+}

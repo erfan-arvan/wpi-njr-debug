@@ -1,0 +1,118 @@
+package shyview;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.NoSuchElementException;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class PositionIterator<E> implements ListIterator<E>, Iterator<E> {
+
+     List<E> source;
+
+    private   int index = 0;
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public PositionIterator( List<E> parList) {
+        source = parList;
+    }
+
+    /*
+	 * Returns the element at the current index of the iterator.
+	 * @return Element at the current index
+	 */
+    @org.checkerframework.dataflow.qual.Pure
+    public E current( PositionIterator<E> this) throws NoSuchElementException {
+        if (source.size() == 0)
+            throw new NoSuchElementException();
+        return source.get(index);
+    }
+
+    /*
+	 * Returns the element with the given offset depending on the current index without modifying the index.
+	 * @return Element with the given offset to the current index
+	 */
+    @org.checkerframework.dataflow.qual.Pure
+    public E preview( PositionIterator<E> this,   int offset) throws NoSuchElementException {
+        int requestedItem = index + offset;
+        if (requestedItem < 0 || requestedItem >= source.size())
+            throw new NoSuchElementException();
+        return source.get(requestedItem);
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   int getOffset( PositionIterator<E> this, E element) {
+        int i = source.indexOf(element);
+        return i - index;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   int getIndex( PositionIterator<E> this) {
+        return index;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setIndex( PositionIterator<E> this,   int parIndex) throws ArrayIndexOutOfBoundsException {
+        if (parIndex < 0 || parIndex >= source.size())
+            throw new ArrayIndexOutOfBoundsException();
+        index = parIndex;
+    }
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public void add( PositionIterator<E> this, E e) {
+        throw new UnsupportedOperationException();
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   boolean hasCurrent( PositionIterator<E> this) {
+        return (source.size() > 0) ? true : false;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   boolean hasNext( PositionIterator<E> this) {
+        return (index + 1 < source.size()) ? true : false;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   boolean hasPrevious( PositionIterator<E> this) {
+        return (index - 1 >= 0) ? true : false;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public E next( PositionIterator<E> this) throws NoSuchElementException {
+        if (index + 1 >= source.size())
+            throw new NoSuchElementException();
+        index += 1;
+        return source.get(index);
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   int nextIndex( PositionIterator<E> this) {
+        return index + 1;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public E previous( PositionIterator<E> this) throws NoSuchElementException {
+        if (index - 1 < 0)
+            throw new NoSuchElementException();
+        index -= 1;
+        return source.get(index);
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   int previousIndex( PositionIterator<E> this) {
+        return index - 1;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void remove( PositionIterator<E> this) {
+        source.remove(index);
+        if (index > 0)
+            index -= 1;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void set( PositionIterator<E> this, E e) {
+        source.set(index, e);
+    }
+}

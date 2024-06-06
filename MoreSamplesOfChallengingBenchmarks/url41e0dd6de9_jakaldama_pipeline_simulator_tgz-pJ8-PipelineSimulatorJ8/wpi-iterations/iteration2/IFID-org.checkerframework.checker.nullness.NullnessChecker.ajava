@@ -1,0 +1,53 @@
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class IFID {
+
+    //Pipeline register for stage IF/ID
+    //There should be a read side and a write side
+    private static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int readInstruction;
+
+    private static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int writeInstruction;
+
+    private static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int readPCIncr;
+
+    private static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int writePCIncr;
+
+    @org.checkerframework.dataflow.qual.Pure
+    public static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getReadInstruction() {
+        return readInstruction;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static void setReadInstruction( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int readInstruction) {
+        IFID.readInstruction = readInstruction;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getWriteInstruction() {
+        return writeInstruction;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static void setWriteInstruction( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int writeInstruction) {
+        IFID.writeInstruction = writeInstruction;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getReadPCIncr() {
+        return readPCIncr;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static void setReadPCIncr(int readPCIncr) {
+        IFID.readPCIncr = readPCIncr;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getWritePCIncr() {
+        return writePCIncr;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static void setWritePCIncr(int writePCIncr) {
+        IFID.writePCIncr = writePCIncr;
+    }
+}

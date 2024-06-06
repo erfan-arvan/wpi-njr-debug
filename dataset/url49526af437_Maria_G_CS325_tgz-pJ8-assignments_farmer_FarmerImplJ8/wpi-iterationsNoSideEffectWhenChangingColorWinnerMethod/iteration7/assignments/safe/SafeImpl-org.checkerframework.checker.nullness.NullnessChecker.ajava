@@ -1,0 +1,37 @@
+package assignments.safe;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class SafeImpl implements Safe {
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull char @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull [] display;
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int index = 0;
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean locked = true;
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public SafeImpl() {
+        display = Safe.BLANK_DISPLAY.toCharArray();
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean isLocked(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull SafeImpl this) {
+        return locked;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String readDisplay(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull SafeImpl this) {
+        return String.valueOf(display);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void enter(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull SafeImpl this,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull char c) {
+        if (Character.isDigit(c)) {
+            display[index++] = c;
+        }
+        if (String.valueOf(display).equals("123456")) {
+            locked = false;
+            display = Safe.OPEN_DISPLAY.toCharArray();
+        }
+    }
+}

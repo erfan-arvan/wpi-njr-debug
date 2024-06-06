@@ -1,0 +1,21 @@
+package simulation.queue;
+
+import simulation.global.Event;
+import simulation.global.SimulationClk;
+import simulation.global.Statistics;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class InfServersQueueSystem extends QueueSystem {
+
+    @org.checkerframework.dataflow.qual.Impure
+    public InfServersQueueSystem(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String name, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Server server,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int queueLen) {
+        super(name, server, queueLen);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean enqueue(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull InfServersQueueSystem this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Customer customer, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Event afterService) {
+        Statistics.trace.log("[" + SimulationClk.clock + "][" + this.name + "][Service]" + customer.getId());
+        this.server.serve(customer, afterService);
+        return true;
+    }
+}

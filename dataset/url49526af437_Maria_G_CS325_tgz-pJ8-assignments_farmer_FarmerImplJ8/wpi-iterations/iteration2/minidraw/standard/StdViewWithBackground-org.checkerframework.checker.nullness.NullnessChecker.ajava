@@ -1,0 +1,47 @@
+package minidraw.standard;
+
+import minidraw.framework.*;
+import java.awt.*;
+
+/**
+ * A drawing view that paints the background with a fixed image
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class StdViewWithBackground extends StandardDrawingView {
+
+    @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Image background;
+
+    /**
+     * Create a DrawingView that features a graphical image as
+     *      background for figures.
+     *      @param backgroundName name of an image previously loaded by the
+     *      image manager.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public StdViewWithBackground(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull DrawingEditor editor, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String backgroundName) {
+        super(editor);
+        ImageManager im = ImageManager.getSingleton();
+        this.background = im.getImage(backgroundName);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public StdViewWithBackground(DrawingEditor editor, Image background) {
+        super(editor);
+        this.background = background;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void drawBackground(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull StdViewWithBackground this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Graphics g) {
+        g.drawImage(background, 0, 0, null);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Dimension getPreferredSize(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull StdViewWithBackground this) {
+        return new Dimension(background.getWidth(null), background.getHeight(null));
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Dimension getMinimumSize(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull StdViewWithBackground this) {
+        return getPreferredSize();
+    }
+}

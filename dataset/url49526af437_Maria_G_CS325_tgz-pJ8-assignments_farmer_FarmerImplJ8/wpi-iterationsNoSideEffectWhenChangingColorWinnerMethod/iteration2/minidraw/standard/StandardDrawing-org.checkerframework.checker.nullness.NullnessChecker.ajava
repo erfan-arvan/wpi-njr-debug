@@ -1,0 +1,163 @@
+package minidraw.standard;
+
+import minidraw.framework.*;
+import minidraw.standard.handlers.*;
+import java.awt.*;
+//import javax.swing.*;
+import java.util.List;
+
+/**
+ * Standard implemementation of drawing.
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class StandardDrawing extends CompositeFigure implements Drawing {
+
+    /**
+     * list of all figures currently selected
+     */
+    protected @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull SelectionHandler selectionHandler;
+
+    /**
+     * use a StandardDrawingChangeListenerHandler to handle all
+     *      observer pattern subject role behaviour
+     */
+    protected @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull StandardDrawingChangeListenerHandler listenerHandler;
+
+    @org.checkerframework.framework.qual.EnsuresQualifier(expression = { "this.fDrawingLockHolder" }, qualifier = org.checkerframework.checker.initialization.qual.FBCBottom.class)
+    @org.checkerframework.dataflow.qual.Impure
+    public StandardDrawing() {
+        selectionHandler = new StandardSelectionHandler();
+        listenerHandler = new StandardDrawingChangeListenerHandler();
+    }
+
+    // === Delegation methods for the DrawingChangeListeners
+    /**
+     * Adds a listener for this drawing.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void addDrawingChangeListener(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull StandardDrawing this, @org.checkerframework.checker.initialization.qual.UnderInitialization(javax.swing.JPanel.class) @org.checkerframework.checker.nullness.qual.NonNull DrawingChangeListener listener) {
+        listenerHandler.addDrawingChangeListener(listener);
+    }
+
+    /**
+     * Removes a listener from this drawing.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void removeDrawingChangeListener(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull StandardDrawing this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull DrawingChangeListener listener) {
+        listenerHandler.removeDrawingChangeListener(listener);
+    }
+
+    /**
+     * Invalidates a rectangle and merges it with the
+     * existing damaged area.
+     * @see FigureChangeListener
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void figureInvalidated(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull StandardDrawing this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull FigureChangeEvent e) {
+        listenerHandler.fireDrawingInvalidated(this, e.getInvalidatedRectangle());
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void figureChanged(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull StandardDrawing this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull FigureChangeEvent e) {
+        listenerHandler.fireDrawingRequestUpdate(this);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void requestUpdate(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull StandardDrawing this) {
+        listenerHandler.fireDrawingRequestUpdate(this);
+    }
+
+    // === Delegation methods for the Selection handling
+    /**
+     * Get a list of all selected figures
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull List<Figure> selection(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull StandardDrawing this) {
+        return selectionHandler.selection();
+    }
+
+    /**
+     * Adds a figure to the current selection.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void addToSelection(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull StandardDrawing this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Figure figure) {
+        selectionHandler.addToSelection(figure);
+    }
+
+    /**
+     * Removes a figure from the selection.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void removeFromSelection(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull StandardDrawing this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Figure figure) {
+        selectionHandler.removeFromSelection(figure);
+    }
+
+    /**
+     * If a figure isn't selected it is added to the selection.
+     * Otherwise it is removed from the selection.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void toggleSelection(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull StandardDrawing this, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Figure figure) {
+        selectionHandler.toggleSelection(figure);
+    }
+
+    /**
+     * Clears the current selection.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void clearSelection(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull StandardDrawing this) {
+        selectionHandler.clearSelection();
+    }
+
+    // === We do some opportunistic reuse of the CompositeFigure but
+    // unfortunately it defines methods that are not usable for a
+    // Drawing.
+    /**
+     * should not be used by a drawing - the reason this method is
+     *      defined is because of the opportunistic reuse opportunities of
+     *      the CompositeFigure
+     */
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public void basicDisplayBox(int x, int y) {
+        throw new RuntimeException("StandardDrawing: basicDisplayBox should not be invoked");
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public Rectangle displayBox(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull StandardDrawing this) {
+        throw new RuntimeException("StandardDrawing: displayBox should not be invoked");
+    }
+
+    /**
+     * boolean that serves as a condition variable
+     * to lock the access to the drawing.
+     * The lock is recursive and we keep track of the current
+     * lock holder.
+     */
+    private transient @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable Thread fDrawingLockHolder = null;
+
+    @org.checkerframework.checker.nullness.qual.EnsuresNonNull({ "this.fDrawingLockHolder" })
+    @org.checkerframework.dataflow.qual.Impure
+    public synchronized void lock(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull StandardDrawing this) {
+        // recursive lock
+        Thread current = Thread.currentThread();
+        if (fDrawingLockHolder == current) {
+            return;
+        }
+        while (fDrawingLockHolder != null) {
+            try {
+                wait();
+            } catch (InterruptedException ex) {
+            }
+        }
+        fDrawingLockHolder = current;
+    }
+
+    @org.checkerframework.framework.qual.EnsuresQualifier(expression = { "this.fDrawingLockHolder" }, qualifier = org.checkerframework.checker.initialization.qual.FBCBottom.class)
+    @org.checkerframework.dataflow.qual.Impure
+    public synchronized void unlock(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull StandardDrawing this) {
+        if (fDrawingLockHolder != null) {
+            fDrawingLockHolder = null;
+            notifyAll();
+        }
+    }
+}

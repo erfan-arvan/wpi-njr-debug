@@ -1,0 +1,153 @@
+package assignments.frs.chap5;
+
+import org.junit.*;
+import assignments.frs.chap5.Breakthrough.PieceType;
+import static org.junit.Assert.*;
+
+/**
+ * Initial test case class for Breakthrough
+ *
+ *   This source code is from the book
+ *     "Flexible, Reliable Software:
+ *       Using Patterns and Agile Development"
+ *     published 2010 by CRC Press.
+ *   Author:
+ *     Henrik B Christensen
+ *     Computer Science Department
+ *     Aarhus University
+ *
+ *   This source code is provided WITHOUT ANY WARRANTY either
+ *   expressed or implied. You may study, use, modify, and
+ *   distribute it for non-commercial purposes. For any
+ *   commercial use, see http://www.baerbak.com/
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class TestBreakthrough {
+
+     Breakthrough game;
+
+    /**
+     * Fixture
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void setUp() {
+        game = new BreakthroughImpl();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void shouldHaveBlackPawnOn00() {
+        assertEquals("Black has pawn on (0,0)", BreakthroughImpl.PieceType.BLACK, game.getPieceAt(0, 0));
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void shouldBeginWithWhitePlayer() {
+        assertEquals("'Player In Turn' should be White Player.", BreakthroughImpl.PlayerType.WHITE, game.getPlayerInTurn());
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void shouldAlternatePlayersWithTurns() throws Exception {
+        assertEquals("Turn 1, 'Player In Turn' should be White Player.", BreakthroughImpl.PlayerType.WHITE, game.getPlayerInTurn());
+        game.move(6, 0, 5, 0);
+        assertEquals("Turn 2, 'Player In Turn' should be Black Player.", BreakthroughImpl.PlayerType.BLACK, game.getPlayerInTurn());
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void shouldMoveOnePieceOneSquareStraightTowardsHomeRow() throws Exception {
+        //Move from (6,0) to (5,0)
+        game.move(6, 0, 5, 0);
+        assertEquals("Piece should have moved from (6,0).", BreakthroughImpl.PieceType.NONE, game.getPieceAt(6, 0));
+        assertEquals("Piece should have moved to (5,0).", BreakthroughImpl.PieceType.WHITE, game.getPieceAt(5, 0));
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void shouldMoveOnePieceOneSquareDiagonallyRightTowardsHomeRow() throws Exception {
+        //Move from (6,0) to (5,1)
+        game.move(6, 0, 5, 1);
+        assertEquals("Piece should have moved from (6,0).", BreakthroughImpl.PieceType.NONE, game.getPieceAt(6, 0));
+        assertEquals("Piece should have moved to (5,1).", BreakthroughImpl.PieceType.WHITE, game.getPieceAt(5, 1));
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void shouldMoveOnePieceOneSquareDiagonallyLeftTowardsHomeRow() throws Exception {
+        //Move from (6,1) to (5,0)
+        game.move(6, 1, 5, 0);
+        assertEquals("Piece should have moved from (6,1).", BreakthroughImpl.PieceType.NONE, game.getPieceAt(6, 1));
+        assertEquals("Piece should have moved to (5,0).", BreakthroughImpl.PieceType.WHITE, game.getPieceAt(5, 0));
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void shouldOnlyMoveOneSquarePerTurn() throws Exception {
+        //Move from (6,1) to (5,0)
+        game.move(6, 0, 4, 0);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void shouldNotMovePieceToOccupiedSquare() throws Exception {
+        //Move from (7,0) to (6,0)
+        game.move(7, 0, 6, 0);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void shouldCaptureOpponentOnTheDiagonal() throws Exception {
+        game.move(6, 0, 5, 0);
+        game.move(1, 1, 2, 1);
+        game.move(5, 0, 4, 0);
+        game.move(2, 1, 3, 1);
+        game.move(4, 0, 3, 1);
+        assertEquals("White should have captured Black Piece at (3,1).", BreakthroughImpl.PieceType.WHITE, game.getPieceAt(3, 1));
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void shouldWinWhenMovePieceToHomeRow() throws Exception {
+        //TO DO
+        //W
+        game.move(6, 0, 5, 0);
+        //B
+        game.move(1, 1, 2, 1);
+        //W
+        game.move(5, 0, 4, 0);
+        //B
+        game.move(2, 1, 3, 1);
+        //W
+        game.move(4, 0, 3, 0);
+        //B
+        game.move(3, 1, 4, 1);
+        //W
+        game.move(3, 0, 2, 0);
+        //B
+        game.move(4, 1, 5, 1);
+        //W
+        game.move(2, 0, 1, 1);
+        //B
+        game.move(1, 3, 2, 3);
+        //W
+        game.move(1, 1, 0, 2);
+        assertEquals("White should be the winner.", BreakthroughImpl.PlayerType.WHITE, game.getWinner());
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void shouldNotAllowWhitePlayerToMoveBlackPiece() throws Exception {
+        //White Player move black piece from (1,1) to (2,1)
+        game.move(1, 1, 2, 1);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void shouldNotAllowMoveSideways() throws Exception {
+        //W
+        game.move(6, 0, 5, 0);
+        //B
+        game.move(1, 1, 2, 1);
+        //W
+        game.move(5, 0, 5, 1);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void shouldNotAllowMoveAwayFromHomeRow() throws Exception {
+        //W
+        game.move(6, 0, 5, 0);
+        //B
+        game.move(1, 1, 2, 1);
+        //W
+        game.move(5, 0, 6, 0);
+    }
+}

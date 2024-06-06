@@ -1,0 +1,118 @@
+package shyview;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.NoSuchElementException;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class PositionIterator<E> implements ListIterator<E>, Iterator<E> {
+
+    @org.checkerframework.checker.initialization.qual.UnknownInitialization(java.util.LinkedList.class) @org.checkerframework.checker.nullness.qual.NonNull List<E> source;
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int index = 0;
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public PositionIterator(@org.checkerframework.checker.initialization.qual.UnknownInitialization(java.util.LinkedList.class) @org.checkerframework.checker.nullness.qual.NonNull List<E> parList) {
+        source = parList;
+    }
+
+    /*
+	 * Returns the element at the current index of the iterator.
+	 * @return Element at the current index
+	 */
+    @org.checkerframework.dataflow.qual.Pure
+    public E current() throws NoSuchElementException {
+        if (source.size() == 0)
+            throw new NoSuchElementException();
+        return source.get(index);
+    }
+
+    /*
+	 * Returns the element with the given offset depending on the current index without modifying the index.
+	 * @return Element with the given offset to the current index
+	 */
+    @org.checkerframework.dataflow.qual.Pure
+    public E preview( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int offset) throws NoSuchElementException {
+        int requestedItem = index + offset;
+        if (requestedItem < 0 || requestedItem >= source.size())
+            throw new NoSuchElementException();
+        return source.get(requestedItem);
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getOffset(E element) {
+        int i = source.indexOf(element);
+        return i - index;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getIndex() {
+        return index;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setIndex( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int parIndex) throws ArrayIndexOutOfBoundsException {
+        if (parIndex < 0 || parIndex >= source.size())
+            throw new ArrayIndexOutOfBoundsException();
+        index = parIndex;
+    }
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public void add(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull PositionIterator<E> this, E e) {
+        throw new UnsupportedOperationException();
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean hasCurrent() {
+        return (source.size() > 0) ? true : false;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean hasNext(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull PositionIterator<E> this) {
+        return (index + 1 < source.size()) ? true : false;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean hasPrevious(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull PositionIterator<E> this) {
+        return (index - 1 >= 0) ? true : false;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public E next(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull PositionIterator<E> this) throws NoSuchElementException {
+        if (index + 1 >= source.size())
+            throw new NoSuchElementException();
+        index += 1;
+        return source.get(index);
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int nextIndex(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull PositionIterator<E> this) {
+        return index + 1;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public E previous(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull PositionIterator<E> this) throws NoSuchElementException {
+        if (index - 1 < 0)
+            throw new NoSuchElementException();
+        index -= 1;
+        return source.get(index);
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int previousIndex(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull PositionIterator<E> this) {
+        return index - 1;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void remove(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull PositionIterator<E> this) {
+        source.remove(index);
+        if (index > 0)
+            index -= 1;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void set(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull PositionIterator<E> this, E e) {
+        source.set(index, e);
+    }
+}

@@ -1,0 +1,25 @@
+package assignments.farmer;
+
+import assignments.farmer.actionstrategies.*;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public interface FarmerFactory {
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  Farmer create( FarmerFactory this,  String str);
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  PlowStrategy createPlowStrategy();
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  PlantStrategy createPlantStrategy();
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  WeedControlStrategy createWeedControlStrategy();
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  HarvestStrategy createHarvestStrategy();
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  MarketStrategy createMarketStrategy();
+}

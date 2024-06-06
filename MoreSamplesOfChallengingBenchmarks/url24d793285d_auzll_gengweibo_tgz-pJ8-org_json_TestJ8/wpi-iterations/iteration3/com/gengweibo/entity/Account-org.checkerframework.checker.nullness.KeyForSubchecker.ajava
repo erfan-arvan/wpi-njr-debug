@@ -1,0 +1,77 @@
+/**
+ * http://auzll.iteye.com/
+ */
+package com.gengweibo.entity;
+
+import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
+import com.gengweibo.weibo.IWeibo;
+import com.google.inject.internal.Maps;
+
+/**
+ * @author auzll@msn.com
+ * @since 2011-3-17
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class Account implements Serializable {
+
+    /**
+     */
+    private static final   long serialVersionUID = 2608646627786083846L;
+
+    /**
+     * 用户ID
+     */
+    private  String id;
+
+    private  Map<String, IWeibo> weiboMap = Maps.newHashMap();
+
+    private   boolean init = false;
+
+    public static final  String ACCOUNT_SESSION_KEY = "__SESSION_ACCOUNT";
+
+    private  IWeibo linkingWeibo;
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  IWeibo getLinkingWeibo( Account this) {
+        return linkingWeibo;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setLinkingWeibo( Account this,  IWeibo linkingWeibo) {
+        this.linkingWeibo = linkingWeibo;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  Map<String, IWeibo> getWeiboMap( Account this) {
+        return weiboMap;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  String getId( Account this) {
+        return id;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setId( Account this,  String id) {
+        this.id = id;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void loadWeibo( Account this,  List<IWeibo> weiboList) {
+        if (!init) {
+            init = true;
+            if (null != weiboList) {
+                for (IWeibo w : weiboList) {
+                    weiboMap.put(w.getWeiboId(), w);
+                }
+            }
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   boolean isInit( Account this) {
+        return init;
+    }
+}

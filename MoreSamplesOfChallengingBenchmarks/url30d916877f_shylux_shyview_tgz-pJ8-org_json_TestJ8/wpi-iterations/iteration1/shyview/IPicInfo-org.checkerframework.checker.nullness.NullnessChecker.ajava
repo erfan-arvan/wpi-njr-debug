@@ -1,0 +1,17 @@
+package shyview;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public interface IPicInfo {
+
+    @org.checkerframework.dataflow.qual.Impure
+    void update(IPicList list);
+
+    @org.checkerframework.dataflow.qual.Impure
+    void clear();
+
+    @org.checkerframework.dataflow.qual.Impure
+    void pushProcess(String info);
+
+    @org.checkerframework.dataflow.qual.Impure
+    void finishProcess();
+}

@@ -1,0 +1,22 @@
+package assignments.farmer.actionstrategies.plantstrategies;
+
+import assignments.farmer.actionstrategies.PlantStrategy;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class AmishPlantStrategy implements PlantStrategy {
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void plantInTheSpring(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull AmishPlantStrategy this) {
+        System.out.println("Peas, lettuce, oats.");
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void plantInTheSummer(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull AmishPlantStrategy this) {
+        System.out.println("Beans, squash, tomatoes, beets, carrots.");
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void plantInTheFall(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull AmishPlantStrategy this) {
+        System.out.println("Late beans, squash, potatoes.");
+    }
+}

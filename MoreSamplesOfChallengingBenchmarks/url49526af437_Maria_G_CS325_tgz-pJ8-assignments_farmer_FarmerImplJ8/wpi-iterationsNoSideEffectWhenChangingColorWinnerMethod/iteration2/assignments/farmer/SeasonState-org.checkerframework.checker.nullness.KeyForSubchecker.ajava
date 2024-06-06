@@ -1,0 +1,22 @@
+package assignments.farmer;
+
+import assignments.farmer.actionstrategies.*;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public interface SeasonState {
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void plow( SeasonState this,  PlowStrategy plowStrategy);
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void plant( SeasonState this,  PlantStrategy plantStrategy);
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void weedControl( SeasonState this,  WeedControlStrategy weedControlStrategy);
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void harvest( SeasonState this,  HarvestStrategy harvestStrategy);
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void market( SeasonState this,  MarketStrategy marketStrategy);
+}

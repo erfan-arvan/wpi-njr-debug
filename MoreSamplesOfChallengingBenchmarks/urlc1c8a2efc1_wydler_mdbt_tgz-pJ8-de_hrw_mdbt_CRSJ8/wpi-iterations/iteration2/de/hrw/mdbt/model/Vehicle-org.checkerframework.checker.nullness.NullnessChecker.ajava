@@ -1,0 +1,166 @@
+package de.hrw.mdbt.model;
+
+import java.util.ArrayList;
+import com.db4o.ObjectContainer;
+import com.db4o.config.CommonConfigurationProvider;
+import com.db4o.constraints.UniqueFieldValueConstraint;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class Vehicle {
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull String licenseNumber;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull String insuranceNumber;
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int actualKm;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable Branch branch;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull VehicleGroup vehicleGroup;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull ArrayList<Report> reports = new ArrayList<Report>();
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull ArrayList<Rental> rentals = new ArrayList<Rental>();
+
+    @org.checkerframework.dataflow.qual.Impure
+    public Vehicle(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String licenseNumber, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String insuranceNumber,  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int actualKm, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable Branch branch, @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable VehicleGroup vehicleGroup) {
+        setLicenseNumber(licenseNumber);
+        setInsuranceNumber(insuranceNumber);
+        setActualKm(actualKm);
+        setBranch(branch);
+        setVehicleGroup(vehicleGroup);
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable String getLicenseNumber() {
+        return licenseNumber;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setLicenseNumber(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String licenseNumber) {
+        this.licenseNumber = licenseNumber;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable String getInsuranceNumber() {
+        return insuranceNumber;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setInsuranceNumber(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String insuranceNumber) {
+        this.insuranceNumber = insuranceNumber;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getActualKm() {
+        return actualKm;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setActualKm( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int actualKm) {
+        this.actualKm = actualKm;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable Branch getBranch() {
+        return branch;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setBranch(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable Branch branch) {
+        if (this.branch != null)
+            this.branch.removeVehicle(this);
+        this.branch = branch;
+        if (branch != null)
+            branch.addVehicle(this);
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable VehicleGroup getVehicleGroup() {
+        return vehicleGroup;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setVehicleGroup(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable VehicleGroup vehicleGroup) {
+        if (this.vehicleGroup != null)
+            this.vehicleGroup.removeVehicle(this);
+        this.vehicleGroup = vehicleGroup;
+        if (vehicleGroup != null)
+            vehicleGroup.addVehicle(this);
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull ArrayList<Report> getReports() {
+        return reports;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setReports(ArrayList<Report> reports) {
+        this.reports = reports;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull ArrayList<Rental> getRentals() {
+        return rentals;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    protected void addRental(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Rental rental) {
+        this.rentals.add(rental);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    protected void removeRental(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Rental rental) {
+        this.rentals.remove(rental);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public static void configure(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull CommonConfigurationProvider config) {
+        config.common().objectClass(Vehicle.class).objectField("licenseNumber").indexed(true);
+        config.common().add(new UniqueFieldValueConstraint(Vehicle.class, "licenseNumber"));
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean checkConstraints() {
+        if (this.licenseNumber == null)
+            return false;
+        if (this.insuranceNumber == null)
+            return false;
+        if (this.branch == null)
+            return false;
+        if (this.vehicleGroup == null)
+            return false;
+        if (this.actualKm < 0)
+            return false;
+        return true;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean objectCanNew(ObjectContainer db) {
+        return checkConstraints();
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean objectCanUpdate(ObjectContainer db) {
+        return checkConstraints();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void objectOnDelete(ObjectContainer db) {
+        if (branch != null) {
+            db.activate(branch, 2);
+            branch.removeVehicle(this);
+            db.store(branch);
+        }
+        if (vehicleGroup != null) {
+            db.activate(vehicleGroup, 1);
+            vehicleGroup.removeVehicle(this);
+            db.store(vehicleGroup);
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String toString(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Vehicle this) {
+        return "--------Vehicle--------\nLicense: " + licenseNumber + "\nInsurance: " + insuranceNumber + "\n-----------------------\n";
+    }
+}

@@ -1,0 +1,61 @@
+/**
+ */
+package ubc.swim.dynamics.controllers;
+
+import org.jbox2d.common.Vec2;
+
+/**
+ * Definition for a fluid buoyancy controller
+ *
+ * Adapted from http://personal.boristhebrave.com/project/b2buoyancycontroller
+ *
+ * @author Ben Humberston
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class FluidControllerDef extends DynamicsControllerDef {
+
+    /// The outer surface normal
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Vec2 normal;
+
+    /// The height of the fluid surface along the normal
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull float offset;
+
+    /// The fluid density
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull float density;
+
+    /// Fluid velocity, for drag calculations
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Vec2 velocity;
+
+    /// Linear drag co-efficient
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull float linearDrag;
+
+    /// If false, bodies are assumed to be uniformly dense, otherwise use the shapes densities
+    //False by default to prevent a gotcha
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean useDensity;
+
+    /// If true, gravity is taken from the world instead of the gravity parameter.
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean useWorldGravity;
+
+    /// Gravity vector, if the world's gravity is not used
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Vec2 gravity;
+
+    @org.checkerframework.dataflow.qual.Impure
+    public FluidControllerDef() {
+        normal = new Vec2(0, 1);
+        offset = 0;
+        density = 0;
+        velocity = new Vec2(0, 0);
+        linearDrag = 0;
+        useDensity = false;
+        useWorldGravity = true;
+        gravity = new Vec2(0, 0);
+    }
+
+    /**
+     * @see org.jbox2d.dynamics.DynamicsControllerDef.ControllerDef#create()
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull DynamicsController create(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull FluidControllerDef this) {
+        return new FluidController(this);
+    }
+}

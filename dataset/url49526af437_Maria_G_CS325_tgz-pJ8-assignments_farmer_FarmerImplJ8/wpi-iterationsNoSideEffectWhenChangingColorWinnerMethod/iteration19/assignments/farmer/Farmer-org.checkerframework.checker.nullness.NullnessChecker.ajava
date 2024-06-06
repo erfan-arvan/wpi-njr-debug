@@ -1,0 +1,23 @@
+package assignments.farmer;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public interface Farmer {
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void plow();
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void plant();
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void weedControl();
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void harvest();
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void market();
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setSeasonState(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull SeasonState seasonState);
+}

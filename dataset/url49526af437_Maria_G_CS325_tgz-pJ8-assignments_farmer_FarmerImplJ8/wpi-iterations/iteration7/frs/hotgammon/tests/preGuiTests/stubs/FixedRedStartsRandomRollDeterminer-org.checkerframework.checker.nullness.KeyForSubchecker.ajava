@@ -1,0 +1,33 @@
+package frs.hotgammon.tests.preGuiTests.stubs;
+
+import frs.hotgammon.RollDeterminer;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class FixedRedStartsRandomRollDeterminer implements RollDeterminer {
+
+    private   int  [] diceRoll = new int[2];
+
+    private final   int  []  [] POSSIBLE_DICE_ROLLS = { { 4, 3 }, { 4, 3 }, { 1, 1 }, { 3, 6 } };
+
+    private   int index = 0;
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void rollDice( FixedRedStartsRandomRollDeterminer this) {
+        diceRoll = POSSIBLE_DICE_ROLLS[index % 4];
+        if (diceRoll[0] == diceRoll[1]) {
+            diceRoll = new int[] { diceRoll[0], diceRoll[1], diceRoll[0], diceRoll[1] };
+        }
+        index++;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   int  [] getDiceRoll( FixedRedStartsRandomRollDeterminer this) {
+        return diceRoll;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void reset( FixedRedStartsRandomRollDeterminer this) {
+        diceRoll = new int[2];
+        index = 0;
+    }
+}

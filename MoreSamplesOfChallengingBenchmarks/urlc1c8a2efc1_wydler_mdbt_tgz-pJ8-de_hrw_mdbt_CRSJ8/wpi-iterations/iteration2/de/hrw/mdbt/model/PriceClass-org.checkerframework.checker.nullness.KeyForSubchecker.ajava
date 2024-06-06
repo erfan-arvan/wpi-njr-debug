@@ -1,0 +1,92 @@
+package de.hrw.mdbt.model;
+
+import java.util.ArrayList;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class PriceClass {
+
+    private  String name;
+
+    private  String description;
+
+    private   float freeKm;
+
+    private   float priceKm;
+
+    private   float priceDay;
+
+    private  ArrayList<Model> models = new ArrayList<Model>();
+
+    @org.checkerframework.dataflow.qual.Impure
+    public PriceClass( String name,  String description,   int freeKm,   int priceDay,   int priceKm) {
+        this.setName(name);
+        this.setDescription(description);
+        this.setFreeKm(freeKm);
+        this.setPriceDay(priceDay);
+        this.setPriceKm(priceKm);
+    }
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public PriceClass() {
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void addModel(Model m) {
+        models.add(m);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void removeModel(Model m) {
+        models.remove(m);
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  String getName( PriceClass this) {
+        return name;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setName( PriceClass this,  String name) {
+        this.name = name;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  String getDescription() {
+        return description;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setDescription( PriceClass this,  String description) {
+        this.description = description;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   float getFreeKm() {
+        return freeKm;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setFreeKm( PriceClass this,   float freeKm) {
+        this.freeKm = freeKm;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   float getPriceKm() {
+        return priceKm;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setPriceKm( PriceClass this,   float priceKm) {
+        this.priceKm = priceKm;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   float getPriceDay() {
+        return priceDay;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setPriceDay( PriceClass this,   float priceDay) {
+        this.priceDay = priceDay;
+    }
+}

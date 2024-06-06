@@ -1,0 +1,19 @@
+package frs.hotgammon.variants.winnerdeterminers;
+
+import frs.hotgammon.WinnerDeterminer;
+import frs.hotgammon.framework.Color;
+import frs.hotgammon.framework.Game;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public class SixMoveWinnerDeterminer implements WinnerDeterminer {
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  Color winner( SixMoveWinnerDeterminer this,   int turnCount) {
+        return (turnCount == 6) ? Color.RED : Color.NONE;
+    }
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public void setGame( SixMoveWinnerDeterminer this,  Game game) {
+        // Do Nothing
+    }
+}

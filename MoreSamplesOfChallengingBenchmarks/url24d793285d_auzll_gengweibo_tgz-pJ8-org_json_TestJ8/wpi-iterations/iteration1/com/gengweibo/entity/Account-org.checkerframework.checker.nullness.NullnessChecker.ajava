@@ -1,0 +1,77 @@
+/**
+ * http://auzll.iteye.com/
+ */
+package com.gengweibo.entity;
+
+import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
+import com.gengweibo.weibo.IWeibo;
+import com.google.inject.internal.Maps;
+
+/**
+ * @author auzll@msn.com
+ * @since 2011-3-17
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class Account implements Serializable {
+
+    /**
+     */
+    private static final  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull long serialVersionUID = 2608646627786083846L;
+
+    /**
+     * 用户ID
+     */
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull String id;
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Map<String, IWeibo> weiboMap = Maps.newHashMap();
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean init = false;
+
+    public static final @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String ACCOUNT_SESSION_KEY = "__SESSION_ACCOUNT";
+
+    private @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.MonotonicNonNull IWeibo linkingWeibo;
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull IWeibo getLinkingWeibo() {
+        return linkingWeibo;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setLinkingWeibo(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.Nullable IWeibo linkingWeibo) {
+        this.linkingWeibo = linkingWeibo;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull Map<String, IWeibo> getWeiboMap() {
+        return weiboMap;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String getId() {
+        return id;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setId(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull String id) {
+        this.id = id;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void loadWeibo(@org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull List<IWeibo> weiboList) {
+        if (!init) {
+            init = true;
+            if (null != weiboList) {
+                for (IWeibo w : weiboList) {
+                    weiboMap.put(w.getWeiboId(), w);
+                }
+            }
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull boolean isInit() {
+        return init;
+    }
+}

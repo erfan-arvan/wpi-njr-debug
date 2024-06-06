@@ -1,0 +1,44 @@
+package simulation.queue;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.NullnessChecker")
+public class Customer {
+
+    private static  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int idGen = 1;
+
+    private  @org.checkerframework.checker.initialization.qual.UnknownInitialization(java.lang.Object.class) @org.checkerframework.checker.nullness.qual.NonNull int id;
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int accumlatedTime;
+
+    private  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int type;
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public Customer() {
+        this.id = idGen++;
+        this.accumlatedTime = 0;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void accumlateTime( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int time) {
+        this.accumlatedTime += time;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getAccumlatedTime() {
+        return this.accumlatedTime;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getId() {
+        return this.id;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setType( @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int route) {
+        this.type = route;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  @org.checkerframework.checker.initialization.qual.Initialized @org.checkerframework.checker.nullness.qual.NonNull int getType() {
+        return this.type;
+    }
+}

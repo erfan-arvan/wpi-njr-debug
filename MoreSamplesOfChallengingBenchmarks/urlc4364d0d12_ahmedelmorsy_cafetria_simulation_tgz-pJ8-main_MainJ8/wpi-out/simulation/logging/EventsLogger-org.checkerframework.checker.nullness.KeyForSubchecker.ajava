@@ -1,0 +1,11 @@
+package simulation.logging;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.nullness.KeyForSubchecker")
+public interface EventsLogger {
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void log( EventsLogger this,  String s);
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void close( EventsLogger this);
+}
